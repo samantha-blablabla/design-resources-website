@@ -1012,8 +1012,9 @@ body > * {
   display: none; /* Hidden on mobile */
   gap: 0.5rem;
   justify-content: flex-end;
-  margin-top: 1rem;
-  padding-right: 150px; /* Align with slider padding */
+  margin-top: -60px; /* Align with section header */
+  margin-bottom: 1.5rem;
+  padding-right: 0; /* Align with View All link */
 }
 
 .slider-arrow {
