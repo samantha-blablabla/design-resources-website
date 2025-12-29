@@ -6,19 +6,35 @@ import { supabase } from '@/lib/supabase';
 import type { Resource } from '@/lib/types';
 
 // Dummy fallback data
-const dummyData = [
+const dummyFeaturedTools = [
   {
     id: 1,
-    title: 'Loading...',
-    description: 'Fetching featured tools from database...',
-    tags: ['loading'],
-    emoji: '⏳',
-    gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+    title: 'Figma Design System',
+    description: 'Complete design system with components, tokens, and guidelines for modern interfaces.',
+    tags: ['figma', 'ui-kits', 'free', 'design-system'],
+    emoji: '🎨',
+    gradient: 'linear-gradient(135deg, #DBEAFE 0%, #E0E7FF 100%)',
+  },
+  {
+    id: 2,
+    title: 'Icon Library Pro',
+    description: 'Over 10,000 customizable icons in multiple styles. Perfect for web and mobile apps.',
+    tags: ['icons', 'svg', 'premium', 'ui-design'],
+    emoji: '⭐',
+    gradient: 'linear-gradient(135deg, #FCE7F3 0%, #F3E8FF 100%)',
+  },
+  {
+    id: 3,
+    title: 'Color Palette Generator',
+    description: 'AI-powered tool to generate beautiful color palettes for your next design project.',
+    tags: ['colors', 'design-tools', 'ai', 'free'],
+    emoji: '🌈',
+    gradient: 'linear-gradient(135deg, #FEF3C7 0%, #FFEDD5 100%)',
   },
 ];
 
 export default function FeaturedTools() {
-  const [resources, setResources] = useState<any[]>(dummyData);
+  const [resources, setResources] = useState<any[]>(dummyFeaturedTools);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

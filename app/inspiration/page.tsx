@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import type { Metadata } from 'next';
 import { Card } from '@/components/ui';
 
 // Dummy inspiration items with pastel gradients

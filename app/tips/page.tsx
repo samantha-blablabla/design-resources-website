@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import type { Metadata } from 'next';
 import { VideoCard } from '@/components/ui';
 
 // Dummy video tutorials with pastel gradients
