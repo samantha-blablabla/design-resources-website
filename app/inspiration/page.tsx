@@ -141,10 +141,10 @@ const allInspirationItemsBackup = [
 // Category filters
 const categories = [
     { id: 'all', label: 'All Inspiration' },
-    { id: 'web', label: 'web-design' },
+    { id: 'web', label: 'Web Design' },
     { id: 'mobile', label: 'Mobile Apps' },
     { id: 'dashboard', label: 'Dashboards' },
-    { id: 'branding', label: 'branding' },
+    { id: 'branding', label: 'Branding' },
     { id: 'illustration', label: 'Illustration' },
 ];
 

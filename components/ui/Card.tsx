@@ -13,8 +13,8 @@ interface CardProps {
 }
 
 export default function Card({ title, description, tags, emoji, gradient, imageUrl, url }: CardProps) {
-    // Limit tags to max 3 for clean display
-    const displayTags = tags.slice(0, 3);
+    // Limit tags to max 2 for cleaner display on small cards
+    const displayTags = tags.slice(0, 2);
 
     const cardContent = (
         <div className="card">
@@ -39,7 +39,8 @@ export default function Card({ title, description, tags, emoji, gradient, imageU
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                    textOverflow: 'ellipsis',
+                    marginBottom: '1rem'
                 }}>{description}</p>
                 <div className="card-tags" style={{
                     display: 'flex',
@@ -53,6 +54,11 @@ export default function Card({ title, description, tags, emoji, gradient, imageU
                             className="tag hashtag"
                             data-category={getHashtagCategory(tag)}
                             data-tag={tag}
+                            style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis'
+                            }}
                         >
                             {formatHashtagDisplay(tag)}
                         </span>
