@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card } from '@/components/ui';
+import { Card, VideoCard } from '@/components/ui';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -156,6 +156,7 @@ const categories = [
     { id: 'ai', label: 'AI Tools' },
     { id: 'accessibility', label: 'Accessibility' },
     { id: 'courses', label: 'Courses' },
+    { id: 'video-tutorials', label: 'Video Tutorials' },
 ];
 
 const pricingFilters = [
@@ -258,17 +259,41 @@ export default function ResourcesPage() {
                 </div>
             ) : (
                 <div className="grid fade-in">
-                {filteredResources.map((resource) => (
-                    <Card
-                        key={resource.id}
-                        title={resource.title}
-                        description={resource.description}
-                        tags={resource.tags}
-                        gradient={resource.gradient}
-                        imageUrl={resource.image_url}
-                        url={resource.url}
-                    />
-                ))}
+                {filteredResources.map((resource) => {
+                    // Check if this is a video tutorial
+                    const isVideo = resource.category === 'video-tutorials';
+
+                    // Remove duration from title (e.g., "Title (12:34)" -> "Title")
+                    const cleanTitle = resource.title.replace(/\s*\(\d+:\d+\)$/, '');
+
+                    if (isVideo) {
+                        return (
+                            <VideoCard
+                                key={resource.id}
+                                title={cleanTitle}
+                                description={resource.description}
+                                gradient={resource.gradient}
+                                duration={resource.duration}
+                                url={resource.url}
+                                thumbnailUrl={resource.thumbnail_url || resource.image_url}
+                                channelName={resource.channel_name}
+                                publishedAt={resource.published_at}
+                            />
+                        );
+                    }
+
+                    return (
+                        <Card
+                            key={resource.id}
+                            title={cleanTitle}
+                            description={resource.description}
+                            tags={resource.tags}
+                            gradient={resource.gradient}
+                            imageUrl={resource.image_url}
+                            url={resource.url}
+                        />
+                    );
+                })}
             </div>
             )}
 
