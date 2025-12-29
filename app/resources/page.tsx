@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, VideoCard } from '@/components/ui';
+import { Card } from '@/components/ui';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -143,7 +143,7 @@ const allDummyResources = [
     },
 ];
 
-// Filter categories
+// Filter categories - excluding videos (moved to /videos page)
 const categories = [
     { id: 'all', label: 'All Resources' },
     { id: 'ui-kits', label: 'UI Kits' },
@@ -155,8 +155,8 @@ const categories = [
     { id: 'design-tools', label: 'Design Tools' },
     { id: 'ai', label: 'AI Tools' },
     { id: 'accessibility', label: 'Accessibility' },
-    { id: 'courses', label: 'Courses' },
-    { id: 'video-tutorials', label: 'Video Tutorials' },
+    { id: 'mockups', label: 'Mockups' },
+    { id: 'tools', label: 'Tools' },
 ];
 
 const pricingFilters = [
@@ -172,13 +172,14 @@ export default function ResourcesPage() {
     const [allResources, setAllResources] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch resources from Supabase
+    // Fetch resources from Supabase (excluding video-tutorials)
     useEffect(() => {
         async function fetchResources() {
             try {
                 const { data, error } = await supabase
                     .from('resources')
                     .select('*')
+                    .neq('category', 'video-tutorials') // Exclude videos
                     .order('created_at', { ascending: false });
 
                 if (error) {
@@ -259,41 +260,17 @@ export default function ResourcesPage() {
                 </div>
             ) : (
                 <div className="grid fade-in">
-                {filteredResources.map((resource) => {
-                    // Check if this is a video tutorial
-                    const isVideo = resource.category === 'video-tutorials';
-
-                    // Remove duration from title (e.g., "Title (12:34)" -> "Title")
-                    const cleanTitle = resource.title.replace(/\s*\(\d+:\d+\)$/, '');
-
-                    if (isVideo) {
-                        return (
-                            <VideoCard
-                                key={resource.id}
-                                title={cleanTitle}
-                                description={resource.description}
-                                gradient={resource.gradient}
-                                duration={resource.duration}
-                                url={resource.url}
-                                thumbnailUrl={resource.thumbnail_url || resource.image_url}
-                                channelName={resource.channel_name}
-                                publishedAt={resource.published_at}
-                            />
-                        );
-                    }
-
-                    return (
-                        <Card
-                            key={resource.id}
-                            title={cleanTitle}
-                            description={resource.description}
-                            tags={resource.tags}
-                            gradient={resource.gradient}
-                            imageUrl={resource.image_url}
-                            url={resource.url}
-                        />
-                    );
-                })}
+                {filteredResources.map((resource) => (
+                    <Card
+                        key={resource.id}
+                        title={resource.title}
+                        description={resource.description}
+                        tags={resource.tags}
+                        gradient={resource.gradient}
+                        imageUrl={resource.image_url}
+                        url={resource.url}
+                    />
+                ))}
             </div>
             )}
 

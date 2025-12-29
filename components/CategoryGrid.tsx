@@ -6,7 +6,7 @@ import {
     ColorFilter,
     Cube,
     PenTablet,
-    Microphone,
+    PlayOutline,
     Book,
     Accessibility,
     Puzzle,
@@ -65,9 +65,9 @@ const categories = [
     // Learning Group
     {
         id: 9,
-        title: 'Video Tutorials',
-        icon: Microphone,
-        href: '/tips',
+        title: 'Videos',
+        icon: PlayOutline,
+        href: '/videos',
     },
     {
         id: 10,

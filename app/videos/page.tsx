@@ -151,7 +151,7 @@ const categories = [
     { id: 'career', label: 'Career' },
 ];
 
-export default function TipsPage() {
+export default function VideosPage() {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [allVideos, setAllVideos] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -191,9 +191,9 @@ export default function TipsPage() {
     return (
         <div className="container">
             <div className="page-header fade-in">
-                <h1 className="section-title">Tips & Tricks</h1>
+                <h1 className="section-title">Video Tutorials</h1>
                 <p className="page-description">
-                    Learn design tips and tricks through our curated video tutorials and guides
+                    Learn design through curated video tutorials from top creators
                 </p>
             </div>
 
