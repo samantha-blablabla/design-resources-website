@@ -13,6 +13,9 @@ interface CardProps {
 }
 
 export default function Card({ title, description, tags, emoji, gradient, imageUrl, url }: CardProps) {
+    // Limit tags to max 3 for clean display
+    const displayTags = tags.slice(0, 3);
+
     const cardContent = (
         <div className="card">
             <div className="card-image" style={{ background: imageUrl ? '#ffffff' : gradient }}>
@@ -31,9 +34,20 @@ export default function Card({ title, description, tags, emoji, gradient, imageU
             </div>
             <div className="card-content">
                 <h3 className="card-title">{title}</h3>
-                <p className="card-description">{description}</p>
-                <div className="card-tags">
-                    {tags.map((tag, index) => (
+                <p className="card-description" style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                }}>{description}</p>
+                <div className="card-tags" style={{
+                    display: 'flex',
+                    flexWrap: 'nowrap',
+                    gap: '0.5rem',
+                    overflow: 'hidden'
+                }}>
+                    {displayTags.map((tag, index) => (
                         <span
                             key={index}
                             className="tag hashtag"

@@ -1,10 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui';
+import { createClient } from '@supabase/supabase-js';
 
-// Dummy inspiration items with pastel gradients
-const allInspirationItems = [
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+// Backup dummy inspiration items - only used as fallback
+const allInspirationItemsBackup = [
     // Web Design
     {
         id: 1,
@@ -144,15 +150,47 @@ const categories = [
 
 export default function InspirationPage() {
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [allItems, setAllItems] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    // Filter items
+    // Fetch inspiration items from Supabase
+    useEffect(() => {
+        async function fetchInspirationItems() {
+            try {
+                const { data, error } = await supabase
+                    .from('resources')
+                    .select('*')
+                    .neq('category', 'video-tutorials')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error fetching inspiration:', error);
+                    setAllItems(allInspirationItemsBackup);
+                } else {
+                    setAllItems(data || allInspirationItemsBackup);
+                }
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                setAllItems(allInspirationItemsBackup);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchInspirationItems();
+    }, []);
+
+    // Filter items by category (check both category field and tags)
     const filteredItems = selectedCategory === 'all'
-        ? allInspirationItems
-        : allInspirationItems.filter(item => item.category === selectedCategory);
+        ? allItems
+        : allItems.filter(item =>
+            item.category === selectedCategory ||
+            item.tags?.includes(selectedCategory)
+        );
 
     return (
         <div className="container">
-            <div className="page-header">
+            <div className="page-header fade-in">
                 <h1 className="section-title">Inspiration Gallery</h1>
                 <p className="page-description">
                     Get inspired by beautiful design examples and creative work from around the web
@@ -160,7 +198,7 @@ export default function InspirationPage() {
             </div>
 
             {/* Category Filters */}
-            <div className="filters-section">
+            <div className="filters-section fade-in">
                 <div className="filter-group">
                     <h3 className="filter-label">Category</h3>
                     <div className="filter-bar">
@@ -178,24 +216,32 @@ export default function InspirationPage() {
             </div>
 
             {/* Results Count */}
-            <div className="results-count">
-                Showing {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
+            <div className="results-count fade-in">
+                {loading ? 'Loading...' : `Showing ${filteredItems.length} ${filteredItems.length === 1 ? 'item' : 'items'}`}
             </div>
 
-            {/* Gallery Grid - Masonry-style layout */}
-            <div className="inspiration-grid">
-                {filteredItems.map((item) => (
-                    <Card
-                        key={item.id}
-                        title={item.title}
-                        description={item.description}
-                        tags={item.tags}
-                        gradient={item.gradient}
-                    />
-                ))}
-            </div>
+            {/* Gallery Grid */}
+            {loading ? (
+                <div className="empty-state">
+                    <p>Loading inspiration...</p>
+                </div>
+            ) : (
+                <div className="inspiration-grid fade-in">
+                    {filteredItems.map((item) => (
+                        <Card
+                            key={item.id}
+                            title={item.title}
+                            description={item.description}
+                            tags={item.tags || []}
+                            gradient={item.gradient}
+                            imageUrl={item.image_url}
+                            url={item.url}
+                        />
+                    ))}
+                </div>
+            )}
 
-            {filteredItems.length === 0 && (
+            {!loading && filteredItems.length === 0 && (
                 <div className="empty-state">
                     <p>No inspiration items found.</p>
                     <button

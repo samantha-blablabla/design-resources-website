@@ -206,7 +206,7 @@ export default function ResourcesPage() {
 
     return (
         <div className="container">
-            <div className="page-header">
+            <div className="page-header fade-in">
                 <h1 className="section-title">All Resources</h1>
                 <p className="page-description">
                     Browse our complete collection of design resources, tools, and assets
@@ -214,7 +214,7 @@ export default function ResourcesPage() {
             </div>
 
             {/* Category Filters */}
-            <div className="filters-section">
+            <div className="filters-section fade-in">
                 <div className="filter-group">
                     <h3 className="filter-label">Category</h3>
                     <div className="filter-bar">
@@ -247,7 +247,7 @@ export default function ResourcesPage() {
             </div>
 
             {/* Results Count */}
-            <div className="results-count">
+            <div className="results-count fade-in">
                 {loading ? 'Loading...' : `Showing ${filteredResources.length} ${filteredResources.length === 1 ? 'resource' : 'resources'}`}
             </div>
 
@@ -257,7 +257,7 @@ export default function ResourcesPage() {
                     <p>Loading resources...</p>
                 </div>
             ) : (
-                <div className="grid">
+                <div className="grid fade-in">
                 {filteredResources.map((resource) => (
                     <Card
                         key={resource.id}

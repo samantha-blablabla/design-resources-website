@@ -190,7 +190,7 @@ export default function TipsPage() {
 
     return (
         <div className="container">
-            <div className="page-header">
+            <div className="page-header fade-in">
                 <h1 className="section-title">Tips & Tricks</h1>
                 <p className="page-description">
                     Learn design tips and tricks through our curated video tutorials and guides
@@ -198,7 +198,7 @@ export default function TipsPage() {
             </div>
 
             {/* Category Filters */}
-            <div className="filters-section">
+            <div className="filters-section fade-in">
                 <div className="filter-group">
                     <h3 className="filter-label">Category</h3>
                     <div className="filter-bar">
@@ -216,7 +216,7 @@ export default function TipsPage() {
             </div>
 
             {/* Results Count */}
-            <div className="results-count">
+            <div className="results-count fade-in">
                 {loading ? 'Loading...' : `Showing ${filteredVideos.length} ${filteredVideos.length === 1 ? 'video' : 'videos'}`}
             </div>
 
@@ -226,7 +226,7 @@ export default function TipsPage() {
                     <p>Loading videos...</p>
                 </div>
             ) : (
-                <div className="grid">
+                <div className="grid fade-in">
                     {filteredVideos.map((video) => (
                         <VideoCard
                             key={video.id}
