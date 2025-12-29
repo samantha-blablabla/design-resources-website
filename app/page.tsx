@@ -92,7 +92,14 @@ export default function Home() {
                             View All →
                         </Link>
                     </div>
-                    {/* Slider Controls - Between header and slider */}
+                    <div className="fade-in">
+                        <CardSlider
+                            ref={featuredSliderRef}
+                            items={featuredTools}
+                            onScrollStateChange={(left, right) => setFeaturedScrollState({ left, right })}
+                        />
+                    </div>
+                    {/* Slider Controls - Below slider */}
                     <div className="slider-controls-row fade-in">
                         <div className="slider-controls">
                             <button
@@ -113,13 +120,6 @@ export default function Home() {
                             </button>
                         </div>
                     </div>
-                    <div className="fade-in">
-                        <CardSlider
-                            ref={featuredSliderRef}
-                            items={featuredTools}
-                            onScrollStateChange={(left, right) => setFeaturedScrollState({ left, right })}
-                        />
-                    </div>
                 </>
             )}
 
@@ -132,7 +132,14 @@ export default function Home() {
                             View All →
                         </Link>
                     </div>
-                    {/* Slider Controls - Between header and slider */}
+                    <div className="fade-in">
+                        <CardSlider
+                            ref={latestSliderRef}
+                            items={latestResources}
+                            onScrollStateChange={(left, right) => setLatestScrollState({ left, right })}
+                        />
+                    </div>
+                    {/* Slider Controls - Below slider */}
                     <div className="slider-controls-row fade-in">
                         <div className="slider-controls">
                             <button
@@ -153,13 +160,6 @@ export default function Home() {
                             </button>
                         </div>
                     </div>
-                    <div className="fade-in">
-                        <CardSlider
-                            ref={latestSliderRef}
-                            items={latestResources}
-                            onScrollStateChange={(left, right) => setLatestScrollState({ left, right })}
-                        />
-                    </div>
                 </>
             )}
 
@@ -172,7 +172,14 @@ export default function Home() {
                             View All →
                         </Link>
                     </div>
-                    {/* Slider Controls - Between header and slider */}
+                    <div className="fade-in">
+                        <CardSlider
+                            ref={aiSliderRef}
+                            items={aiTools}
+                            onScrollStateChange={(left, right) => setAiScrollState({ left, right })}
+                        />
+                    </div>
+                    {/* Slider Controls - Below slider */}
                     <div className="slider-controls-row fade-in">
                         <div className="slider-controls">
                             <button
@@ -192,13 +199,6 @@ export default function Home() {
                                 <NavArrowRight width={20} height={20} strokeWidth={2} />
                             </button>
                         </div>
-                    </div>
-                    <div className="fade-in">
-                        <CardSlider
-                            ref={aiSliderRef}
-                            items={aiTools}
-                            onScrollStateChange={(left, right) => setAiScrollState({ left, right })}
-                        />
                     </div>
                 </>
             )}

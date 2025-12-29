@@ -672,7 +672,7 @@ body > * {
 }
 
 .card-title {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--color-text);
@@ -949,7 +949,7 @@ body > * {
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-lg);
-  margin-top: 4rem; /* Increased spacing between sections */
+  margin-top: 6rem; /* Increased spacing between sections for better visual separation */
 }
 
 .section-title {
@@ -1074,6 +1074,25 @@ body > * {
 .video-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
+}
+
+/* Video card content styles - Desktop */
+.video-card-content {
+  padding: 12px;
+}
+
+.video-card-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.video-card-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+  margin-bottom: 8px;
 }
 
 .video-thumbnail {
@@ -1390,6 +1409,21 @@ body > * {
   .grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  /* Reduce padding for video cards on mobile */
+  .video-card-content {
+    padding: 8px !important;
+  }
+
+  .video-card-title {
+    font-size: 13px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .video-card-description {
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
   }
 
   /* Mobile menu - show on mobile */

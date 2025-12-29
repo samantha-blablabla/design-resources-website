@@ -33,7 +33,13 @@ export default function Card({ title, description, tags, emoji, gradient, imageU
                 ) : null}
             </div>
             <div className="card-content">
-                <h3 className="card-title">{title}</h3>
+                <h3 className="card-title" style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                }}>{title}</h3>
                 <p className="card-description" style={{
                     display: '-webkit-box',
                     WebkitLineClamp: 2,

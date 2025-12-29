@@ -68,14 +68,10 @@ export default function VideoCard({ title, description, emoji, gradient, duratio
                 )}
                 {!thumbnailUrl && <div className="play-icon">▶</div>}
             </div>
-            <div className="card-content" style={{ padding: '12px' }}>
-                <h3 className="card-title" style={{
-                    fontWeight: '700',
-                    fontSize: '14px',
-                    lineHeight: '1.4',
-                    marginBottom: '8px',
+            <div className="card-content video-card-content">
+                <h3 className="card-title video-card-title" style={{
                     display: '-webkit-box',
-                    WebkitLineClamp: 2,
+                    WebkitLineClamp: 1,
                     WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis'
@@ -83,17 +79,12 @@ export default function VideoCard({ title, description, emoji, gradient, duratio
                     {cleanTitle}
                 </h3>
                 {description && (
-                    <p className="card-description" style={{
-                        fontSize: '13px',
-                        lineHeight: '1.5',
-                        color: '#666',
-                        marginBottom: '8px',
+                    <p className="card-description video-card-description" style={{
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        height: '39px' // 2 lines * line-height
+                        textOverflow: 'ellipsis'
                     }}>
                         {description}
                     </p>
