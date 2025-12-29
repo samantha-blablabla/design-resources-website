@@ -21,10 +21,12 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
 
     // Refs for controlling sliders
+    const featuredSliderRef = useRef<CardSliderRef>(null);
     const latestSliderRef = useRef<CardSliderRef>(null);
     const aiSliderRef = useRef<CardSliderRef>(null);
 
     // Scroll states for arrows
+    const [featuredScrollState, setFeaturedScrollState] = useState({ left: false, right: false });
     const [latestScrollState, setLatestScrollState] = useState({ left: false, right: false });
     const [aiScrollState, setAiScrollState] = useState({ left: false, right: false });
 
@@ -82,15 +84,44 @@ export default function Home() {
             </div>
 
             {/* Featured Tools Section */}
-            <div className="section-header fade-in">
-                <h2 className="section-title">Featured Tools</h2>
-                <Link href="/resources" className="view-all-link">
-                    View All →
-                </Link>
-            </div>
-            <div className="fade-in">
-                <FeaturedTools />
-            </div>
+            {!loading && featuredTools.length > 0 && (
+                <>
+                    <div className="section-header fade-in">
+                        <h2 className="section-title">Featured Tools</h2>
+                        <Link href="/resources" className="view-all-link">
+                            View All →
+                        </Link>
+                    </div>
+                    {/* Slider Controls - Between header and slider */}
+                    <div className="slider-controls-row fade-in">
+                        <div className="slider-controls">
+                            <button
+                                className={`slider-arrow ${!featuredScrollState.left ? 'disabled' : ''}`}
+                                onClick={() => featuredSliderRef.current?.scrollLeft()}
+                                disabled={!featuredScrollState.left}
+                                aria-label="Scroll left"
+                            >
+                                <NavArrowLeft width={20} height={20} strokeWidth={2} />
+                            </button>
+                            <button
+                                className={`slider-arrow ${!featuredScrollState.right ? 'disabled' : ''}`}
+                                onClick={() => featuredSliderRef.current?.scrollRight()}
+                                disabled={!featuredScrollState.right}
+                                aria-label="Scroll right"
+                            >
+                                <NavArrowRight width={20} height={20} strokeWidth={2} />
+                            </button>
+                        </div>
+                    </div>
+                    <div className="fade-in">
+                        <CardSlider
+                            ref={featuredSliderRef}
+                            items={featuredTools}
+                            onScrollStateChange={(left, right) => setFeaturedScrollState({ left, right })}
+                        />
+                    </div>
+                </>
+            )}
 
             {/* Latest Resources Section */}
             {!loading && latestResources.length > 0 && (
