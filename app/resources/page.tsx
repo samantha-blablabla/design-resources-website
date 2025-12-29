@@ -1,9 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui';
+import { createClient } from '@supabase/supabase-js';
 
-// Dummy resources with pastel gradients
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+// Dummy resources with pastel gradients - BACKUP ONLY
 const allDummyResources = [
     // UI Kits
     {
@@ -162,11 +168,39 @@ const pricingFilters = [
 export default function ResourcesPage() {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedPricing, setSelectedPricing] = useState('all');
+    const [allResources, setAllResources] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch resources from Supabase
+    useEffect(() => {
+        async function fetchResources() {
+            try {
+                const { data, error } = await supabase
+                    .from('resources')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error fetching resources:', error);
+                    setAllResources(allDummyResources); // Fallback to dummy data
+                } else {
+                    setAllResources(data || []);
+                }
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                setAllResources(allDummyResources); // Fallback to dummy data
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchResources();
+    }, []);
 
     // Filter resources
-    const filteredResources = allDummyResources.filter((resource) => {
+    const filteredResources = allResources.filter((resource) => {
         const categoryMatch = selectedCategory === 'all' || resource.category === selectedCategory;
-        const pricingMatch = selectedPricing === 'all' || resource.tags.some(tag => tag.toLowerCase() === selectedPricing);
+        const pricingMatch = selectedPricing === 'all' || resource.tags?.some((tag: string) => tag.toLowerCase() === selectedPricing);
         return categoryMatch && pricingMatch;
     });
 
@@ -214,11 +248,16 @@ export default function ResourcesPage() {
 
             {/* Results Count */}
             <div className="results-count">
-                Showing {filteredResources.length} {filteredResources.length === 1 ? 'resource' : 'resources'}
+                {loading ? 'Loading...' : `Showing ${filteredResources.length} ${filteredResources.length === 1 ? 'resource' : 'resources'}`}
             </div>
 
             {/* Resources Grid */}
-            <div className="grid">
+            {loading ? (
+                <div className="empty-state">
+                    <p>Loading resources...</p>
+                </div>
+            ) : (
+                <div className="grid">
                 {filteredResources.map((resource) => (
                     <Card
                         key={resource.id}
@@ -226,11 +265,14 @@ export default function ResourcesPage() {
                         description={resource.description}
                         tags={resource.tags}
                         gradient={resource.gradient}
+                        imageUrl={resource.image_url}
+                        url={resource.url}
                     />
                 ))}
             </div>
+            )}
 
-            {filteredResources.length === 0 && (
+            {!loading && filteredResources.length === 0 && (
                 <div className="empty-state">
                     <p>No resources found matching your filters.</p>
                     <button
