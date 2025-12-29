@@ -1,171 +1,143 @@
-# Design Resources Website
+# 🎨 DesignHub - Design Resources Website
 
-A modern Next.js website for curating and discovering design resources, built with App Router and Supabase.
+> A modern Next.js website for curating design resources, built with 100% FREE stack.
 
+[![Deploy Status](https://img.shields.io/badge/deploy-live-success)](https://design-resources-website.vercel.app/)
+[![Tech Stack](https://img.shields.io/badge/stack-Next.js%2014-blue)](https://nextjs.org/)
+[![Database](https://img.shields.io/badge/database-Supabase-green)](https://supabase.com/)
+[![Cost](https://img.shields.io/badge/cost-%240%2Fmonth-brightgreen)](docs/AUTOMATION-PLAN-FREE.md)
 
-## 🚀 Features
+**🌐 Live:** https://design-resources-website.vercel.app/
+**📚 Reference:** https://toools.design
 
-- **Clean Minimal UI** - Grid-based design inspired by toools.design
-- **Dynamic Content** - Fetch resources from Supabase database
-- **AI Classification** - Automatic categorization with OpenAI
-- **Responsive Design** - Mobile-first approach
-- **SEO Optimized** - Proper meta tags and semantic HTML
-- **Edge Functions** - Automated resource scraping with cron jobs
+---
 
-## 📁 Project Structure
+## ⚡ Quick Start
 
+### 🚀 New to This Project?
+👉 **Read [START-HERE.md](START-HERE.md)** first!
+
+### 💻 Working on 2 Machines?
+👉 **Read [docs/workflow/HUONG-DAN-2-MAY.md](docs/workflow/HUONG-DAN-2-MAY.md)**
+
+### 🤖 Chatting with Claude AI?
 ```
-├── app/                      # Next.js App Router pages
-│   ├── page.tsx             # Home page
-│   ├── resources/           # Resources listing
-│   ├── inspiration/         # Inspiration gallery
-│   └── tips/                # Tips & tricks videos
-├── components/
-│   ├── ui/                  # Pure UI components
-│   │   ├── Card.tsx
-│   │   └── VideoCard.tsx
-│   ├── Header.tsx           # Navigation
-│   └── Footer.tsx           # Site footer
-├── lib/
-│   ├── supabase.ts          # Supabase client
-│   └── types.ts             # TypeScript types
-├── supabase/functions/
-│   └── fetch-resources/     # Edge Function for scraping
-└── public/                  # Static assets
+Chào cậu! Đọc file CONTEXT.md và TODO.md để hiểu dự án nhé.
+Tớ đang làm việc trên 2 máy khác nhau.
 ```
+
+---
+
+## 📋 Essential Files (Root Level)
+
+| File | Purpose |
+|------|---------|
+| **[START-HERE.md](START-HERE.md)** | 👈 Start here! Quick guide |
+| **[CONTEXT.md](CONTEXT.md)** | Project context for AI |
+| **[TODO.md](TODO.md)** | Current tasks & progress |
+| **[sync.bat](sync.bat)** | Auto sync script |
+
+---
 
 ## 🛠️ Tech Stack
 
 - **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Database:** Supabase
-- **Styling:** CSS (minimal design system)
-- **AI:** OpenAI GPT-4o-mini
-- **Deployment:** Vercel
+- **Database:** Supabase (FREE tier)
+- **Hosting:** Vercel (FREE tier)
+- **AI:** Groq API (FREE)
+- **APIs:** YouTube Data API v3 (FREE)
+- **Cost:** **$0/month** 🎉
 
-## 📦 Installation
+---
 
-### Prerequisites
+## 📁 Project Structure
 
-- Node.js 18+ 
-- npm or yarn
-- Supabase account (optional)
-
-### Setup
-
-1. Clone the repository:
-```bash
-git clone https://github.com/YOUR_USERNAME/design-resources-website.git
-cd design-resources-website
+```
+design-resources-website/
+│
+├── 📄 START-HERE.md          ← ⭐ Read this first!
+├── 📄 CONTEXT.md             ← Project context
+├── 📄 TODO.md                ← Current tasks
+├── 🔄 sync.bat               ← Auto sync script
+│
+├── 📂 app/                   ← Next.js pages
+├── 📂 components/            ← React components
+├── 📂 lib/                   ← Utils & helpers
+├── 📂 supabase/             ← Database migrations
+│
+└── 📂 docs/                  ← Documentation
+    ├── setup/               ← Setup guides
+    ├── guides/              ← How-to guides
+    └── workflow/            ← 2-machine workflow
 ```
 
-2. Install dependencies:
+---
+
+## 🚀 Features
+
+- ✅ Clean minimal UI (inspired by toools.design)
+- ✅ 100% FREE automation (RSS + YouTube + AI)
+- ✅ Auto-fetch design resources daily
+- ✅ Hashtag system
+- ✅ Image fetcher
+- ✅ Mobile responsive
+
+---
+
+## 📖 Documentation
+
+### 🎯 Getting Started
+- [START-HERE.md](START-HERE.md) - Quick start guide
+- [docs/setup/QUICK-START.md](docs/setup/QUICK-START.md) - 15-minute setup
+
+### 🔧 Setup Guides
+- [docs/setup/HUONG-DAN-SUPABASE.md](docs/setup/HUONG-DAN-SUPABASE.md) - Supabase setup
+- [docs/setup/API-KEYS-GUIDE.md](docs/setup/API-KEYS-GUIDE.md) - Get API keys
+- [docs/setup/HUONG-DAN-CAI-NODE.md](docs/setup/HUONG-DAN-CAI-NODE.md) - Install Node.js
+
+### 📚 Guides
+- [docs/guides/HUONG-DAN-TUY-CHINH-UI.md](docs/guides/HUONG-DAN-TUY-CHINH-UI.md) - UI customization
+- [docs/PROGRESS-SUMMARY.md](docs/PROGRESS-SUMMARY.md) - Project progress
+- [docs/NHAT-KY-DU-AN.md](docs/NHAT-KY-DU-AN.md) - Project diary
+
+### 🔄 Workflow
+- [docs/workflow/HUONG-DAN-2-MAY.md](docs/workflow/HUONG-DAN-2-MAY.md) - 2-machine workflow
+
+---
+
+## 🔗 Important Links
+
+| Service | URL |
+|---------|-----|
+| 🌐 **Website** | https://design-resources-website.vercel.app/ |
+| 📂 **GitHub** | https://github.com/samantha-blablabla/design-resources-website |
+| 🗄️ **Supabase** | https://supabase.com/dashboard/project/kmzcbwiqlfdcrqqndglm |
+| 🚀 **Vercel** | https://vercel.com/samanthas-projects-56df48a7 |
+
+---
+
+## 💻 Development
+
 ```bash
+# Install dependencies
 npm install
-```
 
-3. Create environment file:
-```bash
-cp .env.example .env.local
-```
-
-4. Add your Supabase credentials to `.env.local`:
-```env
-NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-```
-
-5. Run development server:
-```bash
+# Run dev server
 npm run dev
+
+# Build for production
+npm run build
+
+# Sync code (pull + commit + push)
+sync.bat
 ```
 
-Visit http://localhost:3000
-
-## 🗄️ Database Setup
-
-See [supabase_setup.md](docs/supabase_setup.md) for detailed instructions.
-
-### Quick Schema
-
-```sql
-CREATE TABLE resources (
-  id BIGSERIAL PRIMARY KEY,
-  title TEXT NOT NULL,
-  description TEXT,
-  tags TEXT[],
-  emoji TEXT,
-  gradient TEXT,
-  category TEXT,
-  url TEXT UNIQUE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-```
-
-## 🤖 Edge Functions
-
-The project includes an automated resource scraper:
-
-- **Function:** `fetch-resources`
-- **Schedule:** Every 3 days
-- **Features:** AI classification, duplicate prevention
-- **Deploy:** See [edge_function_deployment.md](docs/edge_function_deployment.md)
-
-## 🎨 Component Architecture
-
-Pure presentational components in `/components/ui`:
-- Components accept props only
-- No data fetching in UI components
-- Reusable across the application
-
-See [component_architecture.md](docs/component_architecture.md)
-
-## 🚀 Deployment
-
-### Deploy to Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-1. Push code to GitHub
-2. Import repository in Vercel
-3. Add environment variables
-4. Deploy
-
-### Deploy Edge Functions
-
-```bash
-supabase functions deploy fetch-resources
-supabase secrets set OPENAI_API_KEY=your-key
-```
-
-## 📄 Documentation
-
-- [Supabase Setup](docs/supabase_setup.md)
-- [Component Architecture](docs/component_architecture.md)
-- [Edge Function Deployment](docs/edge_function_deployment.md)
-- [GitHub Setup Guide](docs/github_setup.md)
-
-## 🔧 Scripts
-
-```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run start    # Start production server
-npm run lint     # Run ESLint
-```
+---
 
 ## 📝 License
 
 MIT
 
-## 🤝 Contributing
+---
 
-Contributions welcome! Please open an issue or submit a PR.
-
-## 📧 Contact
-
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
-
-Project Link: [https://github.com/YOUR_USERNAME/design-resources-website](https://github.com/YOUR_USERNAME/design-resources-website)
-# Updated
-
+**Made with ❤️ using 100% FREE stack**
