@@ -1,9 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { VideoCard } from '@/components/ui';
+import { createClient } from '@supabase/supabase-js';
 
-// Dummy video tutorials with pastel gradients
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+// Dummy video tutorials with pastel gradients - BACKUP ONLY
 const allVideoTips = [
     // Design Fundamentals
     {
@@ -132,23 +138,55 @@ const allVideoTips = [
     },
 ];
 
-// Category filters
+// Category filters - updated to match tags in database
 const categories = [
     { id: 'all', label: 'All Videos' },
     { id: 'fundamentals', label: 'Fundamentals' },
-    { id: 'tools', label: 'Tools & Software' },
-    { id: 'ui-ux', label: 'UI/UX Design' },
-    { id: 'web', label: 'Web Design' },
-    { id: 'advanced', label: 'advanced' },
+    { id: 'figma', label: 'Figma' },
+    { id: 'ui-design', label: 'UI/UX Design' },
+    { id: 'web-design', label: 'Web Design' },
+    { id: 'design-system', label: 'Design Systems' },
+    { id: 'accessibility', label: 'Accessibility' },
+    { id: 'branding', label: 'Branding' },
+    { id: 'career', label: 'Career' },
 ];
 
 export default function TipsPage() {
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [allVideos, setAllVideos] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    // Filter videos
+    // Fetch video tutorials from Supabase
+    useEffect(() => {
+        async function fetchVideos() {
+            try {
+                const { data, error } = await supabase
+                    .from('resources')
+                    .select('*')
+                    .eq('category', 'video-tutorials')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error fetching videos:', error);
+                    setAllVideos(allVideoTips); // Fallback to dummy data
+                } else {
+                    setAllVideos(data || []);
+                }
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                setAllVideos(allVideoTips); // Fallback to dummy data
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchVideos();
+    }, []);
+
+    // Filter videos by tag
     const filteredVideos = selectedCategory === 'all'
-        ? allVideoTips
-        : allVideoTips.filter(video => video.category === selectedCategory);
+        ? allVideos
+        : allVideos.filter(video => video.tags?.includes(selectedCategory));
 
     return (
         <div className="container">
@@ -179,23 +217,30 @@ export default function TipsPage() {
 
             {/* Results Count */}
             <div className="results-count">
-                Showing {filteredVideos.length} {filteredVideos.length === 1 ? 'video' : 'videos'}
+                {loading ? 'Loading...' : `Showing ${filteredVideos.length} ${filteredVideos.length === 1 ? 'video' : 'videos'}`}
             </div>
 
             {/* Videos Grid */}
-            <div className="grid">
-                {filteredVideos.map((video) => (
-                    <VideoCard
-                        key={video.id}
-                        title={video.title}
-                        description={video.description}
-                        gradient={video.gradient}
-                        duration={video.duration}
-                    />
-                ))}
-            </div>
+            {loading ? (
+                <div className="empty-state">
+                    <p>Loading videos...</p>
+                </div>
+            ) : (
+                <div className="grid">
+                    {filteredVideos.map((video) => (
+                        <VideoCard
+                            key={video.id}
+                            title={video.title}
+                            description={video.description}
+                            gradient={video.gradient}
+                            duration={video.duration}
+                            url={video.url}
+                        />
+                    ))}
+                </div>
+            )}
 
-            {filteredVideos.length === 0 && (
+            {!loading && filteredVideos.length === 0 && (
                 <div className="empty-state">
                     <p>No videos found.</p>
                     <button

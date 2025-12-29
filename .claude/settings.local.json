@@ -18,7 +18,8 @@
       "Bash(git remote add:*)",
       "Bash(cat:*)",
       "Bash(find:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(psql \"postgresql://postgres.kmzcbwiqlfdcrqqndglm:Abc27102003@@db.kmzcbwiqlfdcrqqndglm.supabase.co:5432/postgres\" -c \"\\\\d resources\")"
     ]
   }
 }
