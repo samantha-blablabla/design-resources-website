@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
 import { Card } from '@/components/ui';
 
 interface CardSliderProps {
@@ -120,26 +119,6 @@ export default function CardSlider({ items }: CardSliderProps) {
                 {items.map((item, index) => (
                     <AnimatedCard key={item.id} item={item} index={index} />
                 ))}
-            </div>
-
-            <div className="slider-controls">
-                <button
-                    className={`slider-arrow slider-arrow-left ${!showLeftArrow ? 'disabled' : ''}`}
-                    onClick={() => scroll('left')}
-                    disabled={!showLeftArrow}
-                    aria-label="Scroll left"
-                >
-                    <NavArrowLeft width={20} height={20} strokeWidth={2} />
-                </button>
-
-                <button
-                    className={`slider-arrow slider-arrow-right ${!showRightArrow ? 'disabled' : ''}`}
-                    onClick={() => scroll('right')}
-                    disabled={!showRightArrow}
-                    aria-label="Scroll right"
-                >
-                    <NavArrowRight width={20} height={20} strokeWidth={2} />
-                </button>
             </div>
         </div>
     );

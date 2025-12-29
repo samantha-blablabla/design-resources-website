@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Home, AppWindow, BookStack, LightBulb, Search } from 'iconoir-react';
+import { Home, AppWindow, BookStack, LightBulb, Search, Menu, Xmark } from 'iconoir-react';
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -16,6 +17,14 @@ export default function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
+
     return (
         <header className={`header-glass ${isScrolled ? 'scrolled' : ''}`}>
             <div className="header-pill">
@@ -24,7 +33,8 @@ export default function Header() {
                     <span className="logo-text">DesignHub</span>
                 </Link>
 
-                <nav className="nav-glass">
+                {/* Desktop Navigation */}
+                <nav className="nav-glass nav-desktop">
                     <Link href="/" className="nav-link-glass">
                         <Home width={20} height={20} strokeWidth={2} />
                         <span>Home</span>
@@ -43,10 +53,49 @@ export default function Header() {
                     </Link>
                 </nav>
 
-                <button className="search-btn-glass">
+                {/* Mobile Actions */}
+                <div className="mobile-actions">
+                    <button className="search-btn-glass">
+                        <Search width={20} height={20} strokeWidth={2} />
+                    </button>
+                    <button className="menu-btn-glass" onClick={toggleMobileMenu}>
+                        {isMobileMenuOpen ? (
+                            <Xmark width={24} height={24} strokeWidth={2} />
+                        ) : (
+                            <Menu width={24} height={24} strokeWidth={2} />
+                        )}
+                    </button>
+                </div>
+
+                {/* Desktop Search */}
+                <button className="search-btn-glass search-btn-desktop">
                     <Search width={20} height={20} strokeWidth={2} />
                 </button>
             </div>
+
+            {/* Mobile Menu Overlay */}
+            {isMobileMenuOpen && (
+                <div className="mobile-menu-overlay" onClick={closeMobileMenu}>
+                    <nav className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+                        <Link href="/" className="mobile-menu-link" onClick={closeMobileMenu}>
+                            <Home width={24} height={24} strokeWidth={2} />
+                            <span>Home</span>
+                        </Link>
+                        <Link href="/resources" className="mobile-menu-link" onClick={closeMobileMenu}>
+                            <AppWindow width={24} height={24} strokeWidth={2} />
+                            <span>Resources</span>
+                        </Link>
+                        <Link href="/inspiration" className="mobile-menu-link" onClick={closeMobileMenu}>
+                            <BookStack width={24} height={24} strokeWidth={2} />
+                            <span>Inspiration</span>
+                        </Link>
+                        <Link href="/tips" className="mobile-menu-link" onClick={closeMobileMenu}>
+                            <LightBulb width={24} height={24} strokeWidth={2} />
+                            <span>Tips</span>
+                        </Link>
+                    </nav>
+                </div>
+            )}
         </header>
     );
 }

@@ -62,13 +62,6 @@ const categories = [
         icon: BookStack,
         href: '/inspiration',
     },
-    {
-        id: 8,
-        title: 'Design Patterns',
-        icon: Puzzle,
-        href: '/resources?category=patterns',
-    },
-
     // Learning Group
     {
         id: 9,
@@ -107,12 +100,6 @@ const categories = [
         title: 'Accessibility',
         icon: Accessibility,
         href: '/resources?category=accessibility',
-    },
-    {
-        id: 15,
-        title: 'Prototyping',
-        icon: MouseButtonLeft,
-        href: '/resources?category=prototyping',
     },
 ];
 
