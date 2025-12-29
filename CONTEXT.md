@@ -1,181 +1,152 @@
 # 🤖 Context Cho Claude AI
 
-> **MỤC ĐÍCH:** File này giúp Claude AI hiểu nhanh dự án khi bắt đầu chat mới
-> **CẬP NHẬT:** 2025-12-29 23:00
+> **MỤC ĐÍCH:** Giúp Claude AI hiểu nhanh dự án khi bắt đầu chat mới
+> **CẬP NHẬT:** 2025-12-29
+> **GIT LÀ SOURCE OF TRUTH** - File này chỉ là summary
 
 ---
 
-## 📊 TRẠNG THÁI DỰ ÁN
+## 📊 PROJECT INFO
 
-### ✅ Build Status
-- **Last Deploy:** 2025-12-29
-- **Build:** ✅ Successful  
-- **Dev Server:** ✅ Running at http://localhost:3000
-- **Website:** https://design-resources-website.vercel.app/
+### Website
+- **Live:** https://design-resources-website.vercel.app/
+- **Local:** http://localhost:3000
+- **Admin:** http://localhost:3000/admin (password: admin123)
 
-### 🔧 Tech Stack
+### Tech Stack
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
 - **Styling:** CSS Modules + Global CSS
 - **Icons:** iconoir-react
-- **Database:** Supabase (Project ID: kmzcbwiqlfdcrqqndglm)
-- **Hosting:** Vercel
-- **AI:** Groq API (free)
-- **APIs:** YouTube Data API v3
+- **Database:** Supabase (PostgreSQL)
+- **Hosting:** Vercel (auto-deploy on push)
+- **Cost:** $0/month (100% FREE)
 
-### 💰 Cost
-- **$0/month** - 100% FREE
-
----
-
-## 📝 CÔNG VIỆC MỚI NHẤT
-
-### Session 1 (2025-12-29 sáng):
-1. ✅ Fix Featured Tools loading issue
-   - File: `components/FeaturedTools.tsx`
-   - Change: Added `.eq('featured', true)` to query
-
-2. ✅ Fix metadata viewport warnings
-   - File: `app/layout.tsx`
-   - Change: Separated `viewport` export from `metadata`
-
-3. ✅ Push code lên GitHub
-   - Commit: `8c2925a`
-   - Branch: `main`
-
-### Session 2 (2025-12-29 tối): ⭐ MAJOR UPDATE
-
-#### 1. Route Restructuring & Icon Fixes
-- ✅ Fixed `PlayOutline` icon error → Changed to `Play`
-- ✅ Renamed `/tips` → `/videos` route
-- ✅ Separated Videos from Resources page completely
-- Files: `components/Header.tsx`, `components/CategoryGrid.tsx`, `app/videos/page.tsx`
-
-#### 2. Slider Navigation Enhancement
-- ✅ Added left/right arrow buttons (Desktop only ≥1024px)
-- ✅ Glassmorphism design with hover effects
-- ✅ Auto hide/show based on scroll position
-- ✅ Removed card fade-in animation for smoother scrolling
-- Files: `components/CardSlider.tsx`, `app/globals.css`
-
-#### 3. Admin Panel Development 🎉
-- ✅ **Created `/admin` page** with password protection (password: `admin123`)
-- ✅ **5 Management Tabs:**
-  1. Quản lý Resources (CRUD interface)
-  2. Cài đặt UI (Background, Cards, Spacing, Header)
-  3. Màu sắc (CSS color variables)
-  4. Tags (Custom tag management)
-  5. Typography (Fonts, sizes, weights)
-- ✅ Full responsive design
-- ✅ 300+ lines custom admin CSS
-- Files: `app/admin/page.tsx`, `app/globals.css`
-
-#### 4. Database Automation Scripts
-- ✅ YouTube thumbnail extractor
-- ✅ Resource validation system (check dead links)
-- ✅ Dead resource removal script
-- ✅ Cron job for scheduled maintenance
-- Files: `scripts/update-youtube-thumbnails.ts`, `scripts/validate-all-resources.ts`,
-  `scripts/remove-all-dead-resources.ts`, `scripts/cron-cleanup-dead-resources.ts`
+### Repository
+- **GitHub:** https://github.com/samantha-blablabla/design-resources-website
+- **Branch:** main
+- **Latest Deploy:** 2025-12-29
 
 ---
 
-## 🎯 ĐANG LÀM / CẦN LÀM
+## 🗂️ PROJECT STRUCTURE
 
-Xem file [TODO.md](TODO.md) để biết chi tiết.
-
-**Quick summary:**
-- [ ] Connect Admin Panel to Supabase (currently UI only)
-- [ ] Test slider arrows on production
-- [ ] Deploy updates to Vercel
-- [ ] Add proper authentication to Admin Panel
-
----
-
-## 🔗 LINKS QUAN TRỌNG
-
-| Service | URL |
-|---------|-----|
-| **Website** | https://design-resources-website.vercel.app/ |
-| **Admin Panel (Local)** | http://localhost:3000/admin |
-| **GitHub** | https://github.com/samantha-blablabla/design-resources-website |
-| **Supabase** | https://supabase.com/dashboard/project/kmzcbwiqlfdcrqqndglm |
-| **Vercel** | https://vercel.com/samanthas-projects-56df48a7 |
-| **Reference** | https://toools.design |
-
----
-
-## 📚 TÀI LIỆU QUAN TRỌNG
-
-Khi cần hiểu dự án, đọc theo thứ tự:
-
-1. **[CONTEXT.md](CONTEXT.md)** - File này, overview dự án
-2. **[TODO.md](TODO.md)** - Công việc hiện tại và đã làm
-3. **[PROGRESS-SUMMARY.md](PROGRESS-SUMMARY.md)** - Tổng quan tiến độ
-4. **[NHAT-KY-DU-AN.md](NHAT-KY-DU-AN.md)** - Lịch sử dự án
-5. **[AUTOMATION-PLAN-FREE.md](AUTOMATION-PLAN-FREE.md)** - Hệ thống automation
-6. **[QUICK-START.md](QUICK-START.md)** - Hướng dẫn setup
-
----
-
-## 🗂️ CẤU TRÚC PROJECT
-
-### Key Directories:
 ```
 design-resources-website/
 ├── app/
-│   ├── admin/          ⭐ NEW - Admin panel
-│   ├── videos/         ⭐ RENAMED from /tips
-│   ├── resources/      
-│   ├── inspiration/
-│   └── page.tsx        (Homepage)
+│   ├── admin/          # Admin panel (5 tabs)
+│   ├── videos/         # Video tutorials page
+│   ├── resources/      # Resources page (excludes videos)
+│   ├── inspiration/    # Inspiration gallery
+│   └── page.tsx        # Homepage with featured tools
 ├── components/
-│   ├── CardSlider.tsx  ⭐ UPDATED - Navigation arrows
-│   ├── Header.tsx      ⭐ UPDATED - Play icon
-│   └── CategoryGrid.tsx
-├── scripts/            ⭐ NEW - Automation scripts
+│   ├── CardSlider.tsx  # Slider with navigation arrows
+│   ├── Header.tsx      # Navigation header
+│   ├── Card.tsx        # Resource card component
+│   └── ui/             # Reusable UI components
+├── scripts/            # Automation scripts
 │   ├── update-youtube-thumbnails.ts
 │   ├── validate-all-resources.ts
 │   └── cron-cleanup-dead-resources.ts
-└── app/globals.css     ⭐ UPDATED - Admin styles
+└── app/globals.css     # Global styles + admin styles
 ```
 
 ---
 
-## 🗄️ CẤU TRÚC SUPABASE
+## 🗄️ DATABASE (SUPABASE)
 
-### Tables:
-1. **resources** - Main resources table
-   - Filters: `.neq('category', 'video-tutorials')` for Resources page
-   - Featured resources: `.eq('featured', true)`
-2. **inspirations** - Empty
-3. **videos** - Empty (using resources table with category filter)
-4. **articles** - Empty
-5. **crawl_logs** - Empty
+### Connection
+- **Project ID:** kmzcbwiqlfdcrqqndglm
+- **URL:** https://supabase.com/dashboard/project/kmzcbwiqlfdcrqqndglm
 
-### Migrations Status:
-- ✅ 001_create_tables.sql - Done
-- ⚠️ 002_enable_rls.sql - Cần verify
-- ❌ 003_seed_dummy_data.sql - Chưa chạy (optional)
-- ❌ 004_hashtag_functions.sql - Chưa chạy
+### Main Table: `resources`
+```sql
+- category: 'ui-kits' | 'icons' | 'video-tutorials' | etc.
+- featured: boolean (for homepage slider)
+- tags: array of strings
+- title, description, url, image_url
+```
+
+### Query Patterns
+```typescript
+// Homepage featured tools
+.eq('featured', true)
+
+// Resources page (exclude videos)
+.neq('category', 'video-tutorials')
+
+// Videos page (only videos)
+.eq('category', 'video-tutorials')
+```
+
+---
+
+## 🎯 KEY FEATURES
+
+### 1. Admin Panel (`/admin`)
+- Password protection (admin123)
+- 5 tabs: Resources, UI Settings, Colors, Tags, Typography
+- Currently UI-only, needs Supabase connection
+
+### 2. Slider Navigation
+- Desktop only (≥1024px)
+- Left/right arrows with glassmorphism
+- Auto hide/show based on scroll position
+- 3 sections: Featured Tools, Latest Resources, AI Tools
+
+### 3. Videos Separation
+- Videos have their own page at `/videos`
+- Resources page excludes video-tutorials category
+- Better UX for different content types
+
+### 4. Automation Scripts
+- YouTube thumbnail extraction
+- Resource validation (check dead links)
+- Automated cleanup via cron
 
 ---
 
 ## 🐛 KNOWN ISSUES
 
-### Fixed:
-- ✅ Featured Tools loading forever
+### Current
+- ⚠️ Admin Panel not connected to Supabase yet
+- ⚠️ Some database migration warnings (non-blocking)
+
+### Fixed Recently
+- ✅ Featured Tools loading issue
+- ✅ PlayOutline icon error → changed to Play
 - ✅ Metadata viewport warnings
-- ✅ PlayOutline icon error
-- ✅ Video/Resources separation
+- ✅ Videos/Resources separation
 
-### Current Issues:
-- ⚠️ Admin Panel is UI-only, not connected to database yet
-- ⚠️ Database migration errors (non-blocking, build still succeeds)
+---
 
-### To Check:
-- ⚠️ RLS policies có hoạt động không?
-- ⚠️ Slider arrows work on all screen sizes?
+## 🔗 IMPORTANT LINKS
+
+| Service | URL |
+|---------|-----|
+| **Website** | https://design-resources-website.vercel.app/ |
+| **GitHub** | https://github.com/samantha-blablabla/design-resources-website |
+| **Supabase** | https://supabase.com/dashboard/project/kmzcbwiqlfdcrqqndglm |
+| **Vercel** | https://vercel.com/samanthas-projects-56df48a7 |
+| **Design Reference** | https://toools.design |
+
+---
+
+## 📚 DOCUMENTATION
+
+### For Daily Work:
+1. **[WORKFLOW.md](WORKFLOW.md)** ⭐ Git workflow giữa 2 máy
+2. **[TODO.md](TODO.md)** - Task list
+3. **[CONTEXT.md](CONTEXT.md)** - File này
+
+### For Major Updates:
+- **DEPLOYMENT-SUMMARY-[hash].md** - Chi tiết deployment lớn
+- **ADMIN-GUIDE.md** - Hướng dẫn admin panel
+
+### For Reference:
+- **PROGRESS-SUMMARY.md** - Tổng quan tiến độ
+- **NHAT-KY-DU-AN.md** - Lịch sử dự án
+- **AUTOMATION-PLAN-FREE.md** - Hệ thống automation
 
 ---
 
@@ -183,78 +154,99 @@ design-resources-website/
 
 ### Khi Bắt Đầu Chat Mới:
 
-**Bước 1:** Nói với Claude:
+**Nói với Claude:**
 ```
-"Đọc file CONTEXT.md và TODO.md để hiểu dự án.
-Tớ đang làm việc trên 2 máy khác nhau."
+"Đọc CONTEXT.md và TODO.md để hiểu dự án.
+Chạy git log để xem commit gần nhất.
+Tớ đang làm việc trên 2 máy."
 ```
 
-**Bước 2:** Claude sẽ tự động:
+**Claude sẽ:**
 1. Đọc CONTEXT.md (file này)
-2. Đọc TODO.md
-3. Đọc các file .md liên quan
-4. Hiểu được đang làm gì, cần làm gì tiếp
-
-**Bước 3:** Bắt đầu làm việc tiếp!
+2. Đọc TODO.md (task list)
+3. Chạy `git log` để xem changes gần nhất
+4. Tóm tắt tình trạng dự án
+5. Hỏi bạn muốn làm gì tiếp
 
 ---
 
 ## 🔄 SYNC GIỮA 2 MÁY
 
-### Trước khi làm việc:
-```bash
-# Chạy file sync.bat
-# Hoặc:
-git pull origin main
-```
+### ⚠️ ĐỌC FILE [WORKFLOW.md](WORKFLOW.md) ĐỂ BIẾT CHI TIẾT
 
-### Sau khi làm việc xong:
+**Quick Commands:**
 ```bash
-# Chạy file sync.bat
-# Hoặc:
+# Khi bắt đầu làm việc
+git pull origin main
+git log --oneline -5
+
+# Khi kết thúc làm việc
 git add .
-git commit -m "Update: [mô tả]"
+git commit -m "Add: [description]"
 git push origin main
 ```
 
+**Rule:**
+- ✅ Git là source of truth
+- ✅ Đọc `git log` để xem thay đổi
+- ✅ Đọc `git diff` để xem chi tiết code
+- ❌ Không ghi code vào CONTEXT.md
+- ❌ Không copy code vào TODO.md
+
 ---
 
-## 🎨 DESIGN SYSTEM NOTE
-
-**Về Figma Integration:**
-- ❌ Claude KHÔNG thể đọc trực tiếp Figma links
-- ✅ Cần export Design Tokens (JSON/CSS)
-- ✅ Hoặc chụp screenshots các components
-- ✅ Sử dụng plugins: "Design Tokens" hoặc "Style Dictionary"
+## 🎨 DESIGN SYSTEM
 
 **Current Design:**
-- Background: Purple pastel gradient `#fcf5ff → #fdf8ff`
-- Cards: Glassmorphism with blur effects
-- Typography: Plus Jakarta Sans
-- Icons: iconoir-react
-- Reference: toools.design
+- **Background:** Purple pastel gradient `#fcf5ff → #fdf8ff`
+- **Cards:** Glassmorphism with blur effects
+- **Typography:** Plus Jakarta Sans
+- **Icons:** iconoir-react
+- **Reference:** toools.design
+
+**Figma Note:**
+- ❌ Claude KHÔNG thể đọc Figma links trực tiếp
+- ✅ Cần export Design Tokens (JSON/CSS)
+- ✅ Hoặc screenshot components
+- ✅ Use plugins: "Design Tokens" or "Style Dictionary"
 
 ---
 
 ## 📞 NEXT STEPS
 
-Xem [TODO.md](TODO.md) để biết công việc tiếp theo.
+Xem **[TODO.md](TODO.md)** để biết tasks cụ thể.
 
-**Priority:**
+**High Priority:**
 1. Connect Admin Panel to Supabase
-2. Deploy updates to Vercel
-3. Test slider navigation on production
-4. Add proper authentication
+2. Test slider arrows on production
+3. Add proper authentication to admin
 
 ---
 
-**Cập nhật lần cuối:** 2025-12-29 23:30
-**Session:** Admin Panel + Slider Navigation (Complete) + Videos/Resources Separation
-**Máy cập nhật:** Claude AI Assistant
+## 🚀 QUICK START
 
-**Latest Changes:**
-- ✅ Slider arrows added to all 3 sections (Featured Tools, Latest Resources, AI Tools)
-- ✅ Arrows positioned between section headers and sliders (like toools.design)
-- ✅ Improved spacing between sections for better visual clarity
-- ✅ Desktop only display (≥1024px)
-- ✅ Auto-disable based on scroll state
+```bash
+# Setup
+git clone [repo]
+npm install
+cp .env.example .env.local
+# Add Supabase keys to .env.local
+
+# Development
+npm run dev          # Start dev server
+npm run build        # Test production build
+
+# Git workflow
+git pull             # Before working
+git push             # After working
+
+# Documentation
+code WORKFLOW.md     # Git commands
+code TODO.md         # Task list
+```
+
+---
+
+**Cập nhật:** 2025-12-29
+**Version:** Simplified (Git as source of truth)
+**Để biết chi tiết code changes:** Chạy `git log` và `git diff`
