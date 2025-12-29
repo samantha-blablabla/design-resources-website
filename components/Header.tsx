@@ -1,0 +1,52 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Home, AppWindow, BookStack, LightBulb, Search } from 'iconoir-react';
+
+export default function Header() {
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    return (
+        <header className={`header-glass ${isScrolled ? 'scrolled' : ''}`}>
+            <div className="header-pill">
+                <Link href="/" className="logo-glass">
+                    <span className="logo-emoji">✨</span>
+                    <span className="logo-text">DesignHub</span>
+                </Link>
+
+                <nav className="nav-glass">
+                    <Link href="/" className="nav-link-glass">
+                        <Home width={20} height={20} strokeWidth={2} />
+                        <span>Home</span>
+                    </Link>
+                    <Link href="/resources" className="nav-link-glass">
+                        <AppWindow width={20} height={20} strokeWidth={2} />
+                        <span>Resources</span>
+                    </Link>
+                    <Link href="/inspiration" className="nav-link-glass">
+                        <BookStack width={20} height={20} strokeWidth={2} />
+                        <span>Inspiration</span>
+                    </Link>
+                    <Link href="/tips" className="nav-link-glass">
+                        <LightBulb width={20} height={20} strokeWidth={2} />
+                        <span>Tips</span>
+                    </Link>
+                </nav>
+
+                <button className="search-btn-glass">
+                    <Search width={20} height={20} strokeWidth={2} />
+                </button>
+            </div>
+        </header>
+    );
+}

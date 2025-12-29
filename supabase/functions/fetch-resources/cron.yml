@@ -1,0 +1,8 @@
+# Cron job to fetch resources every 3 days
+# https://supabase.com/docs/guides/functions/schedule-functions
+
+- schedule: '0 0 */3 * *'  # Every 3 days at midnight UTC
+  function_name: fetch-resources
+  method: POST
+  headers:
+    Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}
