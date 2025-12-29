@@ -130,14 +130,19 @@ export async function GET(request: Request) {
       for (const video of videos) {
         const tags = categorizeVideo(video.title, video.description);
         const resource = {
-          title: `${video.title} (${video.duration})`,
-          description: video.description.slice(0, 200) + (video.description.length > 200 ? '...' : ''),
+          title: video.title, // Clean title without duration
+          description: video.description.slice(0, 300) + (video.description.length > 300 ? '...' : ''),
           url: `https://www.youtube.com/watch?v=${video.id}`,
           category: 'video-tutorials',
           tags,
           source: `youtube-${video.channelTitle.toLowerCase().replace(/\s+/g, '-')}`,
           gradient: GRADIENTS[gradientIndex++ % GRADIENTS.length],
           featured: false,
+          image_url: video.thumbnailUrl, // YouTube thumbnail
+          thumbnail_url: video.thumbnailUrl,
+          published_at: video.publishedAt,
+          channel_name: video.channelTitle,
+          duration: video.duration,
         };
 
         // Check if exists

@@ -140,14 +140,19 @@ async function insertVideoToSupabase(video: YouTubeVideo, gradientIndex: number)
   const tags = categorizeVideo(video.title, video.description);
 
   const resource = {
-    title: `${video.title} (${video.duration})`,
-    description: video.description.slice(0, 200) + (video.description.length > 200 ? '...' : ''), // Limit description
+    title: video.title, // Clean title without duration
+    description: video.description.slice(0, 300) + (video.description.length > 300 ? '...' : ''),
     url: `https://www.youtube.com/watch?v=${video.id}`,
     category: 'video-tutorials',
     tags,
     source: `youtube-${video.channelTitle.toLowerCase().replace(/\s+/g, '-')}`,
     gradient: GRADIENTS[gradientIndex % GRADIENTS.length],
     featured: false,
+    image_url: video.thumbnailUrl, // YouTube thumbnail
+    thumbnail_url: video.thumbnailUrl, // Add thumbnail field
+    published_at: video.publishedAt, // YouTube publish date
+    channel_name: video.channelTitle, // Channel name
+    duration: video.duration, // Video duration
   };
 
   try {

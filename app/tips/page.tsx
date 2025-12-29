@@ -235,6 +235,9 @@ export default function TipsPage() {
                             gradient={video.gradient}
                             duration={video.duration}
                             url={video.url}
+                            thumbnailUrl={video.image_url || video.thumbnail_url}
+                            channelName={video.channel_name}
+                            publishedAt={video.published_at}
                         />
                     ))}
                 </div>
