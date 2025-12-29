@@ -12,11 +12,24 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // High-quality design channels from DATA-SOURCES.md
 const DESIGN_CHANNELS = {
+  // UI/UX Design
   'The Futur': 'UCwjmF42v_R5CwYbC4WYRpkg', // Brand design, business (@thefutur)
   'DesignCourse': 'UCVyRiMvfUNMA1UPlDPzG5Ow', // UI/UX, full courses (@DesignCourse)
   'Flux Academy': 'UCN7dywl5wDxTu1RM3eJ_h9Q', // Modern design workflows (@FluxAcademy)
   'Jesse Showalter': 'UCvBGFeXbBrq3W9_0oNLJREQ', // Web design, frontend
   'Charli Marie': 'UCScRSwdX0t31gjk3MYXIuYQ', // Design process, branding
+  'DesignWithArash': 'UC_NhYYzcpz9QJZGm1nr0fWg', // UI/UX design
+  'Optimistic Web': 'UC1DYgzHSl7xblFi0d6jKDdA', // Web design
+
+  // Motion Design
+  'Motion Design School': 'UC-L0yvYPpGQZD3PHDLKiUpg', // Motion design tutorials
+  'School of Motion': 'UCAhdxqdrDN3gWJkaUFl9G-Q', // Motion graphics
+  'SonduckFilm': 'UC5DmsBrVi62DWBASLK5gMEw', // Motion design
+  'Dope Motions': 'UCgvrz9ioKv89HMyg42z4pyQ', // Motion graphics
+
+  // 3D Design
+  'Josh - Blender Bros': 'UCXfGjwohMgPm4Ng2e1FXySw', // 3D Blender
+  'Ryuu - Blender Bros': 'UCEOVGZ2rpLhR7gSPvaexxxQ', // 3D Blender
 };
 
 const GRADIENTS = [
@@ -83,6 +96,19 @@ function categorizeVideo(title: string, description: string): string[] {
   if (text.match(/responsive|mobile-first/)) tags.push('responsive', 'web-design');
   if (text.match(/css|html|javascript/)) tags.push('web-design', 'code');
   if (text.match(/animation|motion/)) tags.push('animation');
+
+  // Motion Design
+  if (text.match(/motion design|motion graphics|mograph/)) tags.push('motion-design', 'animation');
+  if (text.match(/after effects|ae tutorial/)) tags.push('after-effects', 'motion-design', 'tools');
+  if (text.match(/cinema 4d|c4d/)) tags.push('cinema-4d', '3d', 'tools');
+  if (text.match(/kinetic typography/)) tags.push('kinetic-typography', 'motion-design');
+
+  // 3D Design
+  if (text.match(/3d|three dimensional/)) tags.push('3d');
+  if (text.match(/blender/)) tags.push('blender', '3d', 'tools');
+  if (text.match(/maya|3ds max/)) tags.push('3d-modeling', '3d', 'tools');
+  if (text.match(/rendering|render/)) tags.push('rendering', '3d');
+  if (text.match(/modeling|modelling/)) tags.push('3d-modeling', '3d');
 
   // Advanced topics
   if (text.match(/design system/)) tags.push('design-system', 'advanced');

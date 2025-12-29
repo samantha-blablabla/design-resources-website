@@ -11,11 +11,24 @@ const youtubeApiKey = process.env.YOUTUBE_API_KEY!;
 
 // Design channels to fetch from
 const DESIGN_CHANNELS = {
+  // UI/UX Design
   'The Futur': 'UCwjmF42v_R5CwYbC4WYRpkg',
   'DesignCourse': 'UCVyRiMvfUNMA1UPlDPzG5Ow',
   'Flux Academy': 'UCN7dywl5wDxTu1RM3eJ_h9Q',
   'Jesse Showalter': 'UCvBGFeXbBrq3W9_0oNLJREQ',
   'Charli Marie': 'UCScRSwdX0t31gjk3MYXIuYQ',
+  'DesignWithArash': 'UC_NhYYzcpz9QJZGm1nr0fWg',
+  'Optimistic Web': 'UC1DYgzHSl7xblFi0d6jKDdA',
+
+  // Motion Design
+  'Motion Design School': 'UC-L0yvYPpGQZD3PHDLKiUpg',
+  'School of Motion': 'UCAhdxqdrDN3gWJkaUFl9G-Q',
+  'SonduckFilm': 'UC5DmsBrVi62DWBASLK5gMEw',
+  'Dope Motions': 'UCgvrz9ioKv89HMyg42z4pyQ',
+
+  // 3D Design
+  'Josh - Blender Bros': 'UCXfGjwohMgPm4Ng2e1FXySw',
+  'Ryuu - Blender Bros': 'UCEOVGZ2rpLhR7gSPvaexxxQ',
 };
 
 const GRADIENTS = [
@@ -49,20 +62,44 @@ function categorizeVideo(title: string, description: string): string[] {
   const text = (title + ' ' + description).toLowerCase();
   const tags: string[] = ['video'];
 
+  // Design fundamentals
   if (text.match(/color|palette|theory/)) tags.push('color-theory', 'fundamentals');
   if (text.match(/typography|font|type/)) tags.push('typography', 'fundamentals');
   if (text.match(/layout|composition|grid/)) tags.push('layout', 'fundamentals');
+
+  // Tools
   if (text.match(/figma/)) tags.push('figma', 'tools');
+
+  // UI/UX
   if (text.match(/ui design|user interface/)) tags.push('ui-design', 'interface');
   if (text.match(/ux|user experience|research/)) tags.push('ux-design', 'research');
   if (text.match(/mobile|app design/)) tags.push('mobile-design', 'app-design');
+
+  // Web design
   if (text.match(/web design|website/)) tags.push('web-design');
   if (text.match(/responsive|mobile-first/)) tags.push('responsive', 'web-design');
   if (text.match(/css|html|javascript/)) tags.push('web-design', 'code');
   if (text.match(/animation|motion/)) tags.push('animation');
+
+  // Motion Design
+  if (text.match(/motion design|motion graphics|mograph/)) tags.push('motion-design', 'animation');
+  if (text.match(/after effects|ae tutorial/)) tags.push('after-effects', 'motion-design', 'tools');
+  if (text.match(/cinema 4d|c4d/)) tags.push('cinema-4d', '3d', 'tools');
+  if (text.match(/kinetic typography/)) tags.push('kinetic-typography', 'motion-design');
+
+  // 3D Design
+  if (text.match(/3d|three dimensional/)) tags.push('3d');
+  if (text.match(/blender/)) tags.push('blender', '3d', 'tools');
+  if (text.match(/maya|3ds max/)) tags.push('3d-modeling', '3d', 'tools');
+  if (text.match(/rendering|render/)) tags.push('rendering', '3d');
+  if (text.match(/modeling|modelling/)) tags.push('3d-modeling', '3d');
+
+  // Advanced topics
   if (text.match(/design system/)) tags.push('design-system', 'advanced');
   if (text.match(/accessibility|wcag|a11y/)) tags.push('accessibility', 'inclusive-design');
   if (text.match(/branding|brand identity|logo/)) tags.push('branding');
+
+  // Career
   if (text.match(/portfolio|career|job/)) tags.push('career', 'portfolio');
   if (text.match(/freelance|client|business/)) tags.push('freelance', 'business');
 
