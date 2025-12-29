@@ -190,7 +190,6 @@ export default function InspirationPage() {
                         title={item.title}
                         description={item.description}
                         tags={item.tags}
-                        emoji={item.emoji}
                         gradient={item.gradient}
                     />
                 ))}

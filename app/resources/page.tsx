@@ -225,7 +225,6 @@ export default function ResourcesPage() {
                         title={resource.title}
                         description={resource.description}
                         tags={resource.tags}
-                        emoji={resource.emoji}
                         gradient={resource.gradient}
                     />
                 ))}

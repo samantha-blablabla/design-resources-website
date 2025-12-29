@@ -189,7 +189,6 @@ export default function TipsPage() {
                         key={video.id}
                         title={video.title}
                         description={video.description}
-                        emoji={video.emoji}
                         gradient={video.gradient}
                         duration={video.duration}
                     />

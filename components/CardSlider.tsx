@@ -10,7 +10,7 @@ interface CardSliderProps {
         title: string;
         description: string;
         tags: string[];
-        emoji: string;
+        emoji?: string;
         gradient: string;
         image_url?: string;
         thumbnail_url?: string;
