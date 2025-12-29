@@ -959,6 +959,12 @@ body > * {
   margin: 0;
 }
 
+.section-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .view-all-link {
   color: var(--color-accent);
   text-decoration: none;
@@ -1011,10 +1017,7 @@ body > * {
 .slider-controls {
   display: none; /* Hidden on mobile */
   gap: 0.5rem;
-  justify-content: flex-end;
-  margin-top: -60px; /* Align with section header */
-  margin-bottom: 1.5rem;
-  padding-right: 0; /* Align with View All link */
+  align-items: center;
 }
 
 .slider-arrow {

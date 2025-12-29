@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { Card } from '@/components/ui';
-import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
 
 interface CardSliderProps {
     items: Array<{
@@ -15,6 +14,12 @@ interface CardSliderProps {
         image_url?: string;
         thumbnail_url?: string;
     }>;
+    onScrollStateChange?: (canScrollLeft: boolean, canScrollRight: boolean) => void;
+}
+
+export interface CardSliderRef {
+    scrollLeft: () => void;
+    scrollRight: () => void;
 }
 
 // Card wrapper without animation for horizontal scroll
@@ -34,84 +39,68 @@ function SliderCard({ item }: { item: any }) {
     );
 }
 
-export default function CardSlider({ items }: CardSliderProps) {
-    const sliderRef = useRef<HTMLDivElement>(null);
-    const [showLeftArrow, setShowLeftArrow] = useState(false);
-    const [showRightArrow, setShowRightArrow] = useState(false);
+const CardSlider = forwardRef<CardSliderRef, CardSliderProps>(
+    ({ items, onScrollStateChange }, ref) => {
+        const sliderRef = useRef<HTMLDivElement>(null);
 
-    const updateArrows = () => {
-        if (!sliderRef.current) return;
+        const updateScrollState = () => {
+            if (!sliderRef.current || !onScrollStateChange) return;
 
-        const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-        setShowLeftArrow(scrollLeft > 10);
-        setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
-    };
+            const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+            const canScrollLeft = scrollLeft > 10;
+            const canScrollRight = scrollLeft < scrollWidth - clientWidth - 10;
 
-    useEffect(() => {
-        // Check arrows on mount and window resize
-        updateArrows();
-        window.addEventListener('resize', updateArrows);
-
-        // Small delay to ensure DOM is fully rendered
-        const timer = setTimeout(updateArrows, 100);
-
-        return () => {
-            window.removeEventListener('resize', updateArrows);
-            clearTimeout(timer);
+            onScrollStateChange(canScrollLeft, canScrollRight);
         };
-    }, [items]);
 
-    const scroll = (direction: 'left' | 'right') => {
-        if (!sliderRef.current) return;
+        useEffect(() => {
+            updateScrollState();
+            window.addEventListener('resize', updateScrollState);
 
-        const scrollAmount = 400;
-        const newScrollLeft =
-            direction === 'left'
-                ? sliderRef.current.scrollLeft - scrollAmount
-                : sliderRef.current.scrollLeft + scrollAmount;
+            const timer = setTimeout(updateScrollState, 100);
 
-        sliderRef.current.scrollTo({
-            left: newScrollLeft,
-            behavior: 'smooth',
-        });
-    };
+            return () => {
+                window.removeEventListener('resize', updateScrollState);
+                clearTimeout(timer);
+            };
+        }, [items]);
 
-    const handleScroll = () => {
-        updateArrows();
-    };
+        // Expose scroll methods to parent via ref
+        useImperativeHandle(ref, () => ({
+            scrollLeft: () => {
+                if (!sliderRef.current) return;
+                const scrollAmount = 400;
+                sliderRef.current.scrollTo({
+                    left: sliderRef.current.scrollLeft - scrollAmount,
+                    behavior: 'smooth',
+                });
+            },
+            scrollRight: () => {
+                if (!sliderRef.current) return;
+                const scrollAmount = 400;
+                sliderRef.current.scrollTo({
+                    left: sliderRef.current.scrollLeft + scrollAmount,
+                    behavior: 'smooth',
+                });
+            },
+        }));
 
-    return (
-        <div className="slider-wrapper">
-            {/* Slider Track */}
-            <div
-                ref={sliderRef}
-                className="slider-track"
-                onScroll={handleScroll}
-            >
-                {items.map((item) => (
-                    <SliderCard key={item.id} item={item} />
-                ))}
-            </div>
-
-            {/* Navigation Controls - Bottom Right (Desktop only) */}
-            <div className="slider-controls">
-                <button
-                    className={`slider-arrow ${!showLeftArrow ? 'disabled' : ''}`}
-                    onClick={() => scroll('left')}
-                    aria-label="Scroll left"
-                    disabled={!showLeftArrow}
+        return (
+            <div className="slider-wrapper">
+                <div
+                    ref={sliderRef}
+                    className="slider-track"
+                    onScroll={updateScrollState}
                 >
-                    <NavArrowLeft width={20} height={20} strokeWidth={2} />
-                </button>
-                <button
-                    className={`slider-arrow ${!showRightArrow ? 'disabled' : ''}`}
-                    onClick={() => scroll('right')}
-                    aria-label="Scroll right"
-                    disabled={!showRightArrow}
-                >
-                    <NavArrowRight width={20} height={20} strokeWidth={2} />
-                </button>
+                    {items.map((item) => (
+                        <SliderCard key={item.id} item={item} />
+                    ))}
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
+);
+
+CardSlider.displayName = 'CardSlider';
+
+export default CardSlider;

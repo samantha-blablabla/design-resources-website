@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui';
 import CategoryGrid from '@/components/CategoryGrid';
-import CardSlider from '@/components/CardSlider';
+import CardSlider, { CardSliderRef } from '@/components/CardSlider';
 import FeaturedTools from '@/components/FeaturedTools';
 import Link from 'next/link';
+import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -18,6 +19,14 @@ export default function Home() {
     const [latestResources, setLatestResources] = useState<any[]>([]);
     const [aiTools, setAiTools] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Refs for controlling sliders
+    const latestSliderRef = useRef<CardSliderRef>(null);
+    const aiSliderRef = useRef<CardSliderRef>(null);
+
+    // Scroll states for arrows
+    const [latestScrollState, setLatestScrollState] = useState({ left: false, right: false });
+    const [aiScrollState, setAiScrollState] = useState({ left: false, right: false });
 
     useEffect(() => {
         async function fetchData() {
@@ -88,12 +97,36 @@ export default function Home() {
                 <>
                     <div className="section-header fade-in">
                         <h2 className="section-title">Latest Resources</h2>
-                        <Link href="/resources?sort=latest" className="view-all-link">
-                            View All →
-                        </Link>
+                        <div className="section-header-actions">
+                            <Link href="/resources?sort=latest" className="view-all-link">
+                                View All →
+                            </Link>
+                            <div className="slider-controls">
+                                <button
+                                    className={`slider-arrow ${!latestScrollState.left ? 'disabled' : ''}`}
+                                    onClick={() => latestSliderRef.current?.scrollLeft()}
+                                    disabled={!latestScrollState.left}
+                                    aria-label="Scroll left"
+                                >
+                                    <NavArrowLeft width={20} height={20} strokeWidth={2} />
+                                </button>
+                                <button
+                                    className={`slider-arrow ${!latestScrollState.right ? 'disabled' : ''}`}
+                                    onClick={() => latestSliderRef.current?.scrollRight()}
+                                    disabled={!latestScrollState.right}
+                                    aria-label="Scroll right"
+                                >
+                                    <NavArrowRight width={20} height={20} strokeWidth={2} />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div className="fade-in">
-                        <CardSlider items={latestResources} />
+                        <CardSlider
+                            ref={latestSliderRef}
+                            items={latestResources}
+                            onScrollStateChange={(left, right) => setLatestScrollState({ left, right })}
+                        />
                     </div>
                 </>
             )}
@@ -103,12 +136,36 @@ export default function Home() {
                 <>
                     <div className="section-header fade-in">
                         <h2 className="section-title">Featured AI Tools</h2>
-                        <Link href="/resources?tag=ai" className="view-all-link">
-                            View All →
-                        </Link>
+                        <div className="section-header-actions">
+                            <Link href="/resources?tag=ai" className="view-all-link">
+                                View All →
+                            </Link>
+                            <div className="slider-controls">
+                                <button
+                                    className={`slider-arrow ${!aiScrollState.left ? 'disabled' : ''}`}
+                                    onClick={() => aiSliderRef.current?.scrollLeft()}
+                                    disabled={!aiScrollState.left}
+                                    aria-label="Scroll left"
+                                >
+                                    <NavArrowLeft width={20} height={20} strokeWidth={2} />
+                                </button>
+                                <button
+                                    className={`slider-arrow ${!aiScrollState.right ? 'disabled' : ''}`}
+                                    onClick={() => aiSliderRef.current?.scrollRight()}
+                                    disabled={!aiScrollState.right}
+                                    aria-label="Scroll right"
+                                >
+                                    <NavArrowRight width={20} height={20} strokeWidth={2} />
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div className="fade-in">
-                        <CardSlider items={aiTools} />
+                        <CardSlider
+                            ref={aiSliderRef}
+                            items={aiTools}
+                            onScrollStateChange={(left, right) => setAiScrollState({ left, right })}
+                        />
                     </div>
                 </>
             )}
