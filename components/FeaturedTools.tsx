@@ -12,7 +12,6 @@ const dummyFeaturedTools = [
     title: 'Figma Design System',
     description: 'Complete design system with components, tokens, and guidelines for modern interfaces.',
     tags: ['figma', 'ui-kits', 'free', 'design-system'],
-    emoji: '🎨',
     gradient: 'linear-gradient(135deg, #DBEAFE 0%, #E0E7FF 100%)',
   },
   {
@@ -20,7 +19,6 @@ const dummyFeaturedTools = [
     title: 'Icon Library Pro',
     description: 'Over 10,000 customizable icons in multiple styles. Perfect for web and mobile apps.',
     tags: ['icons', 'svg', 'premium', 'ui-design'],
-    emoji: '⭐',
     gradient: 'linear-gradient(135deg, #FCE7F3 0%, #F3E8FF 100%)',
   },
   {
@@ -28,7 +26,6 @@ const dummyFeaturedTools = [
     title: 'Color Palette Generator',
     description: 'AI-powered tool to generate beautiful color palettes for your next design project.',
     tags: ['colors', 'design-tools', 'ai', 'free'],
-    emoji: '🌈',
     gradient: 'linear-gradient(135deg, #FEF3C7 0%, #FFEDD5 100%)',
   },
 ];

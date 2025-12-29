@@ -6,7 +6,7 @@ interface CardProps {
     title: string;
     description: string;
     tags: string[];
-    emoji: string;
+    emoji?: string;
     gradient: string;
     imageUrl?: string;
     url?: string;
@@ -27,9 +27,7 @@ export default function Card({ title, description, tags, emoji, gradient, imageU
                             unoptimized
                         />
                     </div>
-                ) : (
-                    <span style={{ position: 'relative', zIndex: 3 }}>{emoji}</span>
-                )}
+                ) : null}
             </div>
             <div className="card-content">
                 <h3 className="card-title">{title}</h3>
