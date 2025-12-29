@@ -6,7 +6,7 @@ import {
     ColorFilter,
     Cube,
     PenTablet,
-    PlayOutline,
+    Play,
     Book,
     Accessibility,
     Puzzle,
@@ -66,7 +66,7 @@ const categories = [
     {
         id: 9,
         title: 'Videos',
-        icon: PlayOutline,
+        icon: Play,
         href: '/videos',
     },
     {

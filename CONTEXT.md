@@ -1,7 +1,7 @@
 # 🤖 Context Cho Claude AI
 
 > **MỤC ĐÍCH:** File này giúp Claude AI hiểu nhanh dự án khi bắt đầu chat mới
-> **CẬP NHẬT:** 2025-12-29 08:53
+> **CẬP NHẬT:** 2025-12-29 23:00
 
 ---
 
@@ -9,11 +9,15 @@
 
 ### ✅ Build Status
 - **Last Deploy:** 2025-12-29
-- **Build:** ✅ Successful
+- **Build:** ✅ Successful  
+- **Dev Server:** ✅ Running at http://localhost:3000
 - **Website:** https://design-resources-website.vercel.app/
 
 ### 🔧 Tech Stack
 - **Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript
+- **Styling:** CSS Modules + Global CSS
+- **Icons:** iconoir-react
 - **Database:** Supabase (Project ID: kmzcbwiqlfdcrqqndglm)
 - **Hosting:** Vercel
 - **AI:** Groq API (free)
@@ -26,7 +30,7 @@
 
 ## 📝 CÔNG VIỆC MỚI NHẤT
 
-### Lần Fix Cuối (2025-12-29):
+### Session 1 (2025-12-29 sáng):
 1. ✅ Fix Featured Tools loading issue
    - File: `components/FeaturedTools.tsx`
    - Change: Added `.eq('featured', true)` to query
@@ -39,6 +43,41 @@
    - Commit: `8c2925a`
    - Branch: `main`
 
+### Session 2 (2025-12-29 tối): ⭐ MAJOR UPDATE
+
+#### 1. Route Restructuring & Icon Fixes
+- ✅ Fixed `PlayOutline` icon error → Changed to `Play`
+- ✅ Renamed `/tips` → `/videos` route
+- ✅ Separated Videos from Resources page completely
+- Files: `components/Header.tsx`, `components/CategoryGrid.tsx`, `app/videos/page.tsx`
+
+#### 2. Slider Navigation Enhancement
+- ✅ Added left/right arrow buttons (Desktop only ≥1024px)
+- ✅ Glassmorphism design with hover effects
+- ✅ Auto hide/show based on scroll position
+- ✅ Removed card fade-in animation for smoother scrolling
+- Files: `components/CardSlider.tsx`, `app/globals.css`
+
+#### 3. Admin Panel Development 🎉
+- ✅ **Created `/admin` page** with password protection (password: `admin123`)
+- ✅ **5 Management Tabs:**
+  1. Quản lý Resources (CRUD interface)
+  2. Cài đặt UI (Background, Cards, Spacing, Header)
+  3. Màu sắc (CSS color variables)
+  4. Tags (Custom tag management)
+  5. Typography (Fonts, sizes, weights)
+- ✅ Full responsive design
+- ✅ 300+ lines custom admin CSS
+- Files: `app/admin/page.tsx`, `app/globals.css`
+
+#### 4. Database Automation Scripts
+- ✅ YouTube thumbnail extractor
+- ✅ Resource validation system (check dead links)
+- ✅ Dead resource removal script
+- ✅ Cron job for scheduled maintenance
+- Files: `scripts/update-youtube-thumbnails.ts`, `scripts/validate-all-resources.ts`,
+  `scripts/remove-all-dead-resources.ts`, `scripts/cron-cleanup-dead-resources.ts`
+
 ---
 
 ## 🎯 ĐANG LÀM / CẦN LÀM
@@ -46,10 +85,10 @@
 Xem file [TODO.md](TODO.md) để biết chi tiết.
 
 **Quick summary:**
-- [ ] Test website sau deploy mới
-- [ ] Verify RLS policies trong Supabase
-- [ ] Setup API keys cho automation
-- [ ] Test cron job
+- [ ] Connect Admin Panel to Supabase (currently UI only)
+- [ ] Test slider arrows on production
+- [ ] Deploy updates to Vercel
+- [ ] Add proper authentication to Admin Panel
 
 ---
 
@@ -58,6 +97,7 @@ Xem file [TODO.md](TODO.md) để biết chi tiết.
 | Service | URL |
 |---------|-----|
 | **Website** | https://design-resources-website.vercel.app/ |
+| **Admin Panel (Local)** | http://localhost:3000/admin |
 | **GitHub** | https://github.com/samantha-blablabla/design-resources-website |
 | **Supabase** | https://supabase.com/dashboard/project/kmzcbwiqlfdcrqqndglm |
 | **Vercel** | https://vercel.com/samanthas-projects-56df48a7 |
@@ -69,20 +109,47 @@ Xem file [TODO.md](TODO.md) để biết chi tiết.
 
 Khi cần hiểu dự án, đọc theo thứ tự:
 
-1. **[PROGRESS-SUMMARY.md](PROGRESS-SUMMARY.md)** - Tổng quan tiến độ
-2. **[NHAT-KY-DU-AN.md](NHAT-KY-DU-AN.md)** - Lịch sử dự án
-3. **[TODO.md](TODO.md)** - Công việc hiện tại
-4. **[AUTOMATION-PLAN-FREE.md](AUTOMATION-PLAN-FREE.md)** - Hệ thống automation
-5. **[QUICK-START.md](QUICK-START.md)** - Hướng dẫn setup
+1. **[CONTEXT.md](CONTEXT.md)** - File này, overview dự án
+2. **[TODO.md](TODO.md)** - Công việc hiện tại và đã làm
+3. **[PROGRESS-SUMMARY.md](PROGRESS-SUMMARY.md)** - Tổng quan tiến độ
+4. **[NHAT-KY-DU-AN.md](NHAT-KY-DU-AN.md)** - Lịch sử dự án
+5. **[AUTOMATION-PLAN-FREE.md](AUTOMATION-PLAN-FREE.md)** - Hệ thống automation
+6. **[QUICK-START.md](QUICK-START.md)** - Hướng dẫn setup
+
+---
+
+## 🗂️ CẤU TRÚC PROJECT
+
+### Key Directories:
+```
+design-resources-website/
+├── app/
+│   ├── admin/          ⭐ NEW - Admin panel
+│   ├── videos/         ⭐ RENAMED from /tips
+│   ├── resources/      
+│   ├── inspiration/
+│   └── page.tsx        (Homepage)
+├── components/
+│   ├── CardSlider.tsx  ⭐ UPDATED - Navigation arrows
+│   ├── Header.tsx      ⭐ UPDATED - Play icon
+│   └── CategoryGrid.tsx
+├── scripts/            ⭐ NEW - Automation scripts
+│   ├── update-youtube-thumbnails.ts
+│   ├── validate-all-resources.ts
+│   └── cron-cleanup-dead-resources.ts
+└── app/globals.css     ⭐ UPDATED - Admin styles
+```
 
 ---
 
 ## 🗄️ CẤU TRÚC SUPABASE
 
 ### Tables:
-1. **resources** - 3 rows (2 featured)
+1. **resources** - Main resources table
+   - Filters: `.neq('category', 'video-tutorials')` for Resources page
+   - Featured resources: `.eq('featured', true)`
 2. **inspirations** - Empty
-3. **videos** - Empty
+3. **videos** - Empty (using resources table with category filter)
 4. **articles** - Empty
 5. **crawl_logs** - Empty
 
@@ -99,10 +166,16 @@ Khi cần hiểu dự án, đọc theo thứ tự:
 ### Fixed:
 - ✅ Featured Tools loading forever
 - ✅ Metadata viewport warnings
+- ✅ PlayOutline icon error
+- ✅ Video/Resources separation
+
+### Current Issues:
+- ⚠️ Admin Panel is UI-only, not connected to database yet
+- ⚠️ Database migration errors (non-blocking, build still succeeds)
 
 ### To Check:
 - ⚠️ RLS policies có hoạt động không?
-- ⚠️ Cron job có được setup chưa?
+- ⚠️ Slider arrows work on all screen sizes?
 
 ---
 
@@ -146,12 +219,35 @@ git push origin main
 
 ---
 
+## 🎨 DESIGN SYSTEM NOTE
+
+**Về Figma Integration:**
+- ❌ Claude KHÔNG thể đọc trực tiếp Figma links
+- ✅ Cần export Design Tokens (JSON/CSS)
+- ✅ Hoặc chụp screenshots các components
+- ✅ Sử dụng plugins: "Design Tokens" hoặc "Style Dictionary"
+
+**Current Design:**
+- Background: Purple pastel gradient `#fcf5ff → #fdf8ff`
+- Cards: Glassmorphism with blur effects
+- Typography: Plus Jakarta Sans
+- Icons: iconoir-react
+- Reference: toools.design
+
+---
+
 ## 📞 NEXT STEPS
 
 Xem [TODO.md](TODO.md) để biết công việc tiếp theo.
 
+**Priority:**
+1. Connect Admin Panel to Supabase
+2. Deploy updates to Vercel
+3. Test slider navigation on production
+4. Add proper authentication
+
 ---
 
-**Cập nhật lần cuối:** 2025-12-29 08:53
-**Commit mới nhất:** 8c2925a
-**Máy cập nhật:** [Ghi tên máy]
+**Cập nhật lần cuối:** 2025-12-29 23:00
+**Session:** Admin Panel + Slider Navigation + Videos/Resources Separation
+**Máy cập nhật:** Claude AI Assistant

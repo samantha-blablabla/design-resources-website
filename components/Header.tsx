@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Home, AppWindow, BookStack, PlayOutline, Search, Menu, Xmark } from 'iconoir-react';
+import { Home, AppWindow, BookStack, Play, Search, Menu, Xmark } from 'iconoir-react';
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -48,7 +48,7 @@ export default function Header() {
                         <span>Inspiration</span>
                     </Link>
                     <Link href="/videos" className="nav-link-glass">
-                        <PlayOutline width={20} height={20} strokeWidth={2} />
+                        <Play width={20} height={20} strokeWidth={2} />
                         <span>Videos</span>
                     </Link>
                 </nav>
@@ -90,7 +90,7 @@ export default function Header() {
                             <span>Inspiration</span>
                         </Link>
                         <Link href="/videos" className="mobile-menu-link" onClick={closeMobileMenu}>
-                            <PlayOutline width={24} height={24} strokeWidth={2} />
+                            <Play width={24} height={24} strokeWidth={2} />
                             <span>Videos</span>
                         </Link>
                     </nav>

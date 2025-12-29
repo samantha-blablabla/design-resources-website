@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui';
+import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
 
 interface CardSliderProps {
     items: Array<{
@@ -16,40 +17,10 @@ interface CardSliderProps {
     }>;
 }
 
-// Animated card wrapper
-function AnimatedCard({ item, index }: { item: any; index: number }) {
-    const cardRef = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setIsVisible(true);
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: '50px' }
-        );
-
-        if (cardRef.current) {
-            observer.observe(cardRef.current);
-        }
-
-        return () => {
-            if (cardRef.current) {
-                observer.unobserve(cardRef.current);
-            }
-        };
-    }, []);
-
+// Card wrapper without animation for horizontal scroll
+function SliderCard({ item }: { item: any }) {
     return (
-        <div
-            ref={cardRef}
-            className={`slider-item ${isVisible ? 'slide-in-view' : ''}`}
-            style={{ animationDelay: `${index * 0.1}s` }}
-        >
+        <div className="slider-item">
             <Card
                 title={item.title}
                 description={item.description}
@@ -111,15 +82,38 @@ export default function CardSlider({ items }: CardSliderProps) {
 
     return (
         <div className="slider-wrapper">
+            {/* Left Arrow - Desktop only */}
+            {showLeftArrow && (
+                <button
+                    className="slider-arrow slider-arrow-left"
+                    onClick={() => scroll('left')}
+                    aria-label="Scroll left"
+                >
+                    <NavArrowLeft width={24} height={24} strokeWidth={2} />
+                </button>
+            )}
+
+            {/* Slider Track */}
             <div
                 ref={sliderRef}
                 className="slider-track"
                 onScroll={handleScroll}
             >
-                {items.map((item, index) => (
-                    <AnimatedCard key={item.id} item={item} index={index} />
+                {items.map((item) => (
+                    <SliderCard key={item.id} item={item} />
                 ))}
             </div>
+
+            {/* Right Arrow - Desktop only */}
+            {showRightArrow && (
+                <button
+                    className="slider-arrow slider-arrow-right"
+                    onClick={() => scroll('right')}
+                    aria-label="Scroll right"
+                >
+                    <NavArrowRight width={24} height={24} strokeWidth={2} />
+                </button>
+            )}
         </div>
     );
 }

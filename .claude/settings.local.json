@@ -19,7 +19,15 @@
       "Bash(cat:*)",
       "Bash(find:*)",
       "Bash(npx tsx:*)",
-      "Bash(psql \"postgresql://postgres.kmzcbwiqlfdcrqqndglm:Abc27102003@@db.kmzcbwiqlfdcrqqndglm.supabase.co:5432/postgres\" -c \"\\\\d resources\")"
+      "Bash(psql \"postgresql://postgres.kmzcbwiqlfdcrqqndglm:Abc27102003@@db.kmzcbwiqlfdcrqqndglm.supabase.co:5432/postgres\" -c \"\\\\d resources\")",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill /F /PID 59808)",
+      "Bash(taskkill //F //PID 59808)",
+      "Bash(node -e:*)",
+      "Bash(taskkill //F //PID 62808)",
+      "Bash(taskkill //F //PID 59112)",
+      "Bash(del nul)"
     ]
   }
 }
