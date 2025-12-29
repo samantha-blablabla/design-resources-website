@@ -959,12 +959,6 @@ body > * {
   margin: 0;
 }
 
-.section-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .view-all-link {
   color: var(--color-accent);
   text-decoration: none;
@@ -1014,8 +1008,16 @@ body > * {
   /* Removed animation - cards are static for better horizontal scroll experience */
 }
 
-.slider-controls {
+/* Slider Controls Row - Between header and slider */
+.slider-controls-row {
   display: none; /* Hidden on mobile */
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  margin-top: -0.5rem;
+}
+
+.slider-controls {
+  display: flex;
   gap: 0.5rem;
   align-items: center;
 }
@@ -1054,7 +1056,7 @@ body > * {
 
 /* Show controls on desktop only */
 @media (min-width: 1024px) {
-  .slider-controls {
+  .slider-controls-row {
     display: flex;
   }
 }

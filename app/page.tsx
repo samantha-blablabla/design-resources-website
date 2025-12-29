@@ -97,28 +97,29 @@ export default function Home() {
                 <>
                     <div className="section-header fade-in">
                         <h2 className="section-title">Latest Resources</h2>
-                        <div className="section-header-actions">
-                            <Link href="/resources?sort=latest" className="view-all-link">
-                                View All →
-                            </Link>
-                            <div className="slider-controls">
-                                <button
-                                    className={`slider-arrow ${!latestScrollState.left ? 'disabled' : ''}`}
-                                    onClick={() => latestSliderRef.current?.scrollLeft()}
-                                    disabled={!latestScrollState.left}
-                                    aria-label="Scroll left"
-                                >
-                                    <NavArrowLeft width={20} height={20} strokeWidth={2} />
-                                </button>
-                                <button
-                                    className={`slider-arrow ${!latestScrollState.right ? 'disabled' : ''}`}
-                                    onClick={() => latestSliderRef.current?.scrollRight()}
-                                    disabled={!latestScrollState.right}
-                                    aria-label="Scroll right"
-                                >
-                                    <NavArrowRight width={20} height={20} strokeWidth={2} />
-                                </button>
-                            </div>
+                        <Link href="/resources?sort=latest" className="view-all-link">
+                            View All →
+                        </Link>
+                    </div>
+                    {/* Slider Controls - Between header and slider */}
+                    <div className="slider-controls-row fade-in">
+                        <div className="slider-controls">
+                            <button
+                                className={`slider-arrow ${!latestScrollState.left ? 'disabled' : ''}`}
+                                onClick={() => latestSliderRef.current?.scrollLeft()}
+                                disabled={!latestScrollState.left}
+                                aria-label="Scroll left"
+                            >
+                                <NavArrowLeft width={20} height={20} strokeWidth={2} />
+                            </button>
+                            <button
+                                className={`slider-arrow ${!latestScrollState.right ? 'disabled' : ''}`}
+                                onClick={() => latestSliderRef.current?.scrollRight()}
+                                disabled={!latestScrollState.right}
+                                aria-label="Scroll right"
+                            >
+                                <NavArrowRight width={20} height={20} strokeWidth={2} />
+                            </button>
                         </div>
                     </div>
                     <div className="fade-in">
@@ -136,28 +137,29 @@ export default function Home() {
                 <>
                     <div className="section-header fade-in">
                         <h2 className="section-title">Featured AI Tools</h2>
-                        <div className="section-header-actions">
-                            <Link href="/resources?tag=ai" className="view-all-link">
-                                View All →
-                            </Link>
-                            <div className="slider-controls">
-                                <button
-                                    className={`slider-arrow ${!aiScrollState.left ? 'disabled' : ''}`}
-                                    onClick={() => aiSliderRef.current?.scrollLeft()}
-                                    disabled={!aiScrollState.left}
-                                    aria-label="Scroll left"
-                                >
-                                    <NavArrowLeft width={20} height={20} strokeWidth={2} />
-                                </button>
-                                <button
-                                    className={`slider-arrow ${!aiScrollState.right ? 'disabled' : ''}`}
-                                    onClick={() => aiSliderRef.current?.scrollRight()}
-                                    disabled={!aiScrollState.right}
-                                    aria-label="Scroll right"
-                                >
-                                    <NavArrowRight width={20} height={20} strokeWidth={2} />
-                                </button>
-                            </div>
+                        <Link href="/resources?tag=ai" className="view-all-link">
+                            View All →
+                        </Link>
+                    </div>
+                    {/* Slider Controls - Between header and slider */}
+                    <div className="slider-controls-row fade-in">
+                        <div className="slider-controls">
+                            <button
+                                className={`slider-arrow ${!aiScrollState.left ? 'disabled' : ''}`}
+                                onClick={() => aiSliderRef.current?.scrollLeft()}
+                                disabled={!aiScrollState.left}
+                                aria-label="Scroll left"
+                            >
+                                <NavArrowLeft width={20} height={20} strokeWidth={2} />
+                            </button>
+                            <button
+                                className={`slider-arrow ${!aiScrollState.right ? 'disabled' : ''}`}
+                                onClick={() => aiSliderRef.current?.scrollRight()}
+                                disabled={!aiScrollState.right}
+                                aria-label="Scroll right"
+                            >
+                                <NavArrowRight width={20} height={20} strokeWidth={2} />
+                            </button>
                         </div>
                     </div>
                     <div className="fade-in">
