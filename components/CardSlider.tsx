@@ -82,17 +82,6 @@ export default function CardSlider({ items }: CardSliderProps) {
 
     return (
         <div className="slider-wrapper">
-            {/* Left Arrow - Desktop only */}
-            {showLeftArrow && (
-                <button
-                    className="slider-arrow slider-arrow-left"
-                    onClick={() => scroll('left')}
-                    aria-label="Scroll left"
-                >
-                    <NavArrowLeft width={24} height={24} strokeWidth={2} />
-                </button>
-            )}
-
             {/* Slider Track */}
             <div
                 ref={sliderRef}
@@ -104,16 +93,25 @@ export default function CardSlider({ items }: CardSliderProps) {
                 ))}
             </div>
 
-            {/* Right Arrow - Desktop only */}
-            {showRightArrow && (
+            {/* Navigation Controls - Bottom Right (Desktop only) */}
+            <div className="slider-controls">
                 <button
-                    className="slider-arrow slider-arrow-right"
+                    className={`slider-arrow ${!showLeftArrow ? 'disabled' : ''}`}
+                    onClick={() => scroll('left')}
+                    aria-label="Scroll left"
+                    disabled={!showLeftArrow}
+                >
+                    <NavArrowLeft width={20} height={20} strokeWidth={2} />
+                </button>
+                <button
+                    className={`slider-arrow ${!showRightArrow ? 'disabled' : ''}`}
                     onClick={() => scroll('right')}
                     aria-label="Scroll right"
+                    disabled={!showRightArrow}
                 >
-                    <NavArrowRight width={24} height={24} strokeWidth={2} />
+                    <NavArrowRight width={20} height={20} strokeWidth={2} />
                 </button>
-            )}
+            </div>
         </div>
     );
 }
