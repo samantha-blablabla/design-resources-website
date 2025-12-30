@@ -60,11 +60,15 @@ Vercel will auto-deploy when you push to `main` branch.
 | Job | Schedule | Time (UTC) | Time (Vietnam) | Description |
 |-----|----------|-----------|----------------|-------------|
 | Fetch Videos | `0 2 * * *` | 2:00 AM | 9:00 AM | Fetch new YouTube videos |
-| Cleanup | `0 3 * * *` | 3:00 AM | 10:00 AM | Remove dead links |
+| Fetch Inspiration | `0 4 * * *` | 4:00 AM | 11:00 AM | Fetch design inspiration from RSS feeds |
+| Fetch Resources | `0 6 * * *` | 6:00 AM | 1:00 PM | Fetch design resources from GitHub |
+| Cleanup | `0 8 * * *` | 8:00 AM | 3:00 PM | Remove dead links |
 
 **Cron format:** `minute hour day month dayOfWeek`
 - `0 2 * * *` = Every day at 2:00 AM UTC
-- `0 3 * * *` = Every day at 3:00 AM UTC
+- `0 4 * * *` = Every day at 4:00 AM UTC
+- `0 6 * * *` = Every day at 6:00 AM UTC
+- `0 8 * * *` = Every day at 8:00 AM UTC
 
 ---
 
@@ -170,6 +174,31 @@ Vercel Dashboard will show:
 
 **Created:** 2025-12-30
 **Last Updated:** 2025-12-30
+
+---
+
+## 🎯 Content Sources
+
+### Videos (YouTube)
+- The Futur, DesignCourse, Flux Academy
+- Jesse Showalter, Charli Marie, DesignWithArash
+- Motion Design School, School of Motion, SonduckFilm
+- Blender Bros (Josh & Ryuu)
+- **Total: 13 channels**
+
+### Inspiration (RSS Feeds)
+- Dribbble - Popular shots
+- Behance - Latest projects
+- Awwwards - Award-winning sites
+- Designspiration - Curated inspiration
+- Abduzeedo - Design blog
+- **Total: 5 sources**
+
+### Resources (GitHub)
+- Trending design repositories
+- Design systems and UI kits
+- Design tools and libraries
+- **Filtered by: topic:design, topic:ui, topic:design-system**
 
 ---
 
