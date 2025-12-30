@@ -71,9 +71,21 @@ export default function Home() {
     return (
         <div className="container">
             {/* Hero Section */}
-            <div className="hero fade-in">
-                <h1>Discover the Best Design Resources & Tools</h1>
-                <p>
+            <div className="hero hero-animated">
+                <div className="hero-particles">
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                </div>
+                <h1 className="hero-title-animated">Discover the Best Design Resources & Tools</h1>
+                <p className="hero-text-animated">
                     A growing archive of curated design resources, frequently updated for the community.
                 </p>
             </div>
