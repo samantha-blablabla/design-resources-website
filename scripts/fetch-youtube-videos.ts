@@ -1,13 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
+import { config } from 'dotenv';
 
-// Load environment variables from .env.local (only in local development)
-if (process.env.NODE_ENV !== 'production') {
-  try {
-    require('dotenv').config({ path: '.env.local' });
-  } catch (error) {
-    // dotenv not available, will use environment variables directly
-  }
-}
+// Load .env.local for local development (GitHub Actions injects env vars directly)
+config({ path: '.env.local' });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
