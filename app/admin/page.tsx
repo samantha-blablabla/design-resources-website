@@ -19,6 +19,8 @@ export default function AdminPage() {
     const [resources, setResources] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({ total: 0, videos: 0, inspiration: 0, tools: 0 });
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
     // Load resources and stats
     useEffect(() => {
@@ -57,59 +59,72 @@ export default function AdminPage() {
                     padding-top: 0 !important;
                     overflow: hidden !important;
                 }
-                .header-glass {
+                .header-glass,
+                header,
+                footer,
+                .footer {
                     display: none !important;
                 }
             `}</style>
             <div className="admin-layout">
                 {/* Sidebar */}
-                <aside className="admin-sidebar">
+                <aside className={`admin-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
                 <div className="admin-sidebar-header">
                     <span className="admin-logo">✨</span>
-                    <h2>DesignHub Admin</h2>
+                    {!sidebarCollapsed && <h2>DesignHub Admin</h2>}
                 </div>
 
                 <nav className="admin-nav">
                     <button
                         className={`admin-nav-item ${activeTab === 'resources' ? 'active' : ''}`}
                         onClick={() => setActiveTab('resources')}
+                        title="Resources"
                     >
                         <PageEdit width={20} height={20} />
-                        <span>Resources</span>
+                        {!sidebarCollapsed && <span>Resources</span>}
                     </button>
                     <button
                         className={`admin-nav-item ${activeTab === 'ui-settings' ? 'active' : ''}`}
                         onClick={() => setActiveTab('ui-settings')}
+                        title="UI Settings"
                     >
                         <Settings width={20} height={20} />
-                        <span>UI Settings</span>
+                        {!sidebarCollapsed && <span>UI Settings</span>}
                     </button>
                     <button
                         className={`admin-nav-item ${activeTab === 'colors' ? 'active' : ''}`}
                         onClick={() => setActiveTab('colors')}
+                        title="Colors"
                     >
                         <Palette width={20} height={20} />
-                        <span>Colors</span>
+                        {!sidebarCollapsed && <span>Colors</span>}
                     </button>
                     <button
                         className={`admin-nav-item ${activeTab === 'tags' ? 'active' : ''}`}
                         onClick={() => setActiveTab('tags')}
+                        title="Tags"
                     >
                         <Label width={20} height={20} />
-                        <span>Tags</span>
+                        {!sidebarCollapsed && <span>Tags</span>}
                     </button>
                     <button
                         className={`admin-nav-item ${activeTab === 'typography' ? 'active' : ''}`}
                         onClick={() => setActiveTab('typography')}
+                        title="Typography"
                     >
                         <Text width={20} height={20} />
-                        <span>Typography</span>
+                        {!sidebarCollapsed && <span>Typography</span>}
                     </button>
                 </nav>
 
                 <div className="admin-sidebar-footer">
-                    <p>Design Resources Dashboard</p>
-                    <small>v1.0.0</small>
+                    <button
+                        className="admin-collapse-btn"
+                        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                        title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                    >
+                        {sidebarCollapsed ? '→' : '←'}
+                    </button>
                 </div>
             </aside>
 
@@ -119,42 +134,50 @@ export default function AdminPage() {
                 {activeTab === 'resources' && (
                     <div className="admin-stats-grid">
                         <div className="admin-stat-card">
-                            <div className="admin-stat-icon" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-                                <PageEdit width={24} height={24} />
-                            </div>
                             <div className="admin-stat-content">
-                                <p className="admin-stat-label">Total Resources</p>
-                                <h3 className="admin-stat-value">{stats.total}</h3>
+                                <div className="admin-stat-info">
+                                    <h3>Total Resources</h3>
+                                    <p>{stats.total}</p>
+                                </div>
+                                <div className="admin-stat-icon" style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>
+                                    <PageEdit width={20} height={20} />
+                                </div>
                             </div>
                         </div>
 
                         <div className="admin-stat-card">
-                            <div className="admin-stat-icon" style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}>
-                                <PageEdit width={24} height={24} />
-                            </div>
                             <div className="admin-stat-content">
-                                <p className="admin-stat-label">Video Tutorials</p>
-                                <h3 className="admin-stat-value">{stats.videos}</h3>
+                                <div className="admin-stat-info">
+                                    <h3>Video Tutorials</h3>
+                                    <p>{stats.videos}</p>
+                                </div>
+                                <div className="admin-stat-icon" style={{ background: 'rgba(240, 147, 251, 0.1)', color: '#f093fb' }}>
+                                    <PageEdit width={20} height={20} />
+                                </div>
                             </div>
                         </div>
 
                         <div className="admin-stat-card">
-                            <div className="admin-stat-icon" style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
-                                <MediaImage width={24} height={24} />
-                            </div>
                             <div className="admin-stat-content">
-                                <p className="admin-stat-label">Inspiration</p>
-                                <h3 className="admin-stat-value">{stats.inspiration}</h3>
+                                <div className="admin-stat-info">
+                                    <h3>Inspiration</h3>
+                                    <p>{stats.inspiration}</p>
+                                </div>
+                                <div className="admin-stat-icon" style={{ background: 'rgba(79, 172, 254, 0.1)', color: '#4facfe' }}>
+                                    <MediaImage width={20} height={20} />
+                                </div>
                             </div>
                         </div>
 
                         <div className="admin-stat-card">
-                            <div className="admin-stat-icon" style={{ background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }}>
-                                <Settings width={24} height={24} />
-                            </div>
                             <div className="admin-stat-content">
-                                <p className="admin-stat-label">Design Tools</p>
-                                <h3 className="admin-stat-value">{stats.tools}</h3>
+                                <div className="admin-stat-info">
+                                    <h3>Design Tools</h3>
+                                    <p>{stats.tools}</p>
+                                </div>
+                                <div className="admin-stat-icon" style={{ background: 'rgba(67, 233, 123, 0.1)', color: '#43e97b' }}>
+                                    <Settings width={20} height={20} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -179,6 +202,9 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingResource, setEditingResource] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [categoryFilter, setCategoryFilter] = useState<string>('all');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8; // Show 8 resources per page for Full HD screen
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -191,25 +217,82 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
     const [uploadingImage, setUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState('');
 
-    const filteredResources = resources.filter((r: any) =>
-        r.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        r.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        r.category?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredResources = resources.filter((r: any) => {
+        const matchesSearch = r.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            r.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            r.category?.toLowerCase().includes(searchQuery.toLowerCase());
+
+        const matchesCategory = categoryFilter === 'all' || r.category === categoryFilter;
+
+        return matchesSearch && matchesCategory;
+    });
+
+    // Pagination calculations
+    const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedResources = filteredResources.slice(startIndex, endIndex);
+
+    // Reset to page 1 when filter changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchQuery, categoryFilter]);
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        // Validate file size (10MB max)
+        if (file.size > 10 * 1024 * 1024) {
+            alert('File size must be less than 10MB');
+            return;
+        }
+
         setUploadingImage(true);
 
-        // Create a local preview
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImagePreview(reader.result as string);
-            setFormData({ ...formData, image_url: reader.result as string });
-        };
-        reader.readAsDataURL(file);
+        try {
+            // Create a unique filename
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+            const filePath = `resource-images/${fileName}`;
+
+            // Upload to Supabase Storage
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('images')
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: false
+                });
+
+            if (uploadError) {
+                console.error('Upload error:', uploadError);
+                // Fallback to base64 if upload fails
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setImagePreview(reader.result as string);
+                    setFormData({ ...formData, image_url: reader.result as string });
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // Get public URL
+                const { data: urlData } = supabase.storage
+                    .from('images')
+                    .getPublicUrl(filePath);
+
+                const publicUrl = urlData.publicUrl;
+                setImagePreview(publicUrl);
+                setFormData({ ...formData, image_url: publicUrl });
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            // Fallback to base64
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+                setFormData({ ...formData, image_url: reader.result as string });
+            };
+            reader.readAsDataURL(file);
+        }
 
         setUploadingImage(false);
     };
@@ -327,7 +410,13 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
                         <div className="admin-image-upload-section">
                             <label className="admin-form-label">Thumbnail Image</label>
                             <div className="admin-image-upload-area">
-                                {imagePreview ? (
+                                {uploadingImage ? (
+                                    <div className="admin-upload-placeholder">
+                                        <div className="admin-upload-spinner"></div>
+                                        <p>Uploading to Supabase Storage...</p>
+                                        <small>Free image hosting ✨</small>
+                                    </div>
+                                ) : imagePreview ? (
                                     <div className="admin-image-preview">
                                         <img src={imagePreview} alt="Preview" />
                                         <button
@@ -348,10 +437,11 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
                                             accept="image/*"
                                             onChange={handleImageUpload}
                                             style={{ display: 'none' }}
+                                            disabled={uploadingImage}
                                         />
                                         <UploadSquare width={48} height={48} />
                                         <p>Click to upload or drag and drop</p>
-                                        <small>PNG, JPG, GIF up to 10MB</small>
+                                        <small>PNG, JPG, GIF up to 10MB • Free Supabase Storage</small>
                                     </label>
                                 )}
                             </div>
@@ -458,14 +548,39 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
 
             {/* Search and Table */}
             <div className="admin-table-container-modern">
-                <div className="admin-search-bar">
-                    <Search width={20} height={20} />
-                    <input
-                        type="text"
-                        placeholder="Search resources..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                <div className="admin-search-filter-bar">
+                    <div className="admin-search-input-wrapper">
+                        <Search width={20} height={20} strokeWidth={2} />
+                        <input
+                            type="text"
+                            placeholder="Search resources..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="admin-search-input-clean"
+                        />
+                        {searchQuery && (
+                            <button
+                                className="admin-search-clear-btn"
+                                onClick={() => setSearchQuery('')}
+                            >
+                                <Xmark width={16} height={16} strokeWidth={2} />
+                            </button>
+                        )}
+                    </div>
+
+                    <select
+                        value={categoryFilter}
+                        onChange={(e) => setCategoryFilter(e.target.value)}
+                        className="admin-filter-select"
+                    >
+                        <option value="all">All Categories</option>
+                        <option value="design-tools">Design Tools</option>
+                        <option value="video-tutorials">Video Tutorials</option>
+                        <option value="inspiration">Inspiration</option>
+                        <option value="ui-kits">UI Kits</option>
+                        <option value="fonts">Fonts</option>
+                        <option value="icons">Icons</option>
+                    </select>
                 </div>
 
                 {loading ? (
@@ -490,7 +605,7 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
                                         </td>
                                     </tr>
                                 ) : (
-                                    filteredResources.map((resource: any) => (
+                                    paginatedResources.map((resource: any) => (
                                         <tr key={resource.id}>
                                             <td>
                                                 {resource.image_url || resource.thumbnail_url ? (
@@ -547,6 +662,38 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
                                 )}
                             </tbody>
                         </table>
+
+                        {/* Pagination Controls */}
+                        {totalPages > 1 && (
+                            <div className="admin-pagination">
+                                <button
+                                    className="admin-pagination-btn"
+                                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                                    disabled={currentPage === 1}
+                                >
+                                    ←
+                                </button>
+
+                                <div className="admin-pagination-dots">
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                        <button
+                                            key={page}
+                                            className={`admin-pagination-dot ${page === currentPage ? 'active' : ''}`}
+                                            onClick={() => setCurrentPage(page)}
+                                            title={`Page ${page}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                <button
+                                    className="admin-pagination-btn"
+                                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                                    disabled={currentPage === totalPages}
+                                >
+                                    →
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
