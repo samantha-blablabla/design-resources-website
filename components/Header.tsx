@@ -112,10 +112,12 @@ export default function Header() {
 
                 {/* Mobile Layout */}
                 <div className="mobile-header">
-                    <Link href="/" className={`logo-glass ${isSearchActive ? 'logo-hidden' : ''}`}>
-                        <span className="logo-emoji">✨</span>
-                        <span className="logo-text">DesignHub</span>
-                    </Link>
+                    {!isSearchActive && (
+                        <Link href="/" className="logo-glass">
+                            <span className="logo-emoji">✨</span>
+                            <span className="logo-text">DesignHub</span>
+                        </Link>
+                    )}
 
                     {!isSearchActive ? (
                         <div className="mobile-actions">
