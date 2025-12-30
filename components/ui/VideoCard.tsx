@@ -90,16 +90,9 @@ export default function VideoCard({ title, description, emoji, gradient, duratio
                     </p>
                 )}
                 {(channelName || publishedAt) && (
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontSize: '12px',
-                        color: '#999',
-                        marginTop: '8px'
-                    }}>
+                    <div className="video-card-metadata">
                         {channelName && (
-                            <span style={{ fontWeight: '500' }}>{channelName}</span>
+                            <span className="video-card-channel">{channelName}</span>
                         )}
                         {channelName && publishedAt && (
                             <span>•</span>
