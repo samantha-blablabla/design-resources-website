@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import {
     Sparks, PenTablet, ColorFilter, Cube, Text, ColorWheel,
     Frame, Palette, MouseButtonLeft, Book, Flash, Settings,
-    MediaImage, ThreeStars, Plug
+    MediaImage, ThreeStars
 } from 'iconoir-react';
 
 const supabase = createClient(
