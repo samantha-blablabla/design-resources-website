@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fetch-videos": "ts-node scripts/fetch-youtube-videos.ts",
+    "cleanup-dead": "ts-node scripts/cron-cleanup-dead-resources.ts",
+    "daily-update": "npm run fetch-videos && npm run cleanup-dead"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2",
