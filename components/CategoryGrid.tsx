@@ -14,9 +14,7 @@ import {
     Flash,
     Settings,
     MediaImage,
-    ColorWheel,
-    Package,
-    Lightbulb
+    ColorWheel
 } from 'iconoir-react';
 
 // 16 categories matching Resources page structure
