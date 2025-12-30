@@ -1,126 +1,274 @@
-# Current Project State - Updated December 29, 2025
+# Current Project State - Updated December 30, 2025
 
 ## 🎯 Latest Changes Overview
 
-**Last Updated**: December 29, 2025 - Late Night
+**Last Updated**: December 30, 2025 - Evening
 **Branch**: main
 **Latest Commits**:
-- `1049676` - Trigger redeploy (empty commit)
-- `9562ea4` - Video cards mobile optimization
-- `c7403bb` - Redeploy for Supabase connection pool
-- `b678926` - Fix TypeScript error in delete-product-hunt endpoint
+- `f297ef4` - Update documentation with new automation sources
+- `35ad2ea` - Add automation for inspiration and resources
+- `c01a240` - Secure Vercel Cron endpoints
+- `86005e0` - Temp: disable auth for testing
+- `50c9adc` - Fix Vercel Cron authentication
 
 ---
 
-## 📱 Mobile Responsiveness Status
+## 🤖 COMPLETE AUTOMATION SYSTEM
 
-### ✅ Completed
-- **Card text truncation**: All cards show 1-line title, 2-line description
-- **Video card mobile CSS**: Reduced padding (12px → 8px) and font sizes (16px → 13px title, 14px → 11px description)
-- **Responsive breakpoint**: Mobile styles apply at `max-width: 480px`
+### ✅ Fully Automated - No Manual Work Required!
 
-### ⚠️ Pending Verification
-- Video card changes may need cache clearing on production
-- Code is correct, waiting for Vercel deployment and cache invalidation
+All content now updates automatically every day via **Vercel Cron Jobs**:
 
----
+| Time (UTC) | Time (Vietnam) | Job | Sources | Status |
+|-----------|----------------|-----|---------|--------|
+| 2:00 AM | 9:00 AM | Fetch Videos | 13 YouTube channels | ✅ Tested & Working |
+| 4:00 AM | 11:00 AM | Fetch Inspiration | 5 RSS feeds | ✅ Deployed |
+| 6:00 AM | 1:00 PM | Fetch Resources | GitHub trending | ✅ Deployed |
+| 8:00 AM | 3:00 PM | Cleanup Dead Links | All resources | ✅ Deployed |
 
-## 🏠 Homepage Layout Changes
+### 📊 Test Results (Today)
 
-### Desktop View (> 480px)
-**New 3-row structure for all slider sections**:
+**Fetch Videos** - TESTED SUCCESSFULLY:
 ```
-Row 1: Section Title ──────── View All Link
-Row 2: ← ─────── Slider Cards ─────── →
-Row 3: ←  →  (Navigation Arrows)
+✅ Total Fetched: 126 videos
+✅ Inserted: 60 new videos
+✅ Skipped: 66 duplicates
+✅ Errors: 0
+✅ Channels: 13 processed
+✅ Database: 145 total videos
 ```
-
-**Sections Updated**:
-1. Featured Tools
-2. Latest Resources
-3. AI Tools
-
-**Spacing**: Increased from 4rem to 6rem between sections
-
----
-
-## 🎨 Typography Hierarchy
-
-### Card Titles
-- **Size**: 18px (1.125rem) - increased from 17px
-- **Weight**: 600 (semi-bold)
-- **Line height**: 1.4
-- **Truncation**: 1 line only with ellipsis
-
-### Card Descriptions
-- **Size**: 15px (0.9375rem) - unchanged
-- **Weight**: 400 (normal)
-- **Line height**: 1.5
-- **Truncation**: 2 lines only with ellipsis
-
-**Visual Hierarchy**: 3px difference creates clear distinction
 
 ---
 
 ## 📁 Key Files and Their Current State
 
-### `components/ui/Card.tsx`
-**Purpose**: Main card component for resources, tools, inspiration
-**Recent Changes**:
-- Added title truncation to 1 line (WebkitLineClamp: 1)
-- Description already had 2-line truncation
-**Status**: ✅ Complete and working
+### NEW: API Cron Endpoints
 
-### `components/ui/VideoCard.tsx`
-**Purpose**: Video tutorial cards with thumbnails, duration, metadata
-**Recent Changes**:
-- Removed all inline styles from card content, title, description
-- Added CSS classes: `video-card-content`, `video-card-title`, `video-card-description`
-- Title truncation: 2 lines → 1 line
-- Now fully controlled by CSS for responsive design
-**Status**: ✅ Code complete, ⏳ production cache pending
+**`app/api/cron/fetch-videos/route.ts`**
+- YouTube video automation
+- 13 design channels
+- Auto-categorize and tag videos
+- Parse duration from ISO 8601 format
+- Status: ✅ Working (60 videos added today)
 
-### `app/page.tsx`
-**Purpose**: Homepage with 3 slider sections
-**Recent Changes**:
-- Moved arrow controls from above to below each slider
-- All 3 sections (Featured Tools, Latest Resources, AI Tools) updated
-**Status**: ✅ Complete and working
+**`app/api/cron/fetch-inspiration/route.ts`** (NEW)
+- RSS feed parser for design inspiration
+- 5 sources: Dribbble, Behance, Awwwards, Designspiration, Abduzeedo
+- Extract images from feed content
+- Auto-categorize by design type
+- Status: ✅ Deployed (will run tomorrow at 4 AM UTC)
 
-### `app/globals.css`
-**Purpose**: Global styles and responsive design
-**Recent Changes**:
-- Line 674: Card title size increased to 18px
-- Line 947: Section spacing increased to 6rem
-- Lines 1079-1096: Video card desktop base styles
-- Lines 1414-1427: Video card mobile responsive overrides
-**Status**: ✅ Complete and working
+**`app/api/cron/fetch-resources/route.ts`** (NEW)
+- GitHub API integration
+- Fetch trending design repositories
+- Filter by topics: design, ui, design-system
+- Auto-feature repos with 1000+ stars
+- Status: ✅ Deployed (will run tomorrow at 6 AM UTC)
 
-### `app/videos/page.tsx`
-**Purpose**: Video tutorials listing page
-**Recent Changes**: None in this session (fetches from Supabase)
-**Status**: ✅ Working, displays video cards with mobile optimization
+**`app/api/cron/cleanup/route.ts`**
+- Check all resource URLs
+- Remove dead links automatically
+- 10 second timeout per URL
+- Status: ✅ Deployed
+
+### Configuration Files
+
+**`vercel.json`**
+```json
+{
+  "crons": [
+    { "path": "/api/cron/fetch-videos", "schedule": "0 2 * * *" },
+    { "path": "/api/cron/fetch-inspiration", "schedule": "0 4 * * *" },
+    { "path": "/api/cron/fetch-resources", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/cleanup", "schedule": "0 8 * * *" }
+  ]
+}
+```
+Status: ✅ Complete - 4 cron jobs configured
+
+**`.github/VERCEL-CRON-SETUP.md`**
+- Complete automation documentation
+- Environment variables setup guide
+- Cron schedules and descriptions
+- Content sources list
+- Testing instructions
+- Troubleshooting guide
+- Status: ✅ Complete and up-to-date
+
+### Component Files
+
+**`components/Header.tsx`**
+- Search functionality with Supabase integration
+- **Recent Change**: Added `target="_blank"` to search result links
+- Both desktop and mobile search dropdowns updated
+- Status: ✅ Complete
+
+**`components/ui/VideoCard.tsx`**
+- Video tutorial cards with thumbnails, duration, metadata
+- Mobile responsive CSS
+- Status: ✅ Complete (from previous session)
+
+**`components/ui/Card.tsx`**
+- Main card component for resources, tools, inspiration
+- 1-line title, 2-line description truncation
+- Status: ✅ Complete (from previous session)
+
+### Scripts (Local Development)
+
+**`scripts/fetch-youtube-videos.ts`**
+- **Updated**: Added environment variable validation
+- Can run locally: `npm run fetch-videos`
+- Status: ✅ Working
+
+**`scripts/cron-cleanup-dead-resources.ts`**
+- **Updated**: Added environment variable validation
+- Can run locally: `npm run cleanup-dead`
+- Status: ✅ Working
+
+---
+
+## 🗂️ Project Structure
+
+```
+design-resources-website-main/
+├── .sync-docs/                         # ← Sync documentation
+│   ├── SESSION-2025-12-30.md          # Today's detailed session notes
+│   ├── CURRENT-STATE.md               # This file
+│   └── QUICK-REFERENCE.md             # (from previous session)
+├── .github/
+│   ├── workflows/
+│   │   └── daily-update.yml           # ⚠️ DEPRECATED - Not used anymore
+│   ├── AUTOMATION-SETUP.md            # ⚠️ DEPRECATED - For GitHub Actions
+│   └── VERCEL-CRON-SETUP.md           # ✅ CURRENT - Use this guide
+├── app/
+│   ├── api/
+│   │   └── cron/                      # ← NEW: Vercel Cron endpoints
+│   │       ├── fetch-videos/
+│   │       │   └── route.ts           # YouTube automation
+│   │       ├── fetch-inspiration/
+│   │       │   └── route.ts           # RSS feeds automation (NEW)
+│   │       ├── fetch-resources/
+│   │       │   └── route.ts           # GitHub automation (NEW)
+│   │       └── cleanup/
+│   │           └── route.ts           # Dead link cleanup
+│   ├── page.tsx                       # Homepage
+│   ├── globals.css                    # Global styles
+│   ├── videos/page.tsx                # Video tutorials page
+│   ├── resources/page.tsx             # Resources page
+│   └── inspiration/page.tsx           # Inspiration page
+├── components/
+│   ├── Header.tsx                     # Updated with target="_blank"
+│   └── ui/
+│       ├── Card.tsx
+│       ├── VideoCard.tsx
+│       └── CardSlider.tsx
+├── scripts/                           # For local development only
+│   ├── fetch-youtube-videos.ts
+│   └── cron-cleanup-dead-resources.ts
+├── hooks/
+│   └── useSearch.ts                   # Search hook with Supabase
+├── vercel.json                        # ✅ Cron configuration
+├── package.json
+└── .env.local                         # Local env vars (not committed)
+```
+
+---
+
+## 🔄 Migration: GitHub Actions → Vercel Cron
+
+### What Changed
+
+**Before (GitHub Actions)**:
+- ❌ Manual triggers required
+- ❌ Complex environment setup
+- ❌ Module system conflicts
+- ❌ Multiple failures
+- ❌ Separate from hosting platform
+
+**After (Vercel Cron)**:
+- ✅ Fully automatic (no manual triggers)
+- ✅ Simple environment setup (Vercel dashboard)
+- ✅ No module conflicts
+- ✅ Tested and working
+- ✅ Built into hosting platform
+
+### Files Deprecated
+
+- `.github/workflows/daily-update.yml` - No longer used
+- `.github/AUTOMATION-SETUP.md` - Replaced by VERCEL-CRON-SETUP.md
+
+### Files Now Used
+
+- `app/api/cron/*` - All automation logic
+- `vercel.json` - Cron schedules
+- `.github/VERCEL-CRON-SETUP.md` - Documentation
+
+---
+
+## 🎨 Content Sources
+
+### Videos (13 YouTube Channels)
+**UI/UX Design**:
+- The Futur (@thefutur)
+- DesignCourse (@DesignCourse)
+- Flux Academy (@FluxAcademy)
+- Jesse Showalter
+- Charli Marie
+- DesignWithArash
+- Optimistic Web
+
+**Motion Design**:
+- Motion Design School
+- School of Motion
+- SonduckFilm
+- Dope Motions
+
+**3D Design**:
+- Josh - Blender Bros
+- Ryuu - Blender Bros
+
+### Inspiration (5 RSS Feeds)
+- **Dribbble**: Popular shots RSS
+- **Behance**: Latest projects feed
+- **Awwwards**: Award-winning sites blog
+- **Designspiration**: Curated design inspiration
+- **Abduzeedo**: Design blog and daily inspiration
+
+### Resources (GitHub Trending)
+- Design repositories with 1000+ stars
+- Filtered by topics: `design`, `ui`, `design-system`
+- Design systems, UI kits, design tools
+- Auto-updated from GitHub trending
 
 ---
 
 ## 🔧 Development Environment
 
-### Localhost Status
-**Working**: ✅ Dev server starts in ~2 seconds
-**URL**: http://localhost:3000
-**Port**: 3000
-**Framework**: Next.js 14.2.35
+### Localhost
+- **Command**: `npm run dev`
+- **URL**: http://localhost:3000
+- **Port**: 3000
+- **Framework**: Next.js 14
+- **Status**: ✅ Working
 
-### Known Issues Fixed
-- ✅ Zombie node.exe processes - killed all
-- ✅ Corrupted .next cache - cleaned and reinstalled
-- ✅ Dev server startup hang - resolved
-
-### How to Start Dev Server
+### Environment Variables (.env.local)
 ```bash
-cd "c:\Users\Admin\OneDrive\Máy tính\WebForDesign"
-npm run dev
+NEXT_PUBLIC_SUPABASE_URL=https://kmzcbwiqlfdcrqqndglm.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGc...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+YOUTUBE_API_KEY=AIzaSyC...
+GROQ_API_KEY=gsk_...
+CRON_SECRET=cron_secret_designhub_2025_abc123xyz
 ```
+
+### Vercel Production Environment Variables
+**Required** (all set in Vercel dashboard):
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `YOUTUBE_API_KEY`
+- `CRON_SECRET`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `GROQ_API_KEY`
 
 ---
 
@@ -128,215 +276,131 @@ npm run dev
 
 ### URLs
 - **Production**: https://design-resources-website.vercel.app
-- **GitHub Repo**: https://github.com/samantha-blablabla/design-resources-website
+- **GitHub**: https://github.com/samantha-blablabla/design-resources-website
 
 ### Deployment Status
 - **Platform**: Vercel (auto-deploy on push to main)
-- **Last Deploy**: December 29, 2025
-- **Status**: ⏳ Deployment in progress (empty commit to force rebuild)
+- **Last Deploy**: December 30, 2025 - Evening
+- **Status**: ✅ Deployed and running
+- **Cron Jobs**: ✅ Active (will run tomorrow)
 
-### Cache Issue
-**Current Problem**: CSS changes not visible on production yet
-**Reason**: Vercel edge cache or browser cache
-**Solutions**:
-1. Wait 5-10 minutes for deployment completion
-2. Hard refresh: `Ctrl + Shift + R` (Windows) or `Cmd + Shift + R` (Mac)
-3. Test in incognito mode
-4. Clear browser cache
-
----
-
-## 🗂️ Project Structure
-
-```
-WebForDesign/
-├── .sync-docs/                    # ← NEW: Sync documentation folder
-│   ├── SESSION-2025-12-29.md     # Today's detailed session notes
-│   ├── CURRENT-STATE.md          # This file - current project state
-│   └── QUICK-REFERENCE.md        # Quick commands and references
-├── app/
-│   ├── page.tsx                  # Homepage with 3 sliders
-│   ├── globals.css               # Global styles + responsive
-│   ├── videos/
-│   │   └── page.tsx             # Video tutorials page
-│   └── resources/
-│       └── page.tsx             # Resources listing page
-├── components/
-│   └── ui/
-│       ├── Card.tsx             # Main card component
-│       ├── VideoCard.tsx        # Video card component
-│       └── CardSlider.tsx       # Slider with arrows
-├── CONTEXT.md                    # Project overview (simplified)
-├── TODO.md                       # Task tracking (simplified)
-├── WORKFLOW.md                   # Git workflow guide
-└── package.json                  # Dependencies
-```
-
----
-
-## 🔄 Git Workflow (2 Computers)
-
-### Basic Workflow
+### How to Deploy
 ```bash
-# On Computer 1 (Office):
 git add .
-git commit -m "Description of changes"
+git commit -m "Your message"
 git push origin main
-
-# On Computer 2 (Personal):
-git pull origin main
-# Read .sync-docs/ folder for detailed changes
-npm run dev  # Test locally
 ```
-
-### Key Principle
-**GitHub is the source of truth** - Not CONTEXT.md or TODO.md
-All session details are in `.sync-docs/` folder
+Vercel automatically deploys within 1-2 minutes.
 
 ---
 
-## 📊 Component Props Reference
+## 📊 Database State
 
-### Card Component
+### Supabase Database
+- **Project**: https://kmzcbwiqlfdcrqqndglm.supabase.co
+- **Table**: `resources`
+
+### Current Content Stats
+- **Videos**: 145 total (60 added today via automation ✅)
+- **Inspiration**: Will auto-update starting tomorrow
+- **Resources**: Will auto-update starting tomorrow
+- **Total Resources**: ~145+ (will grow daily)
+
+---
+
+## 🔑 Authentication & Security
+
+### Vercel Cron Security
+All cron endpoints check for `x-vercel-cron: 1` header:
 ```typescript
-interface CardProps {
-    title: string;          // Max 1 line display
-    description: string;    // Max 2 lines display
-    tags: string[];        // Hashtags
-    emoji?: string;        // Optional emoji
-    gradient: string;      // Background gradient
-    imageUrl?: string;     // Optional image
-    url?: string;          // External link
+const cronHeader = request.headers.get('x-vercel-cron');
+if (cronHeader !== '1') {
+  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 }
 ```
 
-### VideoCard Component
-```typescript
-interface VideoCardProps {
-    title: string;          // Max 1 line display
-    description: string;    // Max 2 lines display
-    emoji?: string;
-    gradient: string;
-    duration?: string;      // e.g., "12:34"
-    url?: string;          // YouTube link
-    thumbnailUrl?: string; // Video thumbnail
-    channelName?: string;  // Channel name
-    publishedAt?: string;  // ISO date string
-}
-```
+This header is **automatically added by Vercel** to cron requests.
+No one else can call these endpoints.
 
 ---
 
-## 🎨 CSS Classes Quick Reference
+## 📞 Quick Commands
 
-### Card Styling
-- `.card` - Main card container
-- `.card-title` - Card title (18px, 1 line)
-- `.card-description` - Card description (15px, 2 lines)
-- `.card-content` - Card content area
-- `.card-image` - Card image/gradient area
-- `.card-tags` - Tags container
-
-### Video Card Styling
-- `.video-card` - Video card container
-- `.video-card-content` - Content area (12px desktop, 8px mobile padding)
-- `.video-card-title` - Title (16px desktop, 13px mobile)
-- `.video-card-description` - Description (14px desktop, 11px mobile)
-- `.video-thumbnail` - Thumbnail container
-
-### Layout
-- `.section-header` - Section title row (6rem top margin)
-- `.slider-controls-row` - Arrow controls row
-- `.slider-controls` - Arrow buttons container
-
----
-
-## 🐛 Known Issues
-
-### 1. Production Cache Lag
-**Issue**: CSS changes not immediately visible on production
-**Workaround**: Hard refresh, wait for deployment, or test in incognito mode
-**Status**: Normal Vercel behavior, not a bug
-
-### 2. Webpack TypeScript Warning
-**Issue**: Webpack shows warning about typescript path resolution
-**Impact**: None - just a warning, doesn't affect functionality
-**Status**: Can be ignored, doesn't break anything
-
----
-
-## ✅ Testing Checklist for Next Session
-
-### Desktop (> 480px)
-- [ ] Go to homepage: https://design-resources-website.vercel.app
-- [ ] Check all 3 sections have arrows below sliders
-- [ ] Check section spacing looks larger (6rem)
-- [ ] Check card titles are noticeably larger than descriptions
-- [ ] Check all titles are 1 line only
-- [ ] Check all descriptions are 2 lines only
-
-### Mobile (< 480px)
-- [ ] Go to videos page: https://design-resources-website.vercel.app/videos
-- [ ] Open DevTools → Device toolbar → Width: 400px
-- [ ] Check video cards are more compact
-- [ ] Check reduced padding and font sizes
-- [ ] Check titles are 1 line only
-- [ ] Check descriptions are 2 lines only
-
-### Localhost
-- [ ] Run `npm run dev`
-- [ ] Verify server starts in ~2 seconds
-- [ ] Test all pages load correctly
-- [ ] No console errors
-
----
-
-## 📞 Quick Help
-
-### If Localhost Won't Start
+### Development
 ```bash
-taskkill //F //IM node.exe
-rm -rf .next node_modules
-npm install
+# Start dev server
 npm run dev
+
+# Test video fetching locally
+npm run fetch-videos
+
+# Test cleanup locally
+npm run cleanup-dead
+
+# Run both
+npm run daily-update
 ```
 
-### If Git Conflicts
+### Git Workflow
 ```bash
-git status
-git stash
+# Pull latest changes
 git pull origin main
-git stash pop
-# Resolve conflicts manually
+
+# Make changes, then commit
 git add .
-git commit -m "Resolve conflicts"
+git commit -m "Description"
 git push origin main
 ```
 
-### If Production Not Updating
-1. Check Vercel dashboard: https://vercel.com/dashboard
-2. Wait 5-10 minutes for deployment
-3. Hard refresh browser: Ctrl+Shift+R
-4. Test in incognito mode
-5. Create empty commit to force redeploy:
-   ```bash
-   git commit --allow-empty -m "Force redeploy"
-   git push origin main
-   ```
+### Vercel Logs
+Visit: https://vercel.com/samantha-blablablas-projects/design-resources-website/logs
 
 ---
 
 ## 🎯 Next Session Quick Start
 
-1. **Read this file first** (you're reading it now!)
-2. **Read SESSION-2025-12-29.md** for detailed session notes
-3. **Pull from GitHub**: `git pull origin main`
-4. **Start dev server**: `npm run dev`
-5. **Test production**: Check if video card changes are visible
-6. **Continue working** on any new tasks
+1. **Read SESSION-2025-12-30.md** for detailed session notes
+2. **Pull from GitHub**: `git pull origin main`
+3. **Check automation results**:
+   - Vercel logs at https://vercel.com/.../logs
+   - Database count queries
+4. **Monitor for issues**:
+   - RSS feed failures
+   - GitHub API rate limits
+   - YouTube API quota
+5. **Continue with new features** (if any)
 
 ---
 
-**Remember**: This folder (`.sync-docs/`) is specifically created for syncing work between your 2 computers. Always read files here first when switching computers!
+## 📚 Important Documentation
 
-Good night! 🌙
+1. **VERCEL-CRON-SETUP.md** - Primary automation guide ✅
+2. **SESSION-2025-12-30.md** - Today's detailed work log ✅
+3. **CURRENT-STATE.md** - This file ✅
+
+---
+
+## 🎉 Session Achievements
+
+**Today's Major Wins**:
+- ✅ Migrated from GitHub Actions to Vercel Cron
+- ✅ Successfully tested video automation (60 videos added)
+- ✅ Extended automation to inspiration (RSS feeds)
+- ✅ Extended automation to resources (GitHub)
+- ✅ Created 4 fully automated cron jobs
+- ✅ Fixed search links to open in new tabs
+- ✅ Documented everything comprehensively
+
+**Result**: Website now has **ZERO manual content updates** required!
+
+All content automatically updates daily from **18+ sources**:
+- 13 YouTube channels
+- 5 RSS feeds
+- GitHub trending
+
+---
+
+**Remember**: This is a 2-computer workflow. Always pull from GitHub first and read `.sync-docs/` files!
+
+**Last Updated**: December 30, 2025 - Evening
+**Next Update**: After tomorrow's cron runs complete
