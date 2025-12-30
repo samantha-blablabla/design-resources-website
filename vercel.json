@@ -1,16 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/cron/fetch-videos",
+      "path": "/api/cron/fetch-all-content",
       "schedule": "0 2 * * *"
-    },
-    {
-      "path": "/api/cron/fetch-inspiration",
-      "schedule": "0 4 * * *"
-    },
-    {
-      "path": "/api/cron/fetch-resources",
-      "schedule": "0 6 * * *"
     },
     {
       "path": "/api/cron/cleanup",

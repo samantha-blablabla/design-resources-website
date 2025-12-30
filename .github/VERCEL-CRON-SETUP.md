@@ -57,18 +57,16 @@ Vercel will auto-deploy when you push to `main` branch.
 
 ## 📅 Cron Schedule
 
+**Optimized for Vercel Free Plan (max 2 cron jobs)**
+
 | Job | Schedule | Time (UTC) | Time (Vietnam) | Description |
 |-----|----------|-----------|----------------|-------------|
-| Fetch Videos | `0 2 * * *` | 2:00 AM | 9:00 AM | Fetch new YouTube videos |
-| Fetch Inspiration | `0 4 * * *` | 4:00 AM | 11:00 AM | Fetch design inspiration from RSS feeds |
-| Fetch Resources | `0 6 * * *` | 6:00 AM | 1:00 PM | Fetch design resources from GitHub |
+| Fetch All Content | `0 2 * * *` | 2:00 AM | 9:00 AM | Fetch videos (YouTube) + inspiration (RSS) + resources (GitHub) |
 | Cleanup | `0 8 * * *` | 8:00 AM | 3:00 PM | Remove dead links |
 
 **Cron format:** `minute hour day month dayOfWeek`
-- `0 2 * * *` = Every day at 2:00 AM UTC
-- `0 4 * * *` = Every day at 4:00 AM UTC
-- `0 6 * * *` = Every day at 6:00 AM UTC
-- `0 8 * * *` = Every day at 8:00 AM UTC
+- `0 2 * * *` = Every day at 2:00 AM UTC (combined fetch)
+- `0 8 * * *` = Every day at 8:00 AM UTC (cleanup)
 
 ---
 
@@ -76,7 +74,10 @@ Vercel will auto-deploy when you push to `main` branch.
 
 ### Test Locally
 ```bash
-# Test fetch videos endpoint (requires CRON_SECRET in .env.local)
+# Test combined fetch endpoint (fetches all content types)
+curl http://localhost:3000/api/cron/fetch-all-content -H "x-vercel-cron: 1"
+
+# Or test fetch videos endpoint individually (legacy)
 curl -X GET http://localhost:3000/api/cron/fetch-videos \
   -H "Authorization: Bearer YOUR_CRON_SECRET"
 

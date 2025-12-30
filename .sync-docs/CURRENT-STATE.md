@@ -17,14 +17,14 @@
 
 ### ✅ Fully Automated - No Manual Work Required!
 
-All content now updates automatically every day via **Vercel Cron Jobs**:
+All content now updates automatically every day via **Vercel Cron Jobs** (optimized for free plan):
 
 | Time (UTC) | Time (Vietnam) | Job | Sources | Status |
 |-----------|----------------|-----|---------|--------|
-| 2:00 AM | 9:00 AM | Fetch Videos | 13 YouTube channels | ✅ Tested & Working |
-| 4:00 AM | 11:00 AM | Fetch Inspiration | 5 RSS feeds | ✅ Deployed |
-| 6:00 AM | 1:00 PM | Fetch Resources | GitHub trending | ✅ Deployed |
+| 2:00 AM | 9:00 AM | Fetch All Content | 13 YouTube + 5 RSS + GitHub | ✅ Combined endpoint |
 | 8:00 AM | 3:00 PM | Cleanup Dead Links | All resources | ✅ Deployed |
+
+**Note**: Combined from 4 jobs into 2 jobs to fit Vercel Free Plan limit (max 2 cron jobs)
 
 ### 📊 Test Results (Today)
 
@@ -42,34 +42,29 @@ All content now updates automatically every day via **Vercel Cron Jobs**:
 
 ## 📁 Key Files and Their Current State
 
-### NEW: API Cron Endpoints
+### API Cron Endpoints
 
-**`app/api/cron/fetch-videos/route.ts`**
-- YouTube video automation
-- 13 design channels
-- Auto-categorize and tag videos
-- Parse duration from ISO 8601 format
-- Status: ✅ Working (60 videos added today)
-
-**`app/api/cron/fetch-inspiration/route.ts`** (NEW)
-- RSS feed parser for design inspiration
-- 5 sources: Dribbble, Behance, Awwwards, Designspiration, Abduzeedo
-- Extract images from feed content
-- Auto-categorize by design type
-- Status: ✅ Deployed (will run tomorrow at 4 AM UTC)
-
-**`app/api/cron/fetch-resources/route.ts`** (NEW)
-- GitHub API integration
-- Fetch trending design repositories
-- Filter by topics: design, ui, design-system
-- Auto-feature repos with 1000+ stars
-- Status: ✅ Deployed (will run tomorrow at 6 AM UTC)
+**`app/api/cron/fetch-all-content/route.ts`** ⭐ COMBINED ENDPOINT
+- **All-in-one content fetcher** (optimized for Vercel free plan)
+- Fetches from 18+ sources in one job:
+  - 13 YouTube channels (videos)
+  - 5 RSS feeds (inspiration)
+  - GitHub trending (resources)
+- Auto-categorize and tag content
+- Parse video durations from ISO 8601
+- Extract images from RSS feeds
+- Status: ✅ Active - Runs daily at 2 AM UTC
 
 **`app/api/cron/cleanup/route.ts`**
 - Check all resource URLs
 - Remove dead links automatically
 - 10 second timeout per URL
-- Status: ✅ Deployed
+- Status: ✅ Active - Runs daily at 8 AM UTC
+
+**Legacy endpoints** (kept for manual testing):
+- `fetch-videos/route.ts` - Individual YouTube fetcher
+- `fetch-inspiration/route.ts` - Individual RSS fetcher
+- `fetch-resources/route.ts` - Individual GitHub fetcher
 
 ### Configuration Files
 
@@ -77,14 +72,12 @@ All content now updates automatically every day via **Vercel Cron Jobs**:
 ```json
 {
   "crons": [
-    { "path": "/api/cron/fetch-videos", "schedule": "0 2 * * *" },
-    { "path": "/api/cron/fetch-inspiration", "schedule": "0 4 * * *" },
-    { "path": "/api/cron/fetch-resources", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/fetch-all-content", "schedule": "0 2 * * *" },
     { "path": "/api/cron/cleanup", "schedule": "0 8 * * *" }
   ]
 }
 ```
-Status: ✅ Complete - 4 cron jobs configured
+Status: ✅ Optimized - 2 cron jobs (fits free plan limit)
 
 **`.github/VERCEL-CRON-SETUP.md`**
 - Complete automation documentation
