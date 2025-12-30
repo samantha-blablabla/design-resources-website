@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Home, AppWindow, BookStack, Play, Search, Menu, Xmark } from 'iconoir-react';
+import { useSearch } from '@/hooks/useSearch';
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -10,6 +11,7 @@ export default function Header() {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const { results, loading } = useSearch(searchQuery);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -155,8 +157,56 @@ export default function Header() {
             {isSearchActive && searchQuery && (
                 <div className="search-dropdown">
                     <div className="search-results-list">
-                        <p className="search-placeholder">Searching for "{searchQuery}"...</p>
-                        {/* Results will be rendered here */}
+                        {loading ? (
+                            <div className="search-loading">
+                                <div className="search-spinner"></div>
+                                <p>Searching for "{searchQuery}"...</p>
+                            </div>
+                        ) : results.length > 0 ? (
+                            <>
+                                <p className="search-results-count">{results.length} result{results.length === 1 ? '' : 's'} found</p>
+                                {results.map((result) => (
+                                    <Link
+                                        key={result.id}
+                                        href={result.url || '#'}
+                                        className="search-result-item"
+                                        onClick={() => {
+                                            deactivateSearch();
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                    >
+                                        <div className="search-result-icon">
+                                            {result.type === 'video' ? (
+                                                <Play width={20} height={20} strokeWidth={2} />
+                                            ) : result.type === 'inspiration' ? (
+                                                <BookStack width={20} height={20} strokeWidth={2} />
+                                            ) : (
+                                                <AppWindow width={20} height={20} strokeWidth={2} />
+                                            )}
+                                        </div>
+                                        <div className="search-result-content">
+                                            <h4 className="search-result-title">{result.title}</h4>
+                                            {result.description && (
+                                                <p className="search-result-description">{result.description}</p>
+                                            )}
+                                            <div className="search-result-meta">
+                                                <span className="search-result-category">{result.category.replace(/-/g, ' ')}</span>
+                                                {result.tags && result.tags.length > 0 && (
+                                                    <span className="search-result-tags">
+                                                        {result.tags.slice(0, 2).map(tag => `#${tag}`).join(' ')}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </>
+                        ) : searchQuery.length >= 2 ? (
+                            <div className="search-empty">
+                                <p>No results found for "{searchQuery}"</p>
+                                <span>Try different keywords or browse our categories</span>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             )}
