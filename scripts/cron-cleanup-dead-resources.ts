@@ -22,12 +22,12 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Load environment variables from .env.local (only in local development)
-try {
-  const dotenv = await import('dotenv');
-  dotenv.config({ path: '.env.local' });
-} catch (error) {
-  // dotenv not available (e.g., in GitHub Actions), use process.env directly
-  console.log('Running without dotenv (using environment variables directly)');
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    require('dotenv').config({ path: '.env.local' });
+  } catch (error) {
+    // dotenv not available, will use environment variables directly
+  }
 }
 
 const supabase = createClient(
