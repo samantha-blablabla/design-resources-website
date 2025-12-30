@@ -1,9 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
-import { config } from 'dotenv';
 
-// Load .env.local for local development (GitHub Actions injects env vars directly)
-config({ path: '.env.local' });
-
+// Environment variables (must be set before running this script)
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const youtubeApiKey = process.env.YOUTUBE_API_KEY!;
