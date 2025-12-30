@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import {
     Settings, Palette, PageEdit, Label, Text, Trash, Edit,
-    Plus, Search, UploadSquare, MediaImage, Check, Xmark
+    Plus, Search, UploadSquare, MediaImage, Check, Xmark,
+    Play, Package, Sparks
 } from 'iconoir-react';
 import { createClient } from '@supabase/supabase-js';
 
-type AdminTab = 'resources' | 'ui-settings' | 'colors' | 'tags' | 'typography';
+type AdminTab = 'videos' | 'resources' | 'inspiration' | 'ui-settings' | 'tags';
 
 // Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -15,10 +16,10 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function AdminPage() {
-    const [activeTab, setActiveTab] = useState<AdminTab>('resources');
+    const [activeTab, setActiveTab] = useState<AdminTab>('videos');
     const [resources, setResources] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState({ total: 0, videos: 0, inspiration: 0, tools: 0 });
+    const [stats, setStats] = useState({ total: 0, videos: 0, resources: 0, inspiration: 0 });
     const [searchQuery, setSearchQuery] = useState('');
     const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
@@ -43,11 +44,16 @@ export default function AdminPage() {
     const loadStats = async () => {
         const { data: all } = await supabase.from('resources').select('category');
         if (all) {
+            const graphicDesignCategories = [
+                'brushes', 'gradients', 'textures', 'patterns', 'mockups',
+                'ui-kits', 'text-effects', 'icons', 'fonts', 'templates',
+                'actions', 'presets', 'illustrations', '3d-assets', 'stock-photos'
+            ];
             setStats({
                 total: all.length,
                 videos: all.filter(r => r.category === 'video-tutorials').length,
+                resources: all.filter(r => graphicDesignCategories.includes(r.category)).length,
                 inspiration: all.filter(r => r.category === 'inspiration').length,
-                tools: all.filter(r => r.category === 'design-tools').length,
             });
         }
     };
@@ -76,12 +82,28 @@ export default function AdminPage() {
 
                 <nav className="admin-nav">
                     <button
+                        className={`admin-nav-item ${activeTab === 'videos' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('videos')}
+                        title="Videos"
+                    >
+                        <Play width={20} height={20} />
+                        {!sidebarCollapsed && <span>Videos</span>}
+                    </button>
+                    <button
                         className={`admin-nav-item ${activeTab === 'resources' ? 'active' : ''}`}
                         onClick={() => setActiveTab('resources')}
                         title="Resources"
                     >
-                        <PageEdit width={20} height={20} />
+                        <Package width={20} height={20} />
                         {!sidebarCollapsed && <span>Resources</span>}
+                    </button>
+                    <button
+                        className={`admin-nav-item ${activeTab === 'inspiration' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('inspiration')}
+                        title="Inspiration"
+                    >
+                        <Sparks width={20} height={20} />
+                        {!sidebarCollapsed && <span>Inspiration</span>}
                     </button>
                     <button
                         className={`admin-nav-item ${activeTab === 'ui-settings' ? 'active' : ''}`}
@@ -92,28 +114,12 @@ export default function AdminPage() {
                         {!sidebarCollapsed && <span>UI Settings</span>}
                     </button>
                     <button
-                        className={`admin-nav-item ${activeTab === 'colors' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('colors')}
-                        title="Colors"
-                    >
-                        <Palette width={20} height={20} />
-                        {!sidebarCollapsed && <span>Colors</span>}
-                    </button>
-                    <button
                         className={`admin-nav-item ${activeTab === 'tags' ? 'active' : ''}`}
                         onClick={() => setActiveTab('tags')}
                         title="Tags"
                     >
                         <Label width={20} height={20} />
                         {!sidebarCollapsed && <span>Tags</span>}
-                    </button>
-                    <button
-                        className={`admin-nav-item ${activeTab === 'typography' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('typography')}
-                        title="Typography"
-                    >
-                        <Text width={20} height={20} />
-                        {!sidebarCollapsed && <span>Typography</span>}
                     </button>
                 </nav>
 
@@ -130,13 +136,13 @@ export default function AdminPage() {
 
             {/* Main Content */}
             <main className="admin-main">
-                {/* Stats Cards (Only on resources tab) */}
-                {activeTab === 'resources' && (
+                {/* Stats Cards */}
+                {(activeTab === 'videos' || activeTab === 'resources' || activeTab === 'inspiration') && (
                     <div className="admin-stats-grid">
                         <div className="admin-stat-card">
                             <div className="admin-stat-content">
                                 <div className="admin-stat-info">
-                                    <h3>Total Resources</h3>
+                                    <h3>Total Content</h3>
                                     <p>{stats.total}</p>
                                 </div>
                                 <div className="admin-stat-icon" style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>
@@ -152,6 +158,18 @@ export default function AdminPage() {
                                     <p>{stats.videos}</p>
                                 </div>
                                 <div className="admin-stat-icon" style={{ background: 'rgba(240, 147, 251, 0.1)', color: '#f093fb' }}>
+                                    <MediaImage width={20} height={20} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="admin-stat-card">
+                            <div className="admin-stat-content">
+                                <div className="admin-stat-info">
+                                    <h3>Design Resources</h3>
+                                    <p>{stats.resources}</p>
+                                </div>
+                                <div className="admin-stat-icon" style={{ background: 'rgba(79, 172, 254, 0.1)', color: '#4facfe' }}>
                                     <PageEdit width={20} height={20} />
                                 </div>
                             </div>
@@ -163,20 +181,8 @@ export default function AdminPage() {
                                     <h3>Inspiration</h3>
                                     <p>{stats.inspiration}</p>
                                 </div>
-                                <div className="admin-stat-icon" style={{ background: 'rgba(79, 172, 254, 0.1)', color: '#4facfe' }}>
-                                    <MediaImage width={20} height={20} />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="admin-stat-card">
-                            <div className="admin-stat-content">
-                                <div className="admin-stat-info">
-                                    <h3>Design Tools</h3>
-                                    <p>{stats.tools}</p>
-                                </div>
                                 <div className="admin-stat-icon" style={{ background: 'rgba(67, 233, 123, 0.1)', color: '#43e97b' }}>
-                                    <Settings width={20} height={20} />
+                                    <Palette width={20} height={20} />
                                 </div>
                             </div>
                         </div>
@@ -185,11 +191,11 @@ export default function AdminPage() {
 
                 {/* Tab Content */}
                 <div className="admin-content-area">
-                    {activeTab === 'resources' && <ResourcesManager resources={resources} loading={loading} onRefresh={loadResources} />}
+                    {activeTab === 'videos' && <VideosManager resources={resources.filter(r => r.category === 'video-tutorials')} loading={loading} onRefresh={loadResources} />}
+                    {activeTab === 'resources' && <ResourcesManager resources={resources.filter(r => ['brushes', 'gradients', 'textures', 'patterns', 'mockups', 'ui-kits', 'text-effects', 'icons', 'fonts', 'templates', 'actions', 'presets', 'illustrations', '3d-assets', 'stock-photos'].includes(r.category))} loading={loading} onRefresh={loadResources} />}
+                    {activeTab === 'inspiration' && <InspirationManager resources={resources.filter(r => r.category === 'inspiration')} loading={loading} onRefresh={loadResources} />}
                     {activeTab === 'ui-settings' && <UISettings />}
-                    {activeTab === 'colors' && <ColorsManager />}
                     {activeTab === 'tags' && <TagsManager />}
-                    {activeTab === 'typography' && <TypographySettings />}
                 </div>
             </main>
         </div>
@@ -198,7 +204,7 @@ export default function AdminPage() {
 }
 
 // Resources Manager Component
-function ResourcesManager({ resources, loading, onRefresh }: any) {
+function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'brushes' }: any) {
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingResource, setEditingResource] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -209,7 +215,7 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
         title: '',
         description: '',
         url: '',
-        category: 'design-tools',
+        category: defaultCategory,
         tags: '',
         image_url: '',
         gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -699,6 +705,16 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
             </div>
         </div>
     );
+}
+
+// Videos Manager - wrapper for ResourcesManager with video-tutorials category
+function VideosManager({ resources, loading, onRefresh }: any) {
+    return <ResourcesManager resources={resources} loading={loading} onRefresh={onRefresh} defaultCategory="video-tutorials" />;
+}
+
+// Inspiration Manager - wrapper for ResourcesManager with inspiration category
+function InspirationManager({ resources, loading, onRefresh }: any) {
+    return <ResourcesManager resources={resources} loading={loading} onRefresh={onRefresh} defaultCategory="inspiration" />;
 }
 
 // Placeholder components (keep existing functionality)

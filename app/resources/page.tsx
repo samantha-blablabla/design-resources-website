@@ -3,6 +3,11 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui';
 import { createClient } from '@supabase/supabase-js';
+import {
+    Sparks, PenTablet, ColorFilter, Cube, Text, ColorWheel,
+    Frame, Palette, MouseButtonLeft, Book, Flash, Settings,
+    MediaImage, ThreeStars, Plug
+} from 'iconoir-react';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -11,182 +16,185 @@ const supabase = createClient(
 
 // Dummy resources with pastel gradients - BACKUP ONLY
 const allDummyResources = [
-    // UI Kits
+    // Brushes
     {
         id: 1,
-        title: 'Figma Design System',
-        description: 'Complete design system with components, tokens, and guidelines for modern interfaces.',
-        tags: ['figma', 'ui-kits', 'free'],
+        title: 'Watercolor Brush Pack',
+        description: 'Professional watercolor brushes for Photoshop and Procreate with 50+ unique styles.',
+        tags: ['brushes', 'photoshop', 'procreate'],
         gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-        category: 'ui-kits',
+        category: 'brushes',
     },
     {
         id: 2,
-        title: 'Mobile UI Kit Pro',
-        description: 'Professional mobile app UI kit with 200+ screens and components.',
-        tags: ['mobile', 'ui-kits', 'premium'],
+        title: 'Ink Brushes Collection',
+        description: 'Realistic ink brushes for digital painting and illustration work.',
+        tags: ['brushes', 'illustrator', 'ink'],
         gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-        category: 'ui-kits',
+        category: 'brushes',
     },
-    // Icons
+    // Gradients
     {
         id: 3,
-        title: 'Icon Library Pro',
-        description: 'Over 10,000 customizable icons in multiple styles. Perfect for web and mobile apps.',
-        tags: ['icons', 'svg', 'premium'],
-        gradient: 'linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)',
-        category: 'icons',
+        title: 'Modern UI Gradients',
+        description: 'Collection of 100 modern gradients perfect for web and mobile design.',
+        tags: ['gradients', 'ui', 'web'],
+        gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+        category: 'gradients',
     },
     {
         id: 4,
-        title: 'Minimal Icon Set',
-        description: 'Clean and minimal icon set for modern interfaces. 500+ icons included.',
-        tags: ['icons', 'minimal', 'free'],
-        gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-        category: 'icons',
+        title: 'Vibrant Gradient Pack',
+        description: 'Bold and vibrant gradients for eye-catching designs and backgrounds.',
+        tags: ['gradients', 'colorful', 'backgrounds'],
+        gradient: 'linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)',
+        category: 'gradients',
     },
-    // Illustrations
+    // Textures
     {
         id: 5,
-        title: 'Character Illustrations',
-        description: 'Beautiful character illustrations for web and mobile applications.',
-        tags: ['illustrations', 'characters', 'free'],
+        title: 'Concrete Textures',
+        description: 'High-resolution concrete textures for realistic and industrial designs.',
+        tags: ['textures', 'concrete', 'industrial'],
         gradient: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)',
-        category: 'illustrations',
+        category: 'textures',
     },
     {
         id: 6,
-        title: 'Abstract Backgrounds',
-        description: 'Modern abstract background illustrations and patterns.',
-        tags: ['illustrations', 'backgrounds', 'premium'],
+        title: 'Paper Textures Collection',
+        description: 'Authentic paper textures for vintage and organic design projects.',
+        tags: ['textures', 'paper', 'vintage'],
         gradient: 'linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%)',
-        category: 'illustrations',
+        category: 'textures',
     },
-    // Photos
+    // Patterns
     {
         id: 7,
-        title: 'Stock Photo Library',
-        description: 'High-quality stock photos for commercial and personal use.',
-        tags: ['photos', 'stock', 'free'],
+        title: 'Geometric Patterns',
+        description: 'Seamless geometric patterns for modern and minimalist designs.',
+        tags: ['patterns', 'geometric', 'seamless'],
         gradient: 'linear-gradient(135deg, #c1dfc4 0%, #deecdd 100%)',
-        category: 'photos',
+        category: 'patterns',
     },
-    // Colors
     {
         id: 8,
-        title: 'Color Palette Generator',
-        description: 'AI-powered tool to generate beautiful color palettes for your next design project.',
-        tags: ['colors', 'design-tools', 'ai'],
+        title: 'Floral Pattern Pack',
+        description: 'Beautiful floral patterns perfect for feminine and elegant designs.',
+        tags: ['patterns', 'floral', 'elegant'],
         gradient: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
-        category: 'colors',
+        category: 'patterns',
     },
+    // Mockups
     {
         id: 9,
-        title: 'Gradient Collection',
-        description: 'Curated collection of beautiful gradients for modern designs.',
-        tags: ['colors', 'gradients', 'free'],
+        title: 'iPhone 15 Pro Mockup',
+        description: 'High-quality iPhone mockup with customizable screen and realistic shadows.',
+        tags: ['mockups', 'iphone', 'mobile'],
         gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
-        category: 'colors',
+        category: 'mockups',
     },
-    // Typography
     {
         id: 10,
-        title: 'Typography Insights',
-        description: 'Learn the fundamentals of typography and how to use fonts effectively in design.',
-        tags: ['typography', 'guide', 'free'],
+        title: 'MacBook Pro Mockup',
+        description: 'Professional MacBook mockup for showcasing web and app designs.',
+        tags: ['mockups', 'laptop', 'apple'],
         gradient: 'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)',
-        category: 'typography',
+        category: 'mockups',
     },
-    // Design Tools
+    // UI Kits
     {
         id: 11,
-        title: 'Prototyping Tool',
-        description: 'Create interactive prototypes with ease. No coding required.',
-        tags: ['design-tools', 'prototyping', 'freemium'],
+        title: 'Dashboard UI Kit',
+        description: 'Complete dashboard UI kit with 50+ components for web applications.',
+        tags: ['ui-kits', 'dashboard', 'figma'],
         gradient: 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)',
-        category: 'design-tools',
+        category: 'ui-kits',
     },
-    // AI Tools
     {
         id: 12,
-        title: 'AI Image Generator',
-        description: 'Generate stunning images from text descriptions using advanced AI technology.',
-        tags: ['ai', 'images', 'freemium'],
+        title: 'Mobile App UI Kit',
+        description: 'Comprehensive mobile UI kit with 100+ screens and components.',
+        tags: ['ui-kits', 'mobile', 'sketch'],
         gradient: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)',
-        category: 'ai',
+        category: 'ui-kits',
     },
-    // Accessibility
+    // Text Effects
     {
         id: 13,
-        title: 'Accessibility Checker',
-        description: 'Ensure your designs meet WCAG standards with this comprehensive accessibility tool.',
-        tags: ['accessibility', 'design-tools', 'free'],
+        title: 'Gold Text Effects',
+        description: 'Luxury gold text effects for Photoshop with 10 premium styles.',
+        tags: ['text-effects', 'photoshop', 'gold'],
         gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-        category: 'accessibility',
+        category: 'text-effects',
     },
-    // Courses
+    // Icons
     {
         id: 14,
-        title: 'UI/UX Design Masterclass',
-        description: 'Complete course covering all aspects of modern UI/UX design.',
-        tags: ['course', 'ui-design', 'premium'],
+        title: 'Minimal Line Icons',
+        description: 'Clean line icon set with 500+ icons in SVG format for any project.',
+        tags: ['icons', 'line', 'svg'],
         gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-        category: 'courses',
+        category: 'icons',
     },
+    // Fonts
     {
         id: 15,
-        title: 'Design System Workshop',
-        description: 'Learn to build scalable design systems from scratch.',
-        tags: ['course', 'design-system', 'premium'],
+        title: 'Modern Sans Serif Font',
+        description: 'Contemporary sans-serif typeface perfect for web and branding projects.',
+        tags: ['fonts', 'typography', 'sans-serif'],
         gradient: 'linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)',
-        category: 'courses',
+        category: 'fonts',
     },
 ];
 
-// Filter categories - excluding videos (moved to /videos page)
+// Filter categories for graphic design resources with iconoir-react icons
 const categories = [
-    { id: 'all', label: 'All Resources' },
-    { id: 'ui-kits', label: 'UI Kits' },
-    { id: 'icons', label: 'Icons' },
-    { id: 'illustrations', label: 'Illustrations' },
-    { id: 'photos', label: 'Stock Photos' },
-    { id: 'typography', label: 'Typography' },
-    { id: 'colors', label: 'Color Palettes' },
-    { id: 'design-tools', label: 'Design Tools' },
-    { id: 'ai', label: 'AI Tools' },
-    { id: 'accessibility', label: 'Accessibility' },
-    { id: 'mockups', label: 'Mockups' },
-    { id: 'tools', label: 'Tools' },
+    { id: 'all', label: 'All Resources', icon: Sparks },
+    { id: 'brushes', label: 'Brushes', icon: PenTablet },
+    { id: 'gradients', label: 'Gradients', icon: ColorFilter },
+    { id: 'textures', label: 'Textures', icon: Palette },
+    { id: 'patterns', label: 'Patterns', icon: Frame },
+    { id: 'mockups', label: 'Mockups', icon: Frame },
+    { id: 'ui-kits', label: 'UI Kits', icon: Cube },
+    { id: 'text-effects', label: 'Text Effects', icon: Text },
+    { id: 'icons', label: 'Icons', icon: ThreeStars },
+    { id: 'fonts', label: 'Fonts', icon: Book },
+    { id: 'templates', label: 'Templates', icon: MediaImage },
+    { id: 'actions', label: 'Actions', icon: Flash },
+    { id: 'presets', label: 'Presets', icon: Settings },
+    { id: 'illustrations', label: 'Illustrations', icon: ColorWheel },
+    { id: '3d-assets', label: '3D Assets', icon: Cube },
+    { id: 'stock-photos', label: 'Stock Photos', icon: MediaImage },
 ];
 
-const pricingFilters = [
-    { id: 'all', label: 'All' },
-    { id: 'free', label: 'Free' },
-    { id: 'freemium', label: 'Freemium' },
-    { id: 'premium', label: 'Premium' },
-];
 
 export default function ResourcesPage() {
     const [selectedCategory, setSelectedCategory] = useState('all');
-    const [selectedPricing, setSelectedPricing] = useState('all');
     const [allResources, setAllResources] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch resources from Supabase (excluding video-tutorials)
+    // Fetch graphic design resources from Supabase
     useEffect(() => {
         async function fetchResources() {
             try {
                 const { data, error } = await supabase
                     .from('resources')
                     .select('*')
-                    .neq('category', 'video-tutorials') // Exclude videos
+                    .in('category', [
+                        'brushes', 'gradients', 'textures', 'patterns', 'mockups',
+                        'ui-kits', 'text-effects', 'icons', 'fonts', 'templates',
+                        'actions', 'presets', 'illustrations', '3d-assets', 'stock-photos'
+                    ])
                     .order('created_at', { ascending: false });
 
                 if (error) {
                     console.error('Error fetching resources:', error);
                     setAllResources(allDummyResources); // Fallback to dummy data
+                } else if (data && data.length > 0) {
+                    setAllResources(data);
                 } else {
-                    setAllResources(data || []);
+                    // No data yet, use dummy
+                    setAllResources(allDummyResources);
                 }
             } catch (err) {
                 console.error('Unexpected error:', err);
@@ -201,50 +209,33 @@ export default function ResourcesPage() {
 
     // Filter resources
     const filteredResources = allResources.filter((resource) => {
-        const categoryMatch = selectedCategory === 'all' || resource.category === selectedCategory;
-        const pricingMatch = selectedPricing === 'all' || resource.tags?.some((tag: string) => tag.toLowerCase() === selectedPricing);
-        return categoryMatch && pricingMatch;
+        return selectedCategory === 'all' || resource.category === selectedCategory;
     });
 
     return (
         <div className="container">
             <div className="page-header fade-in">
-                <h1 className="section-title">All Resources</h1>
+                <h1 className="section-title">Graphic Design Resources</h1>
                 <p className="page-description">
-                    Browse our complete collection of design resources, tools, and assets
+                    Free and premium downloadable resources - Brushes, Textures, Mockups, UI Kits, and more
                 </p>
             </div>
 
-            {/* Category Filters */}
+            {/* Category Filters - Grid Layout */}
             <div className="filters-section fade-in">
-                <div className="filter-group">
-                    <h3 className="filter-label">Category</h3>
-                    <div className="filter-bar">
+                <div className="category-grid">
                         {categories.map((category) => (
                             <button
                                 key={category.id}
-                                className={`filter-button ${selectedCategory === category.id ? 'active' : ''}`}
+                                className={`category-card ${selectedCategory === category.id ? 'active' : ''}`}
                                 onClick={() => setSelectedCategory(category.id)}
                             >
-                                {category.label}
+                                <div className="category-icon">
+                                    <category.icon width={32} height={32} strokeWidth={1.5} />
+                                </div>
+                                <span className="category-title">{category.label}</span>
                             </button>
                         ))}
-                    </div>
-                </div>
-
-                <div className="filter-group">
-                    <h3 className="filter-label">Pricing</h3>
-                    <div className="filter-bar">
-                        {pricingFilters.map((filter) => (
-                            <button
-                                key={filter.id}
-                                className={`filter-button ${selectedPricing === filter.id ? 'active' : ''}`}
-                                onClick={() => setSelectedPricing(filter.id)}
-                            >
-                                {filter.label}
-                            </button>
-                        ))}
-                    </div>
                 </div>
             </div>
 
@@ -281,7 +272,6 @@ export default function ResourcesPage() {
                         className="filter-button"
                         onClick={() => {
                             setSelectedCategory('all');
-                            setSelectedPricing('all');
                         }}
                     >
                         Clear Filters

@@ -263,16 +263,24 @@ export async function GET(request: NextRequest) {
             }
         }
 
-        // ===== FETCH RESOURCES FROM GITHUB =====
-        console.log('⚙️ Fetching resources from GitHub...');
+        // ===== FETCH GRAPHIC DESIGN RESOURCES FROM GITHUB =====
+        console.log('🎨 Fetching graphic design resources from GitHub...');
 
         try {
-            const query = 'topic:design OR topic:ui OR topic:design-system';
-            const response = await fetch(
-                `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=20`
-            );
+            // Search for graphic design resource repositories
+            const queries = [
+                'topic:design-resources OR topic:brushes OR topic:textures',
+                'topic:ui-kit OR topic:mockup OR topic:icons',
+                'topic:fonts OR topic:typography OR topic:illustrations',
+            ];
 
-            if (response.ok) {
+            for (const query of queries) {
+                const response = await fetch(
+                    `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=10`
+                );
+
+                if (!response.ok) continue;
+
                 const data = await response.json();
 
                 for (const repo of data.items || []) {
@@ -292,16 +300,57 @@ export async function GET(request: NextRequest) {
                         continue;
                     }
 
-                    const tags = ['GitHub', ...(repo.topics || []).slice(0, 3)];
+                    // Auto-categorize based on repo topics and description
+                    const combined = `${repo.name} ${repo.description || ''} ${(repo.topics || []).join(' ')}`.toLowerCase();
+                    let category = 'templates'; // default
+                    const tags: string[] = [];
+
+                    if (combined.includes('brush') || combined.includes('procreate')) {
+                        category = 'brushes';
+                        tags.push('Brushes');
+                    } else if (combined.includes('gradient')) {
+                        category = 'gradients';
+                        tags.push('Gradients');
+                    } else if (combined.includes('texture')) {
+                        category = 'textures';
+                        tags.push('Textures');
+                    } else if (combined.includes('pattern')) {
+                        category = 'patterns';
+                        tags.push('Patterns');
+                    } else if (combined.includes('mockup')) {
+                        category = 'mockups';
+                        tags.push('Mockups');
+                    } else if (combined.includes('ui-kit') || combined.includes('ui kit')) {
+                        category = 'ui-kits';
+                        tags.push('UI Kits');
+                    } else if (combined.includes('icon')) {
+                        category = 'icons';
+                        tags.push('Icons');
+                    } else if (combined.includes('font') || combined.includes('typography')) {
+                        category = 'fonts';
+                        tags.push('Fonts');
+                    } else if (combined.includes('illustration')) {
+                        category = 'illustrations';
+                        tags.push('Illustrations');
+                    } else if (combined.includes('3d')) {
+                        category = '3d-assets';
+                        tags.push('3D');
+                    }
+
+                    // Add additional tags from topics
+                    const relevantTopics = (repo.topics || [])
+                        .filter((t: string) => !t.includes('awesome') && !t.includes('list'))
+                        .slice(0, 3);
+                    tags.push(...relevantTopics);
 
                     const { error } = await supabase.from('resources').insert({
-                        title: repo.name,
-                        description: repo.description || 'GitHub repository',
+                        title: repo.name.replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()),
+                        description: repo.description || 'Open source design resource collection',
                         url,
-                        category: 'design-tools',
-                        tags,
+                        category,
+                        tags: tags.length > 0 ? tags : ['Design', 'Resources'],
                         image_url: repo.owner.avatar_url,
-                        featured: repo.stargazers_count > 1000,
+                        featured: repo.stargazers_count > 500,
                     });
 
                     if (error) {
