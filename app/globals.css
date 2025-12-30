@@ -1602,11 +1602,12 @@ body > * {
   flex: 1;
   max-width: none;
   justify-content: center; /* Center menu by default */
-  transition: justify-content 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .desktop-header .nav-desktop.nav-compact {
-  justify-content: flex-start; /* Shift left when search is active */
+  justify-content: center; /* Keep centered between logo and search bar */
+  flex: 0.5; /* Reduce space to fit between logo and expanded search */
 }
 
 .mobile-header {
@@ -1840,11 +1841,10 @@ body > * {
 /* Search Dropdown Results - Command Palette Style */
 .search-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.75rem);
   right: 0;
-  margin-top: 0.75rem;
+  left: 0;
   width: 100%;
-  max-width: 580px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1860,18 +1860,34 @@ body > * {
   z-index: 100;
 }
 
-/* Mobile: centered */
-@media (max-width: 1024px) {
-  .search-dropdown {
+/* Hide mobile dropdown on desktop */
+.search-dropdown-mobile {
+  display: none;
+}
+
+/* Mobile: show mobile dropdown, hide desktop dropdown */
+@media (max-width: 1023px) {
+  /* Hide desktop dropdown in .search-inline-desktop */
+  .search-inline-desktop .search-dropdown {
+    display: none;
+  }
+
+  /* Show mobile dropdown */
+  .search-dropdown-mobile {
+    display: block;
+    position: fixed;
+    top: auto;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
+    width: calc(100vw - 2rem);
     max-width: calc(100vw - 2rem);
+    margin-top: 0.5rem;
   }
 }
 
 .search-results-list {
-  padding: 0.5rem;
+  padding: 0 1rem 1.5rem 1rem;
   max-height: 420px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1923,27 +1939,104 @@ body > * {
   color: #64748b;
 }
 
-/* Results count - Minimalist */
+/* Search header with category slider */
+.search-header {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0.75rem 1rem 0.75rem 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  margin: 0 -1rem 0 -1rem;
+  z-index: 10;
+  border-radius: 16px 16px 0 0;
+}
+
 .search-results-count {
   color: #94a3b8;
   font-size: 0.6875rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin: 0.5rem 0.75rem 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  margin-bottom: 0.5rem;
+}
+
+/* Category filter slider */
+.search-category-slider {
+  display: flex;
+  gap: 0.375rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+  margin: -0.25rem -0.75rem -0.5rem;
+  padding: 0.25rem 0.75rem 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.search-category-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.search-category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.search-category-chip:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.search-category-chip.active {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+}
+
+.search-category-chip svg {
+  flex-shrink: 0;
+}
+
+.chip-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.12);
+  padding: 0.125rem 0.4rem;
+  border-radius: 999px;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.search-category-chip.active .chip-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
 }
 
 /* Result item - Command Palette Card Style */
 .search-result-item {
   display: flex;
   gap: 0.75rem;
-  padding: 0.625rem 0.75rem;
+  padding: 0.75rem 0.5rem;
   border-radius: 8px;
   background: transparent;
   border: none;
-  margin: 0.125rem 0.25rem;
+  margin: 0.25rem 0;
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   text-decoration: none;
