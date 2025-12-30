@@ -2,104 +2,123 @@
 
 import {
     Sparks,
-    BookStack,
     ColorFilter,
     Cube,
     PenTablet,
     Play,
     Book,
-    Accessibility,
-    Puzzle,
-    MouseButtonLeft,
+    Palette,
+    Frame,
+    Text,
+    ThreeStars,
+    Flash,
+    Settings,
+    MediaImage,
     ColorWheel,
-    Text
+    Package,
+    Lightbulb
 } from 'iconoir-react';
 
-// Organized categories - grouped by purpose
+// 16 categories matching Resources page structure
 const categories = [
-    // Design Resources Group
+    // Graphic Design Resources (matching Resources page)
     {
         id: 1,
-        title: 'UI Kits',
+        title: 'Brushes',
         icon: PenTablet,
-        href: '/resources?category=ui-kits',
+        href: '/resources?category=brushes',
     },
     {
         id: 2,
-        title: 'Icons',
-        icon: Cube,
-        href: '/resources?category=icons',
+        title: 'Gradients',
+        icon: ColorFilter,
+        href: '/resources?category=gradients',
     },
     {
         id: 3,
-        title: 'Illustrations',
-        icon: PenTablet,
-        href: '/resources?category=illustrations',
+        title: 'Textures',
+        icon: Palette,
+        href: '/resources?category=textures',
     },
     {
         id: 4,
-        title: 'Stock Photos',
-        icon: ColorFilter,
-        href: '/resources?category=photos',
+        title: 'UI Kits',
+        icon: Cube,
+        href: '/resources?category=ui-kits',
     },
     {
         id: 5,
-        title: 'Typography',
-        icon: Text,
-        href: '/resources?category=typography',
+        title: 'Icons',
+        icon: ThreeStars,
+        href: '/resources?category=icons',
     },
     {
         id: 6,
-        title: 'Color Palettes',
-        icon: ColorWheel,
-        href: '/resources?category=colors',
+        title: 'Fonts',
+        icon: Book,
+        href: '/resources?category=fonts',
     },
-
-    // Inspiration Group
     {
         id: 7,
-        title: 'Inspiration',
-        icon: BookStack,
-        href: '/inspiration',
+        title: 'Mockups',
+        icon: Frame,
+        href: '/resources?category=mockups',
     },
-    // Learning Group
+    {
+        id: 8,
+        title: 'Text Effects',
+        icon: Text,
+        href: '/resources?category=text-effects',
+    },
     {
         id: 9,
+        title: 'Illustrations',
+        icon: ColorWheel,
+        href: '/resources?category=illustrations',
+    },
+    {
+        id: 10,
+        title: 'Templates',
+        icon: MediaImage,
+        href: '/resources?category=templates',
+    },
+    {
+        id: 11,
+        title: '3D Assets',
+        icon: Cube,
+        href: '/resources?category=3d-assets',
+    },
+    {
+        id: 12,
+        title: 'Stock Photos',
+        icon: MediaImage,
+        href: '/resources?category=stock-photos',
+    },
+
+    // Other Pages
+    {
+        id: 13,
+        title: 'Inspiration',
+        icon: Sparks,
+        href: '/inspiration',
+    },
+    {
+        id: 14,
         title: 'Videos',
         icon: Play,
         href: '/videos',
     },
     {
-        id: 10,
-        title: 'Courses',
-        icon: Book,
-        href: '/resources?category=courses',
+        id: 15,
+        title: 'Actions',
+        icon: Flash,
+        href: '/resources?category=actions',
     },
     {
-        id: 11,
-        title: 'Articles',
-        icon: BookStack,
-        href: '/resources?category=articles',
-    },
-
-    // Tools Group
-    {
-        id: 12,
-        title: 'Design Tools',
-        icon: Puzzle,
-        href: '/resources?category=design-tools',
-    },
-    {
-        id: 13,
-        title: 'AI Tools',
-        icon: Sparks,
-        href: '/resources?category=ai',
-    },
-    {
-        id: 14,
-        title: 'Accessibility',
-        icon: Accessibility,
-        href: '/resources?category=accessibility',
+        id: 16,
+        title: 'Presets',
+        icon: Settings,
+        href: '/resources?category=presets',
     },
 ];
 
