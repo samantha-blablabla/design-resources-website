@@ -27,7 +27,8 @@
       "Bash(node -e:*)",
       "Bash(taskkill //F //PID 62808)",
       "Bash(taskkill //F //PID 59112)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(curl:*)"
     ]
   }
 }
