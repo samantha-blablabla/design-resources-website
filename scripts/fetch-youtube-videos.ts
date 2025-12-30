@@ -1,9 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Environment variables (must be set before running this script)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const youtubeApiKey = process.env.YOUTUBE_API_KEY!;
+// Environment variables validation
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  console.error('❌ NEXT_PUBLIC_SUPABASE_URL is not set');
+  process.exit(1);
+}
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('❌ SUPABASE_SERVICE_ROLE_KEY is not set');
+  process.exit(1);
+}
+if (!process.env.YOUTUBE_API_KEY) {
+  console.error('❌ YOUTUBE_API_KEY is not set');
+  process.exit(1);
+}
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 

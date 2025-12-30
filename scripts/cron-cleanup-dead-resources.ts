@@ -21,10 +21,19 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Environment variables (must be set before running this script)
+// Environment variables validation
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  console.error('❌ NEXT_PUBLIC_SUPABASE_URL is not set');
+  process.exit(1);
+}
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('❌ SUPABASE_SERVICE_ROLE_KEY is not set');
+  process.exit(1);
+}
+
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 interface ValidationResult {
