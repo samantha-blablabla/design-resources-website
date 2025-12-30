@@ -168,9 +168,16 @@ async function insertVideoToSupabase(video: any, gradientIndex: number) {
 }
 
 export async function GET(request: NextRequest) {
-  // Verify cron secret to prevent unauthorized access
+  // Verify request is from Vercel Cron or has valid authorization
   const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const cronHeader = request.headers.get('x-vercel-cron');
+
+  // Allow if either:
+  // 1. Request has valid Cron header (from Vercel Cron Jobs)
+  // 2. Request has valid authorization header (for manual testing)
+  const isAuthorized = cronHeader === '1' || authHeader === `Bearer ${process.env.CRON_SECRET}`;
+
+  if (!isAuthorized) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
