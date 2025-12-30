@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Home, AppWindow, BookStack, Play, Search, Menu, Xmark, NavArrowLeft } from 'iconoir-react';
+import { Home, AppWindow, BookStack, Play, Search, Menu, Xmark } from 'iconoir-react';
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -131,21 +131,19 @@ export default function Header() {
                             </button>
                         </div>
                     ) : (
-                        <div className="search-mobile-bar">
-                            <button className="search-back-btn" onClick={deactivateSearch}>
-                                <NavArrowLeft width={24} height={24} strokeWidth={2} />
+                        <div className="search-mobile-expanded">
+                            <Search width={20} height={20} strokeWidth={2} />
+                            <input
+                                ref={searchInputRef}
+                                type="text"
+                                placeholder="Search..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                autoFocus
+                            />
+                            <button className="search-close-mobile" onClick={deactivateSearch}>
+                                <Xmark width={20} height={20} strokeWidth={2} />
                             </button>
-                            <div className="search-mobile-input">
-                                <Search width={20} height={20} strokeWidth={2} />
-                                <input
-                                    ref={searchInputRef}
-                                    type="text"
-                                    placeholder="Search..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    autoFocus
-                                />
-                            </div>
                         </div>
                     )}
                 </div>
