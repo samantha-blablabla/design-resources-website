@@ -168,20 +168,14 @@ async function insertVideoToSupabase(video: any, gradientIndex: number) {
 }
 
 export async function GET(request: NextRequest) {
-  // Verify request is from Vercel Cron or has valid authorization
-  const authHeader = request.headers.get('authorization');
+  // Only allow requests from Vercel Cron Jobs
+  // Vercel automatically adds x-vercel-cron: 1 header to cron requests
   const cronHeader = request.headers.get('x-vercel-cron');
 
-  // Allow if either:
-  // 1. Request has valid Cron header (from Vercel Cron Jobs)
-  // 2. Request has valid authorization header (for manual testing)
-  // 3. TEMP: Allow all requests for initial testing
-  const isAuthorized = cronHeader === '1' ||
-                      authHeader === `Bearer ${process.env.CRON_SECRET}` ||
-                      process.env.NODE_ENV === 'production'; // Temporary: allow in production for testing
-
-  if (!isAuthorized) {
-    return NextResponse.json({ error: 'Unauthorized', cronHeader, authHeader, env: process.env.CRON_SECRET ? 'set' : 'not set' }, { status: 401 });
+  if (cronHeader !== '1') {
+    return NextResponse.json({
+      error: 'Unauthorized - This endpoint can only be called by Vercel Cron Jobs'
+    }, { status: 401 });
   }
 
   if (!youtubeApiKey) {

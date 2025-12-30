@@ -50,17 +50,14 @@ async function validateUrl(url: string): Promise<ValidationResult> {
 }
 
 export async function GET(request: NextRequest) {
-  // Verify request is from Vercel Cron or has valid authorization
-  const authHeader = request.headers.get('authorization');
+  // Only allow requests from Vercel Cron Jobs
+  // Vercel automatically adds x-vercel-cron: 1 header to cron requests
   const cronHeader = request.headers.get('x-vercel-cron');
 
-  // Allow if either:
-  // 1. Request has valid Cron header (from Vercel Cron Jobs)
-  // 2. Request has valid authorization header (for manual testing)
-  const isAuthorized = cronHeader === '1' || authHeader === `Bearer ${process.env.CRON_SECRET}`;
-
-  if (!isAuthorized) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (cronHeader !== '1') {
+    return NextResponse.json({
+      error: 'Unauthorized - This endpoint can only be called by Vercel Cron Jobs'
+    }, { status: 401 });
   }
 
   console.log('🧹 Starting cleanup of dead resources...');
