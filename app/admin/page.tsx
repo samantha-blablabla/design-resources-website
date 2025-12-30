@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import {
     Settings, Palette, PageEdit, Label, Text, Trash, Edit,
-    Plus, Search, UploadSquare, Image as ImageIcon, Check, Xmark
+    Plus, Search, UploadSquare, MediaImage, Check, Xmark
 } from 'iconoir-react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -130,7 +130,7 @@ export default function AdminPage() {
 
                         <div className="admin-stat-card">
                             <div className="admin-stat-icon" style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
-                                <ImageIcon width={24} height={24} />
+                                <MediaImage width={24} height={24} />
                             </div>
                             <div className="admin-stat-content">
                                 <p className="admin-stat-label">Inspiration</p>
@@ -490,7 +490,7 @@ function ResourcesManager({ resources, loading, onRefresh }: any) {
                                                     />
                                                 ) : (
                                                     <div className="admin-table-thumbnail-placeholder">
-                                                        <ImageIcon width={20} height={20} />
+                                                        <MediaImage width={20} height={20} />
                                                     </div>
                                                 )}
                                             </td>
