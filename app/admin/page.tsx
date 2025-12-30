@@ -51,9 +51,19 @@ export default function AdminPage() {
     };
 
     return (
-        <div className="admin-layout">
-            {/* Sidebar */}
-            <aside className="admin-sidebar">
+        <>
+            <style jsx global>{`
+                body {
+                    padding-top: 0 !important;
+                    overflow: hidden !important;
+                }
+                .header-glass {
+                    display: none !important;
+                }
+            `}</style>
+            <div className="admin-layout">
+                {/* Sidebar */}
+                <aside className="admin-sidebar">
                 <div className="admin-sidebar-header">
                     <span className="admin-logo">✨</span>
                     <h2>DesignHub Admin</h2>
@@ -160,6 +170,7 @@ export default function AdminPage() {
                 </div>
             </main>
         </div>
+        </>
     );
 }
 
