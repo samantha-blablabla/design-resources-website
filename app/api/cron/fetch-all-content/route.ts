@@ -30,11 +30,11 @@ const YOUTUBE_CHANNELS = [
 
 // RSS feeds for inspiration
 const INSPIRATION_FEEDS = [
-    { url: 'https://dribbble.com/shots/popular.rss', source: 'Dribbble' },
-    { url: 'https://www.behance.net/feeds/projects', source: 'Behance' },
     { url: 'https://www.awwwards.com/blog/feed/', source: 'Awwwards' },
-    { url: 'https://www.designspiration.com/feed/', source: 'Designspiration' },
     { url: 'https://abduzeedo.com/feed', source: 'Abduzeedo' },
+    { url: 'https://www.smashingmagazine.com/feed/', source: 'Smashing Magazine' },
+    { url: 'https://www.creativebloq.com/feed', source: 'Creative Bloq' },
+    { url: 'https://www.designboom.com/feed/', source: 'Designboom' },
 ];
 
 // Parse ISO 8601 duration (PT1H2M3S) to readable format

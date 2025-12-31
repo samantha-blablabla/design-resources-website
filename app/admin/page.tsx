@@ -767,11 +767,11 @@ function SourcesInfoPanel({ category }: { category: string }) {
             title: 'RSS Feeds',
             icon: '🎨',
             items: [
-                'Dribbble Popular Shots',
-                'Behance Projects Feed',
                 'Awwwards Blog',
-                'Designspiration Feed',
-                'Abduzeedo'
+                'Abduzeedo',
+                'Smashing Magazine',
+                'Creative Bloq',
+                'Designboom'
             ]
         },
         'resources': {
