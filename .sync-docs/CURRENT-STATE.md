@@ -2,15 +2,15 @@
 
 ## 🎯 Latest Changes Overview
 
-**Last Updated**: December 31, 2025 - Early Morning
+**Last Updated**: December 31, 2025 - Mid Morning
 **Branch**: main
 **Latest Commits**:
+- `bb27b17` - Make admin panel headings dynamic based on tab
+- `5acf8ce` - Remove emoji icons from homepage cards
+- `39787c3` - Add URL column to admin tables
+- `2879ccf` - Fix TypeScript error: Cast unknown type to string in JSX
+- `92163bb` - Fix TypeScript error: Remove explicit type annotation in map function
 - `32d203c` - Improve admin form UI: Enhanced spacing and typography
-- `42719df` - Optimize Vercel Cron Jobs: Reduce from 4 to 2 (Free Plan)
-- `85c32d7` - Improve admin dashboard UI with Toools.design style
-- `f297ef4` - Update documentation with new automation sources
-- `35ad2ea` - Add automation for inspiration and resources
-- `c01a240` - Secure Vercel Cron endpoints
 
 ---
 
@@ -93,7 +93,10 @@ Status: ✅ Optimized - 2 cron jobs (fits free plan limit)
 
 **`app/admin/page.tsx`** ⭐ NEW UPDATE
 - Admin dashboard with Toools.design inspired UI
-- **Latest Changes (Dec 31, 2025)**:
+- **Latest Changes (Dec 31, 2025 - Mid Morning)**:
+  - Dynamic panel headings based on tab (Manage Video/Inspiration/Design Resources)
+  - URL column added to all admin tables (Videos, Resources, Inspiration)
+  - Fixed TypeScript build errors with type casting
   - Enhanced form spacing and typography
   - Plus Jakarta Sans font for Cancel/Save buttons
   - Improved visual hierarchy with better field group spacing
@@ -106,7 +109,7 @@ Status: ✅ Optimized - 2 cron jobs (fits free plan limit)
   - Pagination system (8 items per page)
   - Proper alignment with 1.5rem padding throughout
   - Stat cards redesigned with modern layout
-- Status: ✅ Complete - Modern UI with Enhanced Form
+- Status: ✅ Complete - Modern UI with Dynamic Headings & URL Column
 
 **`app/globals.css`**
 - **Latest Admin UI Styles (Dec 31, 2025)**:
@@ -136,7 +139,8 @@ Status: ✅ Optimized - 2 cron jobs (fits free plan limit)
 **`components/ui/Card.tsx`**
 - Main card component for resources, tools, inspiration
 - 1-line title, 2-line description truncation
-- Status: ✅ Complete (from previous session)
+- **Latest Change (Dec 31, 2025)**: Removed emoji icons from cards (now shows only gradient background when no image)
+- Status: ✅ Complete - Clean design without emojis
 
 ### Scripts (Local Development)
 
@@ -407,7 +411,12 @@ Visit: https://vercel.com/samantha-blablablas-projects/design-resources-website/
 
 ## 🎉 Session Achievements
 
-**December 31, 2025 - Early Morning Session**:
+**December 31, 2025 - Mid Morning Session**:
+- ✅ Removed emoji icons from homepage cards (cleaner gradient-only design)
+- ✅ Added URL column to all admin tables (Videos, Resources, Inspiration)
+- ✅ Made admin panel headings dynamic based on tab
+- ✅ Fixed TypeScript build errors with proper type casting
+- ✅ Set up Vercel API integration for auto-monitoring and error detection
 - ✅ Enhanced admin form UI with better spacing and typography
 - ✅ Added Plus Jakarta Sans font to Cancel/Save buttons
 - ✅ Split Edit/Preview into side-by-side cards (removed tabs)
@@ -440,6 +449,6 @@ All content automatically updates daily from **18+ sources**:
 
 **Remember**: This is a 2-computer workflow. Always pull from GitHub first and read `.sync-docs/` files!
 
-**Last Updated**: December 31, 2025 - Early Morning
-**Latest Commit**: `32d203c` - Enhanced admin form UI
+**Last Updated**: December 31, 2025 - Mid Morning
+**Latest Commit**: `bb27b17` - Dynamic admin panel headings
 **Next Update**: After daily cron runs complete
