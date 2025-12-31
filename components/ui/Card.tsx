@@ -54,18 +54,7 @@ export default function Card({ title, description, tags, emoji, gradient, imageU
                             unoptimized
                         />
                     </div>
-                ) : (
-                    <div style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '48px'
-                    }}>
-                        {emoji || '🎨'}
-                    </div>
-                )}
+                ) : null}
                 {url && (
                     <div style={{
                         position: 'absolute',
