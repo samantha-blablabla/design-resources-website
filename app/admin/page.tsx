@@ -762,7 +762,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                     >
                         <option value="all">All Tags</option>
                         {allTags.sort().map((tag) => (
-                            <option key={tag} value={tag}>{tag}</option>
+                            <option key={String(tag)} value={String(tag)}>{String(tag)}</option>
                         ))}
                     </select>
                 </div>
