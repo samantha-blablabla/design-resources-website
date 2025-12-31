@@ -7,6 +7,7 @@ import {
     Play, Package, Sparks
 } from 'iconoir-react';
 import { createClient } from '@supabase/supabase-js';
+import { Card } from '@/components/ui';
 
 type AdminTab = 'videos' | 'resources' | 'inspiration' | 'ui-settings' | 'tags';
 
@@ -223,6 +224,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     });
     const [uploadingImage, setUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState('');
+    const [activeFormTab, setActiveFormTab] = useState<'edit' | 'preview'>('edit');
 
     // Extract all unique tags from resources
     const allTags = Array.from(new Set(resources.flatMap((r: any) => r.tags || [])));
@@ -439,7 +441,50 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                         </button>
                     </div>
 
+                    {/* Tabs */}
+                    <div style={{
+                        display: 'flex',
+                        gap: '8px',
+                        borderBottom: '1px solid rgba(0,0,0,0.1)',
+                        marginBottom: '24px'
+                    }}>
+                        <button
+                            type="button"
+                            onClick={() => setActiveFormTab('edit')}
+                            style={{
+                                padding: '12px 24px',
+                                background: 'transparent',
+                                border: 'none',
+                                borderBottom: activeFormTab === 'edit' ? '2px solid #667eea' : '2px solid transparent',
+                                cursor: 'pointer',
+                                fontWeight: activeFormTab === 'edit' ? '600' : '400',
+                                color: activeFormTab === 'edit' ? '#667eea' : '#666',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            ✏️ Edit
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setActiveFormTab('preview')}
+                            style={{
+                                padding: '12px 24px',
+                                background: 'transparent',
+                                border: 'none',
+                                borderBottom: activeFormTab === 'preview' ? '2px solid #667eea' : '2px solid transparent',
+                                cursor: 'pointer',
+                                fontWeight: activeFormTab === 'preview' ? '600' : '400',
+                                color: activeFormTab === 'preview' ? '#667eea' : '#666',
+                                transition: 'all 0.2s'
+                            }}
+                        >
+                            👁️ Preview
+                        </button>
+                    </div>
+
                     <form onSubmit={handleSubmit} className="admin-form-modern">
+                        {activeFormTab === 'edit' ? (
+                        <>
                         {/* Image Upload Section */}
                         <div className="admin-image-upload-section">
                             <label className="admin-form-label">Thumbnail Image</label>
@@ -589,6 +634,35 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                 <span>{editingResource ? 'Update' : 'Save'} Resource</span>
                             </button>
                         </div>
+                        </>
+                        ) : (
+                        /* Preview Tab */
+                        <div style={{ padding: '20px' }}>
+                            <div style={{
+                                maxWidth: '400px',
+                                margin: '0 auto',
+                                transform: 'scale(0.9)',
+                                transformOrigin: 'top center'
+                            }}>
+                                <Card
+                                    title={formData.title || 'Resource Title'}
+                                    description={formData.description || 'Resource description will appear here...'}
+                                    tags={formData.tags ? formData.tags.split(',').map(t => t.trim()) : ['tag1', 'tag2']}
+                                    gradient={formData.gradient}
+                                    imageUrl={imagePreview || formData.image_url || ''}
+                                    url={formData.url || '#'}
+                                />
+                            </div>
+                            <p style={{
+                                textAlign: 'center',
+                                marginTop: '24px',
+                                color: '#666',
+                                fontSize: '14px'
+                            }}>
+                                This is how your resource card will appear on the website
+                            </p>
+                        </div>
+                        )}
                     </form>
                 </div>
             )}
