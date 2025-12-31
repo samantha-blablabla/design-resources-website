@@ -441,22 +441,28 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                     </div>
 
                     {/* Two Column Layout */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-                        {/* Left Column - Edit Form */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        {/* Left Column - Edit Form Card */}
                         <div style={{
-                            borderRight: '1px solid rgba(0,0,0,0.1)',
-                            paddingRight: '24px'
+                            background: '#fff',
+                            borderRadius: '12px',
+                            padding: '24px',
+                            border: '1px solid rgba(0,0,0,0.08)',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                         }}>
                             <h4 style={{
                                 margin: '0 0 20px 0',
                                 fontSize: '16px',
                                 fontWeight: '600',
-                                color: '#333',
+                                color: '#1a1a1a',
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '8px'
+                                gap: '8px',
+                                paddingBottom: '16px',
+                                borderBottom: '1px solid rgba(0,0,0,0.06)'
                             }}>
-                                ✏️ Edit Resource
+                                <Edit width={18} height={18} strokeWidth={2} color="#667eea" />
+                                <span>Edit Resource</span>
                             </h4>
 
                     <form onSubmit={handleSubmit} className="admin-form-modern">
@@ -614,18 +620,27 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                     </form>
                         </div>
 
-                        {/* Right Column - Preview */}
-                        <div style={{ paddingLeft: '24px' }}>
+                        {/* Right Column - Preview Card */}
+                        <div style={{
+                            background: '#f8f9fa',
+                            borderRadius: '12px',
+                            padding: '24px',
+                            border: '1px solid rgba(0,0,0,0.08)',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                        }}>
                             <h4 style={{
                                 margin: '0 0 20px 0',
                                 fontSize: '16px',
                                 fontWeight: '600',
-                                color: '#333',
+                                color: '#1a1a1a',
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '8px'
+                                gap: '8px',
+                                paddingBottom: '16px',
+                                borderBottom: '1px solid rgba(0,0,0,0.06)'
                             }}>
-                                👁️ Preview
+                                <MediaImage width={18} height={18} strokeWidth={2} color="#667eea" />
+                                <span>Live Preview</span>
                             </h4>
 
                             <div style={{
@@ -633,10 +648,8 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                 top: '20px'
                             }}>
                                 <div style={{
-                                    maxWidth: '400px',
-                                    margin: '0 auto',
-                                    transform: 'scale(0.95)',
-                                    transformOrigin: 'top center'
+                                    maxWidth: '380px',
+                                    margin: '0 auto'
                                 }}>
                                     <Card
                                         title={formData.title || 'Resource Title'}
@@ -649,12 +662,13 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                 </div>
                                 <p style={{
                                     textAlign: 'center',
-                                    marginTop: '16px',
-                                    color: '#999',
-                                    fontSize: '13px',
-                                    fontStyle: 'italic'
+                                    marginTop: '20px',
+                                    color: '#888',
+                                    fontSize: '12px',
+                                    fontStyle: 'italic',
+                                    lineHeight: '1.5'
                                 }}>
-                                    Live preview of how this will appear on the website
+                                    💡 This is how your card will appear on the website
                                 </p>
                             </div>
                         </div>
