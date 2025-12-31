@@ -31,27 +31,36 @@ All content now updates automatically every day via **Vercel Cron Jobs** (optimi
 
 **Current Database Content**:
 ```
-✅ Total Resources: 322 (all real content, no dummy data)
+✅ Total Resources: 276 (all real content, policy-compliant)
 ✅ Videos: 201 (from 13 YouTube channels)
 ✅ Inspiration: 43 (from 5 RSS feeds)
-✅ Design Resources: 78 (icons, fonts, UI kits, etc.)
-  - UI Kits: 22
-  - Icons: 19
-  - Fonts: 10
-  - Illustrations: 9
+✅ Design Resources: 32 (downloadable assets only)
+  - Icons: 6 (downloadable sites only, NO GitHub)
+  - Mockups: 2
+  - UI Kits: 4 (downloadable kits, NO code libraries)
+  - Illustrations: 5
+✅ Separate Categories:
+  - Tools: 4
   - Colors: 6
   - Typography: 5
-  - Tools: 4
-  - Mockups: 2
-  - Templates: 1
 ```
 
 **Latest Automation Run** (Dec 31, 2025):
 ```
 ✅ Videos: +56 new videos
 ✅ Inspiration: +43 items from RSS
-✅ Resources: +46 from GitHub
-✅ Cleaned: 30 dummy data items removed
+✅ Resources: DISABLED (manual curation only)
+✅ Cleaned: 76 total items removed
+  - 30 dummy data items
+  - 46 GitHub repositories (not downloadable assets)
+```
+
+**Content Policy** (Updated Dec 31, 2025):
+```
+📋 Resources Page = Downloadable Design Files ONLY
+✅ ALLOWED: Brushes, fonts, mockups, UI kits, illustrations, icons, 3D assets
+❌ NOT ALLOWED: GitHub repos, tools, code libraries, tutorials
+📖 See CONTENT-POLICY.md for full guidelines
 ```
 
 ---
@@ -62,13 +71,14 @@ All content now updates automatically every day via **Vercel Cron Jobs** (optimi
 
 **`app/api/cron/fetch-all-content/route.ts`** ⭐ COMBINED ENDPOINT
 - **All-in-one content fetcher** (optimized for Vercel free plan)
-- Fetches from 18+ sources in one job:
+- Fetches from 18 sources in one job:
   - 13 YouTube channels (videos)
   - 5 RSS feeds (inspiration)
-  - GitHub trending (resources)
+  - ~~GitHub trending~~ **DISABLED** (see CONTENT-POLICY.md)
 - Auto-categorize and tag content
 - Parse video durations from ISO 8601
 - Extract images from RSS feeds
+- **Content Policy**: Resources page = downloadable assets ONLY
 - Status: ✅ Active - Runs daily at 2 AM UTC
 
 **`app/api/cron/cleanup/route.ts`**
@@ -419,19 +429,26 @@ Visit: https://vercel.com/samantha-blablablas-projects/design-resources-website/
 ## 📚 Important Documentation
 
 1. **VERCEL-CRON-SETUP.md** - Primary automation guide ✅
-2. **SESSION-2025-12-30.md** - Today's detailed work log ✅
-3. **CURRENT-STATE.md** - This file ✅
+2. **CONTENT-POLICY.md** - Content guidelines and rules ✅ **NEW**
+3. **SESSION-2025-12-30.md** - Detailed work log ✅
+4. **CURRENT-STATE.md** - This file ✅
 
 ---
 
 ## 🎉 Session Achievements
 
 **December 31, 2025 - Mid Morning Session**:
-- ✅ **DATABASE CLEANUP**: Removed all 30 dummy data items with example.com URLs
-- ✅ **POPULATED DATABASE**: Added 322 real resources total
+- ✅ **CONTENT POLICY ENFORCEMENT**: Created comprehensive content guidelines
+  - Resources page = downloadable design files ONLY
+  - NO GitHub repos, tools, or code libraries
+  - Disabled GitHub auto-fetching in cron
+- ✅ **DATABASE CLEANUP**: Removed 76 non-compliant items
+  - 30 dummy data items with example.com URLs
+  - 46 GitHub repositories (not downloadable assets)
+- ✅ **FINAL DATABASE**: 276 policy-compliant resources
   - 201 videos from YouTube automation
   - 43 inspiration items from RSS feeds
-  - 78 design resources from GitHub and manual entries
+  - 32 downloadable design resources (manual + verified)
 - ✅ Removed emoji icons from homepage cards (cleaner gradient-only design)
 - ✅ Added URL column to all admin tables (Videos, Resources, Inspiration)
 - ✅ Made admin panel headings dynamic based on tab
@@ -470,5 +487,15 @@ All content automatically updates daily from **18+ sources**:
 **Remember**: This is a 2-computer workflow. Always pull from GitHub first and read `.sync-docs/` files!
 
 **Last Updated**: December 31, 2025 - Mid Morning
-**Latest Commit**: `bb27b17` - Dynamic admin panel headings
+**Latest Commit**: `de20da7` - Content policy enforcement
 **Next Update**: After daily cron runs complete
+
+---
+
+## 📅 Automation Reports
+
+**Schedule** (Vietnam Time):
+- **9:15 AM Daily**: Check if cron ran successfully, report any errors
+- **11:00 AM Daily**: Verify new content on website, check for 404s removed
+
+**Reports will be posted in**: `.sync-docs/daily-reports/YYYY-MM-DD.md`
