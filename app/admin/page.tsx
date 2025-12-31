@@ -761,7 +761,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                         className="admin-filter-select"
                     >
                         <option value="all">All Tags</option>
-                        {allTags.sort().map((tag: string) => (
+                        {allTags.sort().map((tag) => (
                             <option key={tag} value={tag}>{tag}</option>
                         ))}
                     </select>
