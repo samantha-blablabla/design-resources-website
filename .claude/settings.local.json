@@ -34,7 +34,10 @@
       "Bash(node fill-thumbnails.js:*)",
       "Bash(del:*)",
       "Bash(node check-resources.js:*)",
-      "Bash(node import-dummy-data.js:*)"
+      "Bash(node import-dummy-data.js:*)",
+      "Bash(node clean-all-dummy.js:*)",
+      "Bash(node check-database.js:*)",
+      "Bash(node fetch-github-resources.js:*)"
     ]
   }
 }

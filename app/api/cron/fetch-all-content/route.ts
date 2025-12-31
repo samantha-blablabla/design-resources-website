@@ -264,8 +264,14 @@ export async function GET(request: NextRequest) {
         }
 
         // ===== FETCH GRAPHIC DESIGN RESOURCES FROM GITHUB =====
-        console.log('🎨 Fetching graphic design resources from GitHub...');
+        // DISABLED: GitHub repos are not downloadable design resources
+        // Resources page should only contain:
+        // - Downloadable brushes, fonts, mockups, UI kits, etc.
+        // - Websites that provide downloadable design assets
+        // NOT: GitHub repositories, tools, or libraries
+        console.log('🎨 Skipping GitHub resources (disabled)...');
 
+        /* DISABLED - GitHub fetching removed
         try {
             // Search for graphic design resource repositories
             const queries = [
@@ -365,6 +371,7 @@ export async function GET(request: NextRequest) {
             console.error('Error fetching GitHub resources:', error.message);
             results.resources.errors++;
         }
+        */
 
         console.log('✅ Combined fetch completed:', results);
 
