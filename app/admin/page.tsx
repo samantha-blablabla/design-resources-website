@@ -405,6 +405,9 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                 </button>
             </div>
 
+            {/* Sources Info Panel */}
+            <SourcesInfoPanel category={defaultCategory} />
+
             {showAddForm && (
                 <div className="admin-form-card-modern">
                     <div className="admin-form-header">
@@ -743,6 +746,113 @@ function ColorsManager() {
 
 function TagsManager() {
     return <div className="admin-panel-modern"><h2>Tags Manager</h2><p>Coming soon...</p></div>;
+}
+
+// Sources Info Panel Component
+function SourcesInfoPanel({ category }: { category: string }) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const sources = {
+        'video-tutorials': {
+            title: 'YouTube Channels',
+            icon: '📺',
+            items: [
+                'DesignCourse', 'Flux Academy', 'Jesse Showalter', 'The Futur',
+                'Charli Marie', 'Motion Design School', 'School of Motion',
+                'SonduckFilm', 'Dope Motions', 'DesignWithArash',
+                'Blender Guru', 'Josh - Blender Bros', 'Ryuu - Blender Bros'
+            ]
+        },
+        'inspiration': {
+            title: 'RSS Feeds',
+            icon: '🎨',
+            items: [
+                'Dribbble Popular Shots',
+                'Behance Projects Feed',
+                'Awwwards Blog',
+                'Designspiration Feed',
+                'Abduzeedo'
+            ]
+        },
+        'resources': {
+            title: 'GitHub Topics',
+            icon: '📦',
+            items: [
+                'design-resources, brushes, textures',
+                'ui-kit, mockup, icons',
+                'fonts, typography, illustrations'
+            ]
+        }
+    };
+
+    const sourceInfo = sources[category as keyof typeof sources];
+    if (!sourceInfo) return null;
+
+    return (
+        <div style={{
+            marginBottom: '20px',
+            border: '1px solid rgba(99, 102, 241, 0.2)',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%)',
+            overflow: 'hidden'
+        }}>
+            <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                style={{
+                    width: '100%',
+                    padding: '16px 20px',
+                    background: 'transparent',
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer',
+                    color: 'inherit',
+                    fontSize: '14px',
+                    fontWeight: '500'
+                }}
+            >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ fontSize: '20px' }}>{sourceInfo.icon}</span>
+                    <span>{sourceInfo.title} ({sourceInfo.items.length})</span>
+                </div>
+                <span style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>▼</span>
+            </button>
+
+            {isExpanded && (
+                <div style={{ padding: '0 20px 20px 20px' }}>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                        gap: '10px'
+                    }}>
+                        {sourceInfo.items.map((item, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    padding: '8px 12px',
+                                    background: 'rgba(255, 255, 255, 0.5)',
+                                    borderRadius: '6px',
+                                    fontSize: '13px',
+                                    border: '1px solid rgba(99, 102, 241, 0.1)'
+                                }}
+                            >
+                                {item}
+                            </div>
+                        ))}
+                    </div>
+                    <p style={{
+                        marginTop: '12px',
+                        fontSize: '12px',
+                        color: '#6b7280',
+                        fontStyle: 'italic'
+                    }}>
+                        Content is automatically fetched via Vercel Cron Jobs (every 6 hours)
+                    </p>
+                </div>
+            )}
+        </div>
+    );
 }
 
 function TypographySettings() {
