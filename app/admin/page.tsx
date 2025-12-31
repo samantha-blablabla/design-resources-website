@@ -224,7 +224,6 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     });
     const [uploadingImage, setUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState('');
-    const [activeFormTab, setActiveFormTab] = useState<'edit' | 'preview'>('edit');
 
     // Extract all unique tags from resources
     const allTags = Array.from(new Set(resources.flatMap((r: any) => r.tags || [])));
@@ -441,49 +440,26 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                         </button>
                     </div>
 
-                    {/* Tabs */}
-                    <div style={{
-                        display: 'flex',
-                        gap: '8px',
-                        borderBottom: '1px solid rgba(0,0,0,0.1)',
-                        marginBottom: '24px'
-                    }}>
-                        <button
-                            type="button"
-                            onClick={() => setActiveFormTab('edit')}
-                            style={{
-                                padding: '12px 24px',
-                                background: 'transparent',
-                                border: 'none',
-                                borderBottom: activeFormTab === 'edit' ? '2px solid #667eea' : '2px solid transparent',
-                                cursor: 'pointer',
-                                fontWeight: activeFormTab === 'edit' ? '600' : '400',
-                                color: activeFormTab === 'edit' ? '#667eea' : '#666',
-                                transition: 'all 0.2s'
-                            }}
-                        >
-                            ✏️ Edit
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setActiveFormTab('preview')}
-                            style={{
-                                padding: '12px 24px',
-                                background: 'transparent',
-                                border: 'none',
-                                borderBottom: activeFormTab === 'preview' ? '2px solid #667eea' : '2px solid transparent',
-                                cursor: 'pointer',
-                                fontWeight: activeFormTab === 'preview' ? '600' : '400',
-                                color: activeFormTab === 'preview' ? '#667eea' : '#666',
-                                transition: 'all 0.2s'
-                            }}
-                        >
-                            👁️ Preview
-                        </button>
-                    </div>
+                    {/* Two Column Layout */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                        {/* Left Column - Edit Form */}
+                        <div style={{
+                            borderRight: '1px solid rgba(0,0,0,0.1)',
+                            paddingRight: '24px'
+                        }}>
+                            <h4 style={{
+                                margin: '0 0 20px 0',
+                                fontSize: '16px',
+                                fontWeight: '600',
+                                color: '#333',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }}>
+                                ✏️ Edit Resource
+                            </h4>
 
                     <form onSubmit={handleSubmit} className="admin-form-modern">
-                        {activeFormTab === 'edit' ? (
                         <>
                         {/* Image Upload Section */}
                         <div className="admin-image-upload-section">
@@ -635,35 +611,54 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                             </button>
                         </div>
                         </>
-                        ) : (
-                        /* Preview Tab */
-                        <div style={{ padding: '20px' }}>
-                            <div style={{
-                                maxWidth: '400px',
-                                margin: '0 auto',
-                                transform: 'scale(0.9)',
-                                transformOrigin: 'top center'
-                            }}>
-                                <Card
-                                    title={formData.title || 'Resource Title'}
-                                    description={formData.description || 'Resource description will appear here...'}
-                                    tags={formData.tags ? formData.tags.split(',').map(t => t.trim()) : ['tag1', 'tag2']}
-                                    gradient={formData.gradient}
-                                    imageUrl={imagePreview || formData.image_url || ''}
-                                    url={formData.url || '#'}
-                                />
-                            </div>
-                            <p style={{
-                                textAlign: 'center',
-                                marginTop: '24px',
-                                color: '#666',
-                                fontSize: '14px'
-                            }}>
-                                This is how your resource card will appear on the website
-                            </p>
-                        </div>
-                        )}
                     </form>
+                        </div>
+
+                        {/* Right Column - Preview */}
+                        <div style={{ paddingLeft: '24px' }}>
+                            <h4 style={{
+                                margin: '0 0 20px 0',
+                                fontSize: '16px',
+                                fontWeight: '600',
+                                color: '#333',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }}>
+                                👁️ Preview
+                            </h4>
+
+                            <div style={{
+                                position: 'sticky',
+                                top: '20px'
+                            }}>
+                                <div style={{
+                                    maxWidth: '400px',
+                                    margin: '0 auto',
+                                    transform: 'scale(0.95)',
+                                    transformOrigin: 'top center'
+                                }}>
+                                    <Card
+                                        title={formData.title || 'Resource Title'}
+                                        description={formData.description || 'Resource description will appear here...'}
+                                        tags={formData.tags ? formData.tags.split(',').map(t => t.trim()).filter(Boolean) : ['tag1', 'tag2']}
+                                        gradient={formData.gradient}
+                                        imageUrl={imagePreview || formData.image_url || ''}
+                                        url={formData.url || '#'}
+                                    />
+                                </div>
+                                <p style={{
+                                    textAlign: 'center',
+                                    marginTop: '16px',
+                                    color: '#999',
+                                    fontSize: '13px',
+                                    fontStyle: 'italic'
+                                }}>
+                                    Live preview of how this will appear on the website
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
 
