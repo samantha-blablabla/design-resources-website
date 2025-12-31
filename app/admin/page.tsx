@@ -603,16 +603,73 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                             </label>
                         </div>
 
-                        <div className="admin-form-actions-modern">
+                        <div style={{
+                            display: 'flex',
+                            gap: '12px',
+                            justifyContent: 'flex-end',
+                            marginTop: '24px',
+                            paddingTop: '24px',
+                            borderTop: '1px solid rgba(0,0,0,0.06)'
+                        }}>
                             <button
                                 type="button"
-                                className="admin-button-secondary-modern"
                                 onClick={() => { resetForm(); setShowAddForm(false); }}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '12px 24px',
+                                    fontSize: '14px',
+                                    fontWeight: '500',
+                                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                                    color: '#666',
+                                    background: '#fff',
+                                    border: '1px solid rgba(0,0,0,0.12)',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+                                }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.background = '#f8f9fa';
+                                    e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)';
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.background = '#fff';
+                                    e.currentTarget.style.borderColor = 'rgba(0,0,0,0.12)';
+                                }}
                             >
-                                Cancel
+                                <Xmark width={18} height={18} strokeWidth={2} />
+                                <span>Cancel</span>
                             </button>
-                            <button type="submit" className="admin-button-primary-modern">
-                                <Check width={20} height={20} />
+                            <button
+                                type="submit"
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '12px 24px',
+                                    fontSize: '14px',
+                                    fontWeight: '500',
+                                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                                    color: '#fff',
+                                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)'
+                                }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-1px)';
+                                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(102, 126, 234, 0.3)';
+                                }}
+                            >
+                                <Check width={18} height={18} strokeWidth={2} />
                                 <span>{editingResource ? 'Update' : 'Save'} Resource</span>
                             </button>
                         </div>
