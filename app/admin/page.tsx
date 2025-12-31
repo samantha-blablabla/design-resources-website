@@ -776,6 +776,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                 <tr>
                                     <th>Thumbnail</th>
                                     <th>Title</th>
+                                    <th>URL</th>
                                     <th>Category</th>
                                     <th>Tags</th>
                                     <th>Actions</th>
@@ -784,7 +785,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                             <tbody>
                                 {filteredResources.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} style={{ textAlign: 'center', padding: '3rem' }}>
+                                        <td colSpan={6} style={{ textAlign: 'center', padding: '3rem' }}>
                                             No resources found
                                         </td>
                                     </tr>
@@ -807,8 +808,27 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                             <td>
                                                 <div className="admin-table-title">
                                                     {resource.title}
-                                                    <small>{resource.url}</small>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <a
+                                                    href={resource.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{
+                                                        color: '#667eea',
+                                                        textDecoration: 'none',
+                                                        fontSize: '13px',
+                                                        display: 'block',
+                                                        maxWidth: '200px',
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap'
+                                                    }}
+                                                    title={resource.url}
+                                                >
+                                                    {resource.url}
+                                                </a>
                                             </td>
                                             <td>
                                                 <span className="admin-badge">{resource.category}</span>
