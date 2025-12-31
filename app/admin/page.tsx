@@ -211,6 +211,19 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     const [searchQuery, setSearchQuery] = useState('');
     const [tagFilter, setTagFilter] = useState<string>('all');
     const [currentPage, setCurrentPage] = useState(1);
+
+    // Get title based on category
+    const getTitle = () => {
+        if (defaultCategory === 'video-tutorials') return 'Manage Video Resources';
+        if (defaultCategory === 'inspiration') return 'Manage Inspiration Resources';
+        return 'Manage Design Resources';
+    };
+
+    const getSubtitle = () => {
+        if (defaultCategory === 'video-tutorials') return 'Add, edit, and manage your video tutorials';
+        if (defaultCategory === 'inspiration') return 'Add, edit, and manage your inspiration content';
+        return 'Add, edit, and manage your design resources';
+    };
     const itemsPerPage = 8; // Show 8 resources per page for Full HD screen
     const [formData, setFormData] = useState({
         title: '',
@@ -394,8 +407,8 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
         <div className="admin-panel-modern">
             <div className="admin-panel-header-modern">
                 <div>
-                    <h2>Manage Resources</h2>
-                    <p className="admin-subtitle">Add, edit, and manage your design resources</p>
+                    <h2>{getTitle()}</h2>
+                    <p className="admin-subtitle">{getSubtitle()}</p>
                 </div>
                 <button
                     className="admin-button-primary-modern"
