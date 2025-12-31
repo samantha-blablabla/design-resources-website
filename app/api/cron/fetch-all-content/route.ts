@@ -31,14 +31,14 @@ const YOUTUBE_CHANNELS = [
 // Inspiration sources - RSS feeds + APIs
 const INSPIRATION_SOURCES = {
     rss: [
-        { url: 'https://www.awwwards.com/blog/feed/', source: 'Awwwards', limit: 3 },
         { url: 'https://packagingoftheworld.com/feed', source: 'Packaging of the World', limit: 3 },
     ],
     apis: [
         {
-            url: 'https://www.artstation.com/api/v2/community/explore/projects/trending.json?page=1&per_page=3',
+            url: 'https://www.artstation.com/api/v2/community/explore/projects/trending.json?page=1&per_page=10',
             source: 'ArtStation',
-            type: 'artstation'
+            type: 'artstation',
+            limit: 3
         },
     ]
 };
@@ -333,7 +333,7 @@ export async function GET(request: NextRequest) {
 
                 const data = await response.json();
 
-                for (const item of data.data || []) {
+                for (const item of (data.data || []).slice(0, api.limit || 3)) {
                     results.inspiration.fetched++;
 
                     const url = item.url || item.permalink;

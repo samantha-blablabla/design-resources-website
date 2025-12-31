@@ -36,23 +36,25 @@ This document defines what content belongs on each page of the website and what 
 
 ### ✅ ALLOWED
 - Design showcases from:
-  - Awwwards
-  - Designboom
-  - Creative Bloq
-  - Smashing Magazine
-  - Abduzeedo
+  - **Packaging of the World** (RSS Feed) - Packaging design showcase
+  - **ArtStation** (Public API) - Digital art, 3D art, illustration
 - Real design project showcases
+- Digital art and illustrations
+- Packaging design
 - Award-winning designs
-- Design trends and articles
+- Design trends and creative work
 
 ### ❌ NOT ALLOWED
 - Dummy/placeholder content
 - Generic blog posts
 - Non-design content
 - Promotional content
+- Paid marketplace content
 
 ### 📊 Current Sources
-5 RSS feeds (see VERCEL-CRON-SETUP.md for list)
+- **RSS Feeds**: 1 source (Packaging of the World)
+- **Public APIs**: 1 source (ArtStation)
+- **Total items per fetch**: 6 items (3 from each source)
 
 ---
 
