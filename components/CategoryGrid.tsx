@@ -18,7 +18,7 @@ import {
     Brain
 } from 'iconoir-react';
 
-// 17 categories matching Resources page structure + AI Tools
+// 16 categories matching Resources page structure + AI Tools
 const categories = [
     // AI Tools - FIRST CATEGORY
     {
@@ -120,12 +120,6 @@ const categories = [
         title: 'Actions',
         icon: Flash,
         href: '/resources?category=actions',
-    },
-    {
-        id: 16,
-        title: 'Presets',
-        icon: Settings,
-        href: '/resources?category=presets',
     },
 ];
 
