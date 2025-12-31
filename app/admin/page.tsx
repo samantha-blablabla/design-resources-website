@@ -219,6 +219,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
         tags: '',
         image_url: '',
         gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        featured: false,
     });
     const [uploadingImage, setUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState('');
@@ -364,6 +365,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
             tags: resource.tags?.join(', ') || '',
             image_url: resource.image_url || '',
             gradient: resource.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            featured: resource.featured || false,
         });
         setImagePreview(resource.image_url || '');
         setShowAddForm(true);
@@ -378,6 +380,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
             tags: '',
             image_url: '',
             gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            featured: false,
         });
         setImagePreview('');
         setEditingResource(null);
@@ -533,6 +536,18 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                 value={formData.tags}
                                 onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                             />
+                        </div>
+
+                        <div className="admin-form-group">
+                            <label className="admin-checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={formData.featured}
+                                    onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                                />
+                                <span>⭐ Featured (Show on homepage)</span>
+                            </label>
                         </div>
 
                         <div className="admin-form-actions-modern">
