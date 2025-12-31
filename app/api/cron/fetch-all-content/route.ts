@@ -28,14 +28,20 @@ const YOUTUBE_CHANNELS = [
     { id: 'UCWWybvw9jnpOdJq_6wTHryA', name: 'Ryuu - Blender Bros' },
 ];
 
-// RSS feeds for inspiration
-const INSPIRATION_FEEDS = [
-    { url: 'https://www.awwwards.com/blog/feed/', source: 'Awwwards' },
-    { url: 'https://abduzeedo.com/feed', source: 'Abduzeedo' },
-    { url: 'https://www.smashingmagazine.com/feed/', source: 'Smashing Magazine' },
-    { url: 'https://www.creativebloq.com/feed', source: 'Creative Bloq' },
-    { url: 'https://www.designboom.com/feed/', source: 'Designboom' },
-];
+// Inspiration sources - RSS feeds + APIs
+const INSPIRATION_SOURCES = {
+    rss: [
+        { url: 'https://www.awwwards.com/blog/feed/', source: 'Awwwards', limit: 3 },
+        { url: 'https://packagingoftheworld.com/feed', source: 'Packaging of the World', limit: 3 },
+    ],
+    apis: [
+        {
+            url: 'https://www.artstation.com/api/v2/community/explore/projects/trending.json?page=1&per_page=3',
+            source: 'ArtStation',
+            type: 'artstation'
+        },
+    ]
+};
 
 // Parse ISO 8601 duration (PT1H2M3S) to readable format
 function parseDuration(isoDuration: string): string {
@@ -83,21 +89,60 @@ function categorizeVideo(title: string, description: string, channelName: string
     return { category, tags: tags.length > 0 ? tags : ['Design', 'Tutorial'] };
 }
 
-// Auto-categorize inspiration based on content
-function categorizeInspiration(title: string, content: string) {
+// Auto-categorize inspiration based on content with new categories
+function categorizeInspiration(title: string, content: string, source: string) {
     const combined = `${title} ${content}`.toLowerCase();
 
+    let category = 'inspiration'; // default
     const tags: string[] = [];
 
-    if (combined.includes('ui') || combined.includes('interface')) tags.push('UI');
-    if (combined.includes('web')) tags.push('Web Design');
-    if (combined.includes('logo') || combined.includes('branding')) tags.push('Branding');
-    if (combined.includes('illustration')) tags.push('Illustration');
-    if (combined.includes('typography') || combined.includes('font')) tags.push('Typography');
-    if (combined.includes('color') || combined.includes('palette')) tags.push('Color');
-    if (combined.includes('mobile') || combined.includes('app')) tags.push('Mobile');
+    // Category detection based on keywords
+    if (combined.includes('packaging') || combined.includes('package') || combined.includes('label') || combined.includes('bottle')) {
+        category = 'packaging-design';
+        tags.push('Packaging');
+    } else if (combined.includes('ui') || combined.includes('ux') || combined.includes('interface') || combined.includes('dashboard')) {
+        category = 'ui-ux-design';
+        tags.push('UI/UX');
+    } else if (combined.includes('brand') || combined.includes('logo') || combined.includes('identity')) {
+        category = 'branding-identity';
+        tags.push('Branding');
+    } else if (combined.includes('3d') || combined.includes('render') || combined.includes('cgi')) {
+        category = '3d-digital-art';
+        tags.push('3D Art');
+    } else if (combined.includes('illustration') || combined.includes('character') || combined.includes('concept art')) {
+        category = 'digital-illustration';
+        tags.push('Illustration');
+    } else if (combined.includes('typography') || combined.includes('font') || combined.includes('lettering')) {
+        category = 'typography';
+        tags.push('Typography');
+    } else if (combined.includes('web design') || combined.includes('website')) {
+        category = 'web-design';
+        tags.push('Web Design');
+    } else if (combined.includes('motion') || combined.includes('animation')) {
+        category = 'motion-graphics';
+        tags.push('Motion');
+    } else if (combined.includes('architecture') || combined.includes('interior') || combined.includes('building')) {
+        category = 'architecture-interior';
+        tags.push('Architecture');
+    } else if (combined.includes('photography') || combined.includes('photo')) {
+        category = 'photography-art';
+        tags.push('Photography');
+    }
 
-    return tags.length > 0 ? tags : ['Design', 'Inspiration'];
+    // Add source-specific tags
+    if (source === 'Packaging of the World') {
+        category = 'packaging-design';
+        tags.push('Packaging');
+    } else if (source === 'ArtStation') {
+        if (!tags.length) tags.push('Digital Art');
+    }
+
+    // Additional tags
+    if (combined.includes('mobile') || combined.includes('app')) tags.push('Mobile');
+    if (combined.includes('poster')) tags.push('Poster');
+    if (combined.includes('print')) tags.push('Print');
+
+    return { category, tags: tags.length > 0 ? tags : ['Design', 'Inspiration'] };
 }
 
 // Extract image from RSS content
@@ -215,11 +260,11 @@ export async function GET(request: NextRequest) {
         const Parser = (await import('rss-parser')).default;
         const parser = new Parser();
 
-        for (const feed of INSPIRATION_FEEDS) {
+        for (const feed of INSPIRATION_SOURCES.rss) {
             try {
                 const rssFeed = await parser.parseURL(feed.url);
 
-                for (const item of rssFeed.items?.slice(0, 10) || []) {
+                for (const item of rssFeed.items?.slice(0, feed.limit) || []) {
                     results.inspiration.fetched++;
 
                     const url = item.link || '';
@@ -237,28 +282,102 @@ export async function GET(request: NextRequest) {
                     }
 
                     const imageUrl = extractImage(item.content || item.contentSnippet || '', url);
-                    const tags = categorizeInspiration(item.title || '', item.content || '');
+                    const { category, tags } = categorizeInspiration(
+                        item.title || '',
+                        item.content || item.contentSnippet || '',
+                        feed.source
+                    );
 
                     const { error } = await supabase.from('resources').insert({
                         title: item.title || 'Untitled',
                         description: (item.contentSnippet || item.content || '').substring(0, 500),
                         url,
-                        category: 'inspiration',
+                        category,
                         tags,
                         image_url: imageUrl,
+                        source: feed.source,
                         published_at: item.pubDate || new Date().toISOString(),
                         featured: false,
                     });
 
                     if (error) {
-                        console.error(`Error inserting inspiration: ${error.message}`);
+                        console.error(`Error inserting inspiration from ${feed.source}: ${error.message}`);
                         results.inspiration.errors++;
                     } else {
+                        console.log(`✅ Added [${category}] ${item.title?.substring(0, 50)}`);
                         results.inspiration.inserted++;
                     }
                 }
             } catch (error: any) {
-                console.error(`Error processing feed ${feed.source}:`, error.message);
+                console.error(`Error processing RSS feed ${feed.source}:`, error.message);
+                results.inspiration.errors++;
+            }
+        }
+
+        // ===== FETCH INSPIRATION FROM ARTSTATION API =====
+        console.log('🎨 Fetching inspiration from ArtStation API...');
+
+        for (const api of INSPIRATION_SOURCES.apis) {
+            try {
+                const response = await fetch(api.url, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    }
+                });
+
+                if (!response.ok) {
+                    console.error(`Failed to fetch from ${api.source}`);
+                    results.inspiration.errors++;
+                    continue;
+                }
+
+                const data = await response.json();
+
+                for (const item of data.data || []) {
+                    results.inspiration.fetched++;
+
+                    const url = item.url || item.permalink;
+
+                    // Check if already exists
+                    const { data: existing } = await supabase
+                        .from('resources')
+                        .select('id')
+                        .eq('url', url)
+                        .single();
+
+                    if (existing) {
+                        results.inspiration.skipped++;
+                        continue;
+                    }
+
+                    const { category, tags } = categorizeInspiration(
+                        item.title || '',
+                        item.description || '',
+                        api.source
+                    );
+
+                    const { error } = await supabase.from('resources').insert({
+                        title: item.title || 'Untitled',
+                        description: item.description?.substring(0, 500) || `Artwork by ${item.user?.full_name || 'Artist'}`,
+                        url,
+                        category,
+                        tags,
+                        image_url: item.smaller_square_cover_url || item.cover_url,
+                        source: api.source,
+                        published_at: new Date().toISOString(),
+                        featured: false,
+                    });
+
+                    if (error) {
+                        console.error(`Error inserting from ${api.source}: ${error.message}`);
+                        results.inspiration.errors++;
+                    } else {
+                        console.log(`✅ Added [${category}] ${item.title?.substring(0, 50)}`);
+                        results.inspiration.inserted++;
+                    }
+                }
+            } catch (error: any) {
+                console.error(`Error processing API ${api.source}:`, error.message);
                 results.inspiration.errors++;
             }
         }
