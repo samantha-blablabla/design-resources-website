@@ -409,13 +409,32 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
             </div>
 
             {/* Sources Info Panel */}
-            <SourcesInfoPanel category={defaultCategory} />
+            <div style={{ padding: '0 24px' }}>
+                <SourcesInfoPanel category={defaultCategory} />
+            </div>
 
             {showAddForm && (
                 <div className="admin-form-card-modern">
-                    <div className="admin-form-header">
-                        <h3>{editingResource ? 'Edit Resource' : 'Add New Resource'}</h3>
-                        <button className="admin-close-btn" onClick={() => { resetForm(); setShowAddForm(false); }}>
+                    <div className="admin-form-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                        <h3 style={{ margin: 0 }}>{editingResource ? 'Edit Resource' : 'Add New Resource'}</h3>
+                        <button
+                            type="button"
+                            className="admin-close-btn"
+                            onClick={() => { resetForm(); setShowAddForm(false); }}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                padding: '8px',
+                                borderRadius: '6px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'background 0.2s'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.05)'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
                             <Xmark width={20} height={20} />
                         </button>
                     </div>
@@ -457,6 +476,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                         <UploadSquare width={48} height={48} />
                                         <p>Click to upload or drag and drop</p>
                                         <small>PNG, JPG, GIF up to 10MB • Free Supabase Storage</small>
+                                        <small style={{ marginTop: '4px', opacity: 0.7 }}>Recommended: 400x300px or 16:9 aspect ratio</small>
                                     </label>
                                 )}
                             </div>
