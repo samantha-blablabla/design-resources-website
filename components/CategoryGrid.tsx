@@ -14,11 +14,20 @@ import {
     Flash,
     Settings,
     MediaImage,
-    ColorWheel
+    ColorWheel,
+    Brain
 } from 'iconoir-react';
 
-// 16 categories matching Resources page structure
+// 17 categories matching Resources page structure + AI Tools
 const categories = [
+    // AI Tools - FIRST CATEGORY
+    {
+        id: 0,
+        title: 'AI Tools',
+        icon: Brain,
+        href: '/resources?category=ai-tools',
+    },
+
     // Graphic Design Resources (matching Resources page)
     {
         id: 1,

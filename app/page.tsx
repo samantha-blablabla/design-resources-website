@@ -48,12 +48,13 @@ export default function Home() {
                     .order('created_at', { ascending: false })
                     .limit(6);
 
-                // Fetch AI tools (resources with 'ai' tag)
+                // Fetch AI tools (from ai-tools category, featured first)
                 const { data: ai } = await supabase
                     .from('resources')
                     .select('*')
-                    .contains('tags', ['ai'])
-                    .limit(3);
+                    .eq('category', 'ai-tools')
+                    .eq('featured', true)
+                    .limit(8);
 
                 setFeaturedTools(featured || []);
                 setLatestResources(latest || []);
@@ -114,6 +115,46 @@ export default function Home() {
             <div className="fade-in">
                 <CategoryGrid />
             </div>
+
+            {/* Featured AI Tools Section - MOVED TO TOP */}
+            {!loading && aiTools.length > 0 && (
+                <>
+                    <div className="section-header fade-in">
+                        <h2 className="section-title">Featured AI Tools</h2>
+                        <Link href="/resources?category=ai-tools" className="view-all-link">
+                            View All →
+                        </Link>
+                    </div>
+                    <div className="fade-in">
+                        <CardSlider
+                            ref={aiSliderRef}
+                            items={aiTools}
+                            onScrollStateChange={(left, right) => setAiScrollState({ left, right })}
+                        />
+                    </div>
+                    {/* Slider Controls - Below slider */}
+                    <div className="slider-controls-row fade-in">
+                        <div className="slider-controls">
+                            <button
+                                className={`slider-arrow ${!aiScrollState.left ? 'disabled' : ''}`}
+                                onClick={() => aiSliderRef.current?.scrollLeft()}
+                                disabled={!aiScrollState.left}
+                                aria-label="Scroll left"
+                            >
+                                <NavArrowLeft width={20} height={20} strokeWidth={2} />
+                            </button>
+                            <button
+                                className={`slider-arrow ${!aiScrollState.right ? 'disabled' : ''}`}
+                                onClick={() => aiSliderRef.current?.scrollRight()}
+                                disabled={!aiScrollState.right}
+                                aria-label="Scroll right"
+                            >
+                                <NavArrowRight width={20} height={20} strokeWidth={2} />
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
 
             {/* Featured Tools Section */}
             {!loading && featuredTools.length > 0 && (
@@ -195,45 +236,6 @@ export default function Home() {
                 </>
             )}
 
-            {/* Featured AI Tools Section */}
-            {!loading && aiTools.length > 0 && (
-                <>
-                    <div className="section-header fade-in">
-                        <h2 className="section-title">Featured AI Tools</h2>
-                        <Link href="/resources?tag=ai" className="view-all-link">
-                            View All →
-                        </Link>
-                    </div>
-                    <div className="fade-in">
-                        <CardSlider
-                            ref={aiSliderRef}
-                            items={aiTools}
-                            onScrollStateChange={(left, right) => setAiScrollState({ left, right })}
-                        />
-                    </div>
-                    {/* Slider Controls - Below slider */}
-                    <div className="slider-controls-row fade-in">
-                        <div className="slider-controls">
-                            <button
-                                className={`slider-arrow ${!aiScrollState.left ? 'disabled' : ''}`}
-                                onClick={() => aiSliderRef.current?.scrollLeft()}
-                                disabled={!aiScrollState.left}
-                                aria-label="Scroll left"
-                            >
-                                <NavArrowLeft width={20} height={20} strokeWidth={2} />
-                            </button>
-                            <button
-                                className={`slider-arrow ${!aiScrollState.right ? 'disabled' : ''}`}
-                                onClick={() => aiSliderRef.current?.scrollRight()}
-                                disabled={!aiScrollState.right}
-                                aria-label="Scroll right"
-                            >
-                                <NavArrowRight width={20} height={20} strokeWidth={2} />
-                            </button>
-                        </div>
-                    </div>
-                </>
-            )}
         </div>
     );
 }
