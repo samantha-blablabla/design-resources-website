@@ -83,6 +83,26 @@ export default function Home() {
                     <span className="particle"></span>
                     <span className="particle"></span>
                     <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
+                    <span className="particle"></span>
                 </div>
                 <h1 className="hero-title-animated">Discover the Best Design Resources & Tools</h1>
                 <p className="hero-text-animated">
