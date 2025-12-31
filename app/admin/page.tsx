@@ -208,7 +208,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingResource, setEditingResource] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [categoryFilter, setCategoryFilter] = useState<string>('all');
+    const [tagFilter, setTagFilter] = useState<string>('all');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8; // Show 8 resources per page for Full HD screen
     const [formData, setFormData] = useState({
@@ -224,14 +224,17 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     const [uploadingImage, setUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState('');
 
+    // Extract all unique tags from resources
+    const allTags = Array.from(new Set(resources.flatMap((r: any) => r.tags || [])));
+
     const filteredResources = resources.filter((r: any) => {
         const matchesSearch = r.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             r.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             r.category?.toLowerCase().includes(searchQuery.toLowerCase());
 
-        const matchesCategory = categoryFilter === 'all' || r.category === categoryFilter;
+        const matchesTag = tagFilter === 'all' || r.tags?.includes(tagFilter);
 
-        return matchesSearch && matchesCategory;
+        return matchesSearch && matchesTag;
     });
 
     // Pagination calculations
@@ -243,7 +246,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     // Reset to page 1 when filter changes
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchQuery, categoryFilter]);
+    }, [searchQuery, tagFilter]);
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -593,17 +596,14 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                     </div>
 
                     <select
-                        value={categoryFilter}
-                        onChange={(e) => setCategoryFilter(e.target.value)}
+                        value={tagFilter}
+                        onChange={(e) => setTagFilter(e.target.value)}
                         className="admin-filter-select"
                     >
-                        <option value="all">All Categories</option>
-                        <option value="design-tools">Design Tools</option>
-                        <option value="video-tutorials">Video Tutorials</option>
-                        <option value="inspiration">Inspiration</option>
-                        <option value="ui-kits">UI Kits</option>
-                        <option value="fonts">Fonts</option>
-                        <option value="icons">Icons</option>
+                        <option value="all">All Tags</option>
+                        {allTags.sort().map((tag: string) => (
+                            <option key={tag} value={tag}>{tag}</option>
+                        ))}
                     </select>
                 </div>
 
