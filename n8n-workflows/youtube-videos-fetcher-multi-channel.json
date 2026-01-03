@@ -1,0 +1,293 @@
+{
+  "name": "YouTube Videos Fetcher - Multi Channel",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 300],
+      "id": "schedule-trigger-node",
+      "name": "Schedule Daily 6AM"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// 13 YouTube channels for design resources\nconst channels = [\n  { id: 'UCVyRiMvfUNMA1UPlDPzG5Ow', name: 'DesignCourse' },\n  { id: 'UCPDGLCpPvLZQIFJdV8ZroTA', name: 'Flux Academy' },\n  { id: 'UCzBkNPSxw15qrW_Y8p-oCUw', name: 'Jesse Showalter' },\n  { id: 'UC-b3c7kxa5vU-bnmaROgvog', name: 'The Futur' },\n  { id: 'UCZHkx_OyRXHb1D3XTqOidRw', name: 'Charli Marie' },\n  { id: 'UCQ_DTLof0a_OrcuAlH9bIkA', name: 'Motion Design School' },\n  { id: 'UCMrvLMUITAImCHMOhX88PYQ', name: 'School of Motion' },\n  { id: 'UCFW5V23lFeq_EZ-n0l_Y-xg', name: 'Dope Motions' },\n  { id: 'UCLtuLmuevwxQzkn6SMR6kZQ', name: 'DesignWithArash' },\n  { id: 'UCOKHwx1VCdgnxwbjyb9Iu1g', name: 'Blender Guru' },\n  { id: 'UCSLLdTBwLMfTKWCyqUmVwxg', name: 'Blender Bros' }\n];\n\nreturn channels.map(channel => ({ json: channel }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 300],
+      "id": "set-channels-node",
+      "name": "Set YouTube Channels"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/youtube/v3/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSyC0pTb952Xc8WZprjfXBRh2FKRyPwOcFIo"
+            },
+            {
+              "name": "channelId",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "order",
+              "value": "date"
+            },
+            {
+              "name": "maxResults",
+              "value": "10"
+            },
+            {
+              "name": "type",
+              "value": "video"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 300],
+      "id": "youtube-search-node",
+      "name": "YouTube API Search"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Auto-categorization function\nfunction categorizeVideo(title, description, channelName) {\n  const combined = `${title} ${description} ${channelName}`.toLowerCase();\n  const tags = [];\n\n  // Design Categories\n  if (combined.match(/\\b(ui|user interface|interface design)\\b/)) tags.push('UI Design');\n  if (combined.match(/\\b(ux|user experience|usability)\\b/)) tags.push('UX Design');\n  if (combined.match(/\\b(web design|website|responsive)\\b/)) tags.push('Web Design');\n  if (combined.match(/\\b(logo|branding|brand identity)\\b/)) tags.push('Branding');\n  if (combined.match(/\\b(graphic design|poster|flyer)\\b/)) tags.push('Graphic Design');\n  \n  // Motion & 3D\n  if (combined.match(/\\b(motion|animation|after effects|animate)\\b/)) tags.push('Motion Graphics');\n  if (combined.match(/\\b(3d|blender|cinema 4d|c4d|maya|three\\.js)\\b/)) tags.push('3D Design');\n  \n  // Tools\n  if (combined.match(/\\b(figma)\\b/)) tags.push('Figma');\n  if (combined.match(/\\b(adobe|photoshop|illustrator|xd|premiere|after effects)\\b/)) tags.push('Adobe');\n  if (combined.match(/\\b(sketch|invision|framer)\\b/)) tags.push('Design Tools');\n  \n  // Topics\n  if (combined.match(/\\b(tutorial|how to|learn|course|lesson)\\b/)) tags.push('Tutorial');\n  if (combined.match(/\\b(portfolio|showcase|review)\\b/)) tags.push('Portfolio');\n  if (combined.match(/\\b(typography|font|typeface)\\b/)) tags.push('Typography');\n  if (combined.match(/\\b(color|palette|gradient)\\b/)) tags.push('Color Theory');\n  if (combined.match(/\\b(freelance|client|business)\\b/)) tags.push('Business');\n  if (combined.match(/\\b(ai|artificial intelligence|midjourney|dall-e|chatgpt)\\b/)) tags.push('AI');\n  \n  // Channel-specific tags\n  if (channelName.toLowerCase().includes('motion')) tags.push('Motion Design');\n  if (channelName.toLowerCase().includes('blender')) tags.push('Blender');\n  if (channelName.toLowerCase().includes('futur')) tags.push('Design Business');\n  \n  // Default tags if nothing matched\n  if (tags.length === 0) {\n    tags.push('Design', 'Tutorial');\n  }\n  \n  // Remove duplicates and limit to 5 tags\n  return [...new Set(tags)].slice(0, 5);\n}\n\n// Get all items from previous node\nconst allItems = $input.all();\nconst results = [];\n\nfor (const inputItem of allItems) {\n  const channelName = inputItem.json.name;\n  const videos = inputItem.json.items || [];\n  \n  for (const video of videos) {\n    const videoId = video.id.videoId;\n    const title = video.snippet.title;\n    const description = video.snippet.description || '';\n    \n    // Auto-categorize\n    const tags = categorizeVideo(title, description, channelName);\n    \n    results.push({\n      title: title,\n      description: description.substring(0, 500),\n      url: `https://www.youtube.com/watch?v=${videoId}`,\n      thumbnail_url: video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.default?.url,\n      channel_name: channelName,\n      published_at: video.snippet.publishedAt,\n      category: 'video-tutorials',\n      tags: tags,\n      featured: false\n    });\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [660, 300],
+      "id": "parse-categorize-node",
+      "name": "Parse & Auto-Categorize"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "resources",
+        "returnAll": false,
+        "limit": 1,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "url",
+              "keyValue": "={{ $json.url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [880, 300],
+      "id": "check-exists-node",
+      "name": "Check If Exists",
+      "credentials": {
+        "supabaseApi": {
+          "id": "nosbOw6TGr2Tl0aJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-empty",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1100, 300],
+      "id": "if-not-exists-node",
+      "name": "If Not Exists"
+    },
+    {
+      "parameters": {
+        "tableId": "resources",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.title }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.description }}"
+            },
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.url }}"
+            },
+            {
+              "fieldId": "channel_name",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.channel_name }}"
+            },
+            {
+              "fieldId": "thumbnail_url",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.thumbnail_url }}"
+            },
+            {
+              "fieldId": "published_at",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.published_at }}"
+            },
+            {
+              "fieldId": "category",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.category }}"
+            },
+            {
+              "fieldId": "tags",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.tags }}"
+            },
+            {
+              "fieldId": "featured",
+              "fieldValue": "={{ $node[\"Parse & Auto-Categorize\"].json.featured }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1320, 200],
+      "id": "insert-supabase-node",
+      "name": "Insert to Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "nosbOw6TGr2Tl0aJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1320, 400],
+      "id": "skip-node",
+      "name": "Skip (Already Exists)"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Daily 6AM": {
+      "main": [
+        [
+          {
+            "node": "Set YouTube Channels",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set YouTube Channels": {
+      "main": [
+        [
+          {
+            "node": "YouTube API Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube API Search": {
+      "main": [
+        [
+          {
+            "node": "Parse & Auto-Categorize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Auto-Categorize": {
+      "main": [
+        [
+          {
+            "node": "Check If Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Exists": {
+      "main": [
+        [
+          {
+            "node": "If Not Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Not Exists": {
+      "main": [
+        [
+          {
+            "node": "Insert to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip (Already Exists)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "multi-channel-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2461d2639d6072d1d3a5e2251b3a14ee5834f3407b65b48042ddf998ebd3a9c9"
+  },
+  "id": "EcYUQknGPR0vQwfe",
+  "tags": []
+}

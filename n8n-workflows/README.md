@@ -4,24 +4,50 @@ Collection of n8n workflows to automate content fetching for the design resource
 
 ## 📦 Workflows
 
-### 1. YouTube Videos Fetcher (`youtube-videos-fetcher.json`)
-**Purpose**: Automatically fetch design tutorial videos from 13 YouTube channels
+### 1. YouTube Videos Fetcher - Multi Channel (`youtube-videos-fetcher-multi-channel.json`) ⭐ **RECOMMENDED**
+**Purpose**: Automatically fetch design tutorial videos from 11 YouTube channels with intelligent auto-categorization
 
 **Schedule**: Daily at 6:00 AM
 
 **What it does**:
-- Fetches latest 10 videos from each channel
-- Extracts video metadata (title, description, thumbnail, duration)
-- Auto-categorizes videos based on content (UI, UX, Motion, 3D, etc.)
+- Fetches latest 10 videos from each channel (110 videos total)
+- Extracts video metadata (title, description, thumbnail, published date)
+- **Intelligent auto-categorization** based on title/description/channel:
+  - Design Categories: UI, UX, Web Design, Branding, Graphic Design
+  - Motion & 3D: Motion Graphics, 3D Design, Blender
+  - Tools: Figma, Adobe, Design Tools
+  - Topics: Tutorial, Portfolio, Typography, Color Theory, Business, AI
 - Checks for duplicates before inserting
-- Inserts new videos into Supabase
+- Inserts only new videos into Supabase
+- Returns up to 5 relevant tags per video
 
-**Channels monitored**:
-- DesignCourse, Flux Academy, Jesse Showalter
-- The Futur, Charli Marie
-- Motion Design School, School of Motion, Dope Motions
-- DesignWithArash, Blender Guru
-- Josh & Ryuu (Blender Bros)
+**Channels monitored** (11 channels):
+- **UI/UX Design**: DesignCourse, Flux Academy, Jesse Showalter
+- **Design Business**: The Futur, Charli Marie
+- **Motion Graphics**: Motion Design School, School of Motion, Dope Motions
+- **3D Design**: DesignWithArash, Blender Guru, Blender Bros
+
+**Auto-categorization keywords**:
+- UI Design: ui, user interface, interface design
+- UX Design: ux, user experience, usability
+- Web Design: web design, website, responsive
+- Motion Graphics: motion, animation, after effects
+- 3D Design: 3d, blender, cinema 4d, c4d, maya
+- Figma: figma
+- Adobe: adobe, photoshop, illustrator, xd, premiere
+- AI: ai, midjourney, dall-e, chatgpt
+- And more...
+
+### 2. YouTube Videos Fetcher - Single Channel (`youtube-videos-fetcher-fixed.json`)
+**Purpose**: Simple workflow for testing with a single YouTube channel
+
+**Schedule**: Daily at 6:00 AM
+
+**What it does**:
+- Fetches latest 5 videos from DesignCourse channel
+- Basic categorization (Design, Tutorial tags)
+- Checks for duplicates
+- Good for testing and development
 
 ---
 
