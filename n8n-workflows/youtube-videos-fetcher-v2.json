@@ -1,0 +1,156 @@
+{
+  "name": "YouTube Videos Fetcher",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "YOUR_YOUTUBE_API_KEY_HERE"
+            },
+            {
+              "name": "channelId",
+              "value": "UCVyRiMvfUNMA1UPlDPzG5Ow"
+            },
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "order",
+              "value": "date"
+            },
+            {
+              "name": "maxResults",
+              "value": "5"
+            },
+            {
+              "name": "type",
+              "value": "video"
+            }
+          ]
+        }
+      },
+      "id": "2",
+      "name": "Get YouTube Videos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Get video data from YouTube API response\nconst items = $input.item.json.items || [];\nconst results = [];\n\nfor (const item of items) {\n  const videoId = item.id.videoId;\n  results.push({\n    json: {\n      video_id: videoId,\n      title: item.snippet.title,\n      description: (item.snippet.description || '').substring(0, 500),\n      url: `https://www.youtube.com/watch?v=${videoId}`,\n      thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url,\n      published_at: item.snippet.publishedAt,\n      channel: 'DesignCourse'\n    }\n  });\n}\n\nreturn results;"
+      },
+      "id": "3",
+      "name": "Parse Videos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "database",
+        "operation": "insert",
+        "projectId": "YOUR_SUPABASE_PROJECT",
+        "dataset": "public",
+        "table": "resources",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $json.title }}",
+            "description": "={{ $json.description }}",
+            "url": "={{ $json.url }}",
+            "category": "video-tutorials",
+            "thumbnail_url": "={{ $json.thumbnail }}",
+            "channel_name": "={{ $json.channel }}",
+            "published_at": "={{ $json.published_at }}",
+            "featured": false
+          }
+        }
+      },
+      "id": "4",
+      "name": "Insert to Database",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        900,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get YouTube Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get YouTube Videos": {
+      "main": [
+        [
+          {
+            "node": "Parse Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Videos": {
+      "main": [
+        [
+          {
+            "node": "Insert to Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-30T00:00:00.000Z",
+  "versionId": "1"
+}

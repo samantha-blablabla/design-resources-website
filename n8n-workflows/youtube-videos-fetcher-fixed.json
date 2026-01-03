@@ -1,0 +1,291 @@
+{
+  "name": "YouTube Videos Fetcher - Complete",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 6 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6f3f8803-8c93-4cb8-a86f-15aba0325823",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSyC0pTb952Xc8WZprjfXBRh2FKRyPwOcFIo"
+            },
+            {
+              "name": "channelId",
+              "value": "UCVyRiMvfUNMA1UPlDPzG5Ow"
+            },
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "order",
+              "value": "date"
+            },
+            {
+              "name": "maxResults",
+              "value": "5"
+            },
+            {
+              "name": "type",
+              "value": "video"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "787c9c08-bf12-479f-8373-477bb59d2fae",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get items from previous node\nconst items = $input.all();\n\nif (!items || items.length === 0 || !items[0].json.items) {\n  return [];\n}\n\nconst videos = items[0].json.items;\nconst results = [];\n\nfor (const item of videos) {\n  const videoId = item.id.videoId;\n  \n  results.push({\n    title: item.snippet.title,\n    description: (item.snippet.description || '').substring(0, 500),\n    url: `https://www.youtube.com/watch?v=${videoId}`,\n    thumbnail_url: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.default?.url,\n    channel_name: 'DesignCourse',\n    published_at: item.snippet.publishedAt,\n    category: 'video-tutorials',\n    tags: ['Design', 'Tutorial'],\n    featured: false\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "e5d17df2-b327-4dd6-a5cf-1991e46b6487",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "resources",
+        "returnAll": false,
+        "limit": 1,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "url",
+              "keyValue": "={{ $json.url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ],
+      "id": "check-exists-node",
+      "name": "Check If Exists",
+      "credentials": {
+        "supabaseApi": {
+          "id": "nosbOw6TGr2Tl0aJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "check-empty",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "id": "if-not-exists-node",
+      "name": "If Not Exists"
+    },
+    {
+      "parameters": {
+        "tableId": "resources",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $node[\"Code\"].json.title }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $node[\"Code\"].json.description }}"
+            },
+            {
+              "fieldId": "url",
+              "fieldValue": "={{ $node[\"Code\"].json.url }}"
+            },
+            {
+              "fieldId": "channel_name",
+              "fieldValue": "={{ $node[\"Code\"].json.channel_name }}"
+            },
+            {
+              "fieldId": "thumbnail_url",
+              "fieldValue": "={{ $node[\"Code\"].json.thumbnail_url }}"
+            },
+            {
+              "fieldId": "published_at",
+              "fieldValue": "={{ $node[\"Code\"].json.published_at }}"
+            },
+            {
+              "fieldId": "category",
+              "fieldValue": "={{ $node[\"Code\"].json.category }}"
+            },
+            {
+              "fieldId": "tags",
+              "fieldValue": "={{ $node[\"Code\"].json.tags }}"
+            },
+            {
+              "fieldId": "featured",
+              "fieldValue": "={{ $node[\"Code\"].json.featured }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -100
+      ],
+      "id": "5a5fba21-c142-4b3b-bcf4-daefc4957edf",
+      "name": "Insert to Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "nosbOw6TGr2Tl0aJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        100
+      ],
+      "id": "skip-node",
+      "name": "Skip (Already Exists)"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Check If Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Exists": {
+      "main": [
+        [
+          {
+            "node": "If Not Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Not Exists": {
+      "main": [
+        [
+          {
+            "node": "Insert to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip (Already Exists)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fixed-version-1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2461d2639d6072d1d3a5e2251b3a14ee5834f3407b65b48042ddf998ebd3a9c9"
+  },
+  "id": "EcYUQknGPR0vQwfe",
+  "tags": []
+}
