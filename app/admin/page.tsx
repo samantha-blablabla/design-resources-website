@@ -39,7 +39,7 @@ export default function AdminPage() {
 
     const loadStats = async () => {
         const { data: all } = await supabase.from('resources').select('category');
-        if (all) {
+        if (all && all.length > 0) {
             const graphicDesignCategories = [
                 'brushes', 'gradients', 'textures', 'patterns', 'mockups',
                 'ui-kits', 'text-effects', 'icons', 'fonts', 'templates',
@@ -47,9 +47,9 @@ export default function AdminPage() {
             ];
             setStats({
                 total: all.length,
-                videos: all.filter(r => r.category === 'video-tutorials').length,
-                resources: all.filter(r => graphicDesignCategories.includes(r.category)).length,
-                inspiration: all.filter(r => r.category === 'inspiration').length,
+                videos: all.filter((r: any) => r.category === 'video-tutorials').length,
+                resources: all.filter((r: any) => graphicDesignCategories.includes(r.category)).length,
+                inspiration: all.filter((r: any) => r.category === 'inspiration').length,
             });
         }
     };
