@@ -47,7 +47,9 @@
       "Bash(node fetch-github-resources.js:*)",
       "Bash(psql \"postgresql://postgres.kmzcbwiqlfdcrqqndglm:Abc27102003@@db.kmzcbwiqlfdcrqqndglm.supabase.co:5432/postgres\" -c \"SELECT title, channel_name, published_at, created_at FROM resources WHERE category = ''video-tutorials'' ORDER BY created_at DESC LIMIT 10;\")",
       "Bash(node check-n8n-data.js:*)",
-      "Bash(node fill-home-data.js:*)"
+      "Bash(node fill-home-data.js:*)",
+      "Bash(taskkill //F //PID 44356)",
+      "Bash(start http://localhost:3000)"
     ]
   }
 }

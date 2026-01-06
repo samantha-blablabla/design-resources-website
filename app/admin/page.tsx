@@ -205,6 +205,23 @@ export default function AdminPage() {
     );
 }
 
+// Toast notification component
+function Toast({ message, type, onClose }: { message: string; type: 'success' | 'error'; onClose: () => void }) {
+    useEffect(() => {
+        const timer = setTimeout(onClose, 3000);
+        return () => clearTimeout(timer);
+    }, [onClose]);
+
+    return (
+        <div className={`admin-toast ${type}`}>
+            <div className="admin-toast-content">
+                {type === 'success' ? <Check width={20} height={20} /> : <Xmark width={20} height={20} />}
+                <span>{message}</span>
+            </div>
+        </div>
+    );
+}
+
 // Resources Manager Component
 function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'brushes' }: any) {
     const router = useRouter();
@@ -213,6 +230,11 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     const [searchQuery, setSearchQuery] = useState('');
     const [tagFilter, setTagFilter] = useState<string>('all');
     const [currentPage, setCurrentPage] = useState(1);
+    const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+    const showToast = (message: string, type: 'success' | 'error') => {
+        setToast({ message, type });
+    };
 
     // Get title based on category
     const getTitle = () => {
@@ -340,11 +362,12 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                 .eq('id', editingResource.id);
 
             if (!error) {
-                alert('Updated successfully!');
-                setEditingResource(null);
-                resetForm();
+                showToast('Updated successfully!', 'success');
+                // Don't reset form - keep user in edit mode
                 onRefresh();
                 router.refresh(); // Refresh main site to show changes
+            } else {
+                showToast('Failed to update: ' + error.message, 'error');
             }
         } else {
             // Create new
@@ -353,11 +376,13 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                 .insert([resource]);
 
             if (!error) {
-                alert('Added successfully!');
+                showToast('Added successfully!', 'success');
                 resetForm();
                 setShowAddForm(false);
                 onRefresh();
                 router.refresh(); // Refresh main site to show changes
+            } else {
+                showToast('Failed to add: ' + error.message, 'error');
             }
         }
     };
@@ -371,9 +396,11 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
             .eq('id', id);
 
         if (!error) {
-            alert('Deleted successfully!');
+            showToast('Deleted successfully!', 'success');
             onRefresh();
             router.refresh(); // Refresh main site to show changes
+        } else {
+            showToast('Failed to delete: ' + error.message, 'error');
         }
     };
 
@@ -410,6 +437,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
 
     return (
         <div className="admin-panel-modern">
+            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
             <div className="admin-panel-header-modern">
                 <div>
                     <h2>{getTitle()}</h2>
@@ -497,7 +525,15 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                     </div>
                                 ) : imagePreview ? (
                                     <div className="admin-image-preview">
-                                        <img src={imagePreview} alt="Preview" />
+                                        <img
+                                            src={imagePreview}
+                                            alt="Preview"
+                                            onError={(e) => {
+                                                const target = e.target as HTMLImageElement;
+                                                target.style.display = 'none';
+                                                showToast('Failed to load image. Please check the URL.', 'error');
+                                            }}
+                                        />
                                         <button
                                             type="button"
                                             className="admin-image-remove"
@@ -505,6 +541,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                                                 setImagePreview('');
                                                 setFormData({ ...formData, image_url: '' });
                                             }}
+                                            title="Remove image"
                                         >
                                             <Trash width={16} height={16} />
                                         </button>
