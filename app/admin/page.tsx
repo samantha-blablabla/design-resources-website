@@ -1,21 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
     Settings, Palette, PageEdit, Label, Text, Trash, Edit,
     Plus, Search, UploadSquare, MediaImage, Check, Xmark,
     Play, Package, Sparks
 } from 'iconoir-react';
-import { createClient } from '@supabase/supabase-js';
 import { Card } from '@/components/ui';
+import { supabase } from '@/lib/supabase';
 
 type AdminTab = 'videos' | 'resources' | 'inspiration' | 'ui-settings' | 'tags';
-
-// Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function AdminPage() {
     const [activeTab, setActiveTab] = useState<AdminTab>('videos');
@@ -36,8 +31,7 @@ export default function AdminPage() {
         const { data, error } = await supabase
             .from('resources')
             .select('*')
-            .order('created_at', { ascending: false })
-            .limit(50);
+            .order('created_at', { ascending: false });
 
         if (data) setResources(data);
         setLoading(false);
@@ -232,9 +226,9 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     const [currentPage, setCurrentPage] = useState(1);
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-    const showToast = (message: string, type: 'success' | 'error') => {
+    const showToast = useCallback((message: string, type: 'success' | 'error') => {
         setToast({ message, type });
-    };
+    }, []);
 
     // Get title based on category
     const getTitle = () => {
@@ -262,24 +256,36 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
     const [uploadingImage, setUploadingImage] = useState(false);
     const [imagePreview, setImagePreview] = useState('');
 
-    // Extract all unique tags from resources
-    const allTags = Array.from(new Set(resources.flatMap((r: any) => r.tags || [])));
+    // Extract all unique tags from resources (memoized)
+    const allTags = useMemo(() =>
+        Array.from(new Set(resources.flatMap((r: any) => r.tags || []))),
+        [resources]
+    );
 
-    const filteredResources = resources.filter((r: any) => {
-        const matchesSearch = r.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            r.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            r.category?.toLowerCase().includes(searchQuery.toLowerCase());
+    // Memoize filtered resources to prevent recalculation on every render
+    const filteredResources = useMemo(() => {
+        return resources.filter((r: any) => {
+            // Filter by category first
+            const matchesCategory = r.category === defaultCategory;
 
-        const matchesTag = tagFilter === 'all' || r.tags?.includes(tagFilter);
+            const matchesSearch = r.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                r.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                r.category?.toLowerCase().includes(searchQuery.toLowerCase());
 
-        return matchesSearch && matchesTag;
-    });
+            const matchesTag = tagFilter === 'all' || r.tags?.includes(tagFilter);
 
-    // Pagination calculations
-    const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedResources = filteredResources.slice(startIndex, endIndex);
+            return matchesCategory && matchesSearch && matchesTag;
+        });
+    }, [resources, defaultCategory, searchQuery, tagFilter]);
+
+    // Pagination calculations (memoized)
+    const { totalPages, paginatedResources } = useMemo(() => {
+        const totalPages = Math.ceil(filteredResources.length / itemsPerPage);
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedResources = filteredResources.slice(startIndex, endIndex);
+        return { totalPages, paginatedResources };
+    }, [filteredResources, currentPage, itemsPerPage]);
 
     // Reset to page 1 when filter changes
     useEffect(() => {
@@ -298,51 +304,18 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
 
         setUploadingImage(true);
 
-        try {
-            // Create a unique filename
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-            const filePath = `resource-images/${fileName}`;
-
-            // Upload to Supabase Storage
-            const { data: uploadData, error: uploadError } = await supabase.storage
-                .from('images')
-                .upload(filePath, file, {
-                    cacheControl: '3600',
-                    upsert: false
-                });
-
-            if (uploadError) {
-                console.error('Upload error:', uploadError);
-                // Fallback to base64 if upload fails
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setImagePreview(reader.result as string);
-                    setFormData({ ...formData, image_url: reader.result as string });
-                };
-                reader.readAsDataURL(file);
-            } else {
-                // Get public URL
-                const { data: urlData } = supabase.storage
-                    .from('images')
-                    .getPublicUrl(filePath);
-
-                const publicUrl = urlData.publicUrl;
-                setImagePreview(publicUrl);
-                setFormData({ ...formData, image_url: publicUrl });
-            }
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            // Fallback to base64
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-                setFormData({ ...formData, image_url: reader.result as string });
-            };
-            reader.readAsDataURL(file);
-        }
-
-        setUploadingImage(false);
+        // Use base64 for now (no Supabase storage bucket needed)
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result as string);
+            setFormData({ ...formData, image_url: reader.result as string });
+            setUploadingImage(false);
+        };
+        reader.onerror = () => {
+            showToast('Failed to read image file', 'error');
+            setUploadingImage(false);
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -356,10 +329,14 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
 
         if (editingResource) {
             // Update existing
-            const { error } = await supabase
+            console.log('🔄 Updating resource:', editingResource.id, resource);
+            const { data, error } = await supabase
                 .from('resources')
                 .update(resource)
-                .eq('id', editingResource.id);
+                .eq('id', editingResource.id)
+                .select(); // Return updated data to verify
+
+            console.log('✅ Update result:', { data, error });
 
             if (!error) {
                 showToast('Updated successfully!', 'success');
@@ -367,6 +344,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                 onRefresh();
                 router.refresh(); // Refresh main site to show changes
             } else {
+                console.error('❌ Update failed:', error);
                 showToast('Failed to update: ' + error.message, 'error');
             }
         } else {
@@ -387,7 +365,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
         }
     };
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = useCallback(async (id: string) => {
         if (!confirm('Are you sure you want to delete this resource?')) return;
 
         const { error } = await supabase
@@ -402,15 +380,15 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
         } else {
             showToast('Failed to delete: ' + error.message, 'error');
         }
-    };
+    }, [onRefresh, router, showToast]);
 
-    const handleEdit = (resource: any) => {
+    const handleEdit = useCallback((resource: any) => {
         setEditingResource(resource);
         setFormData({
             title: resource.title || '',
             description: resource.description || '',
             url: resource.url || '',
-            category: resource.category || 'design-tools',
+            category: resource.category || defaultCategory,
             tags: resource.tags?.join(', ') || '',
             image_url: resource.image_url || '',
             gradient: resource.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -418,7 +396,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
         });
         setImagePreview(resource.image_url || '');
         setShowAddForm(true);
-    };
+    }, [defaultCategory]);
 
     const resetForm = () => {
         setFormData({
