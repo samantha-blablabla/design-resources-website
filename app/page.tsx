@@ -7,12 +7,7 @@ import CardSlider, { CardSliderRef } from '@/components/CardSlider';
 import FeaturedTools from '@/components/FeaturedTools';
 import Link from 'next/link';
 import { NavArrowLeft, NavArrowRight } from 'iconoir-react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from '@/lib/supabase';
 
 export default function Home() {
     const [featuredTools, setFeaturedTools] = useState<any[]>([]);
@@ -66,7 +61,25 @@ export default function Home() {
             }
         }
 
+        // Initial fetch
         fetchData();
+
+        // Subscribe to real-time changes
+        const channel = supabase
+            .channel('home-resources-changes')
+            .on('postgres_changes',
+                { event: '*', schema: 'public', table: 'resources' },
+                (payload) => {
+                    console.log('🔄 Resource changed, refreshing data...', payload);
+                    fetchData(); // Refetch when any resource changes
+                }
+            )
+            .subscribe();
+
+        // Cleanup subscription on unmount
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, []);
 
     return (
