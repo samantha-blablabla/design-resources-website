@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
     Settings, Palette, PageEdit, Label, Text, Trash, Edit,
     Plus, Search, UploadSquare, MediaImage, Check, Xmark,
@@ -206,6 +207,7 @@ export default function AdminPage() {
 
 // Resources Manager Component
 function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'brushes' }: any) {
+    const router = useRouter();
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingResource, setEditingResource] = useState<any>(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -342,6 +344,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                 setEditingResource(null);
                 resetForm();
                 onRefresh();
+                router.refresh(); // Refresh main site to show changes
             }
         } else {
             // Create new
@@ -354,6 +357,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
                 resetForm();
                 setShowAddForm(false);
                 onRefresh();
+                router.refresh(); // Refresh main site to show changes
             }
         }
     };
@@ -369,6 +373,7 @@ function ResourcesManager({ resources, loading, onRefresh, defaultCategory = 'br
         if (!error) {
             alert('Deleted successfully!');
             onRefresh();
+            router.refresh(); // Refresh main site to show changes
         }
     };
 
