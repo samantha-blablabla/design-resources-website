@@ -4342,3 +4342,45 @@ body > * {
   font-weight: 500;
   font-size: 0.95rem;
 }
+
+/* ========================================
+   DesignHubV2 Urban Dark Theme
+   ======================================== */
+
+/* Urban Palette Colors */
+:root {
+  --urban-bg: #060606;
+  --urban-neon-yellow: #eab308;
+  --urban-neon-blue: #3b82f6;
+  --urban-neon-orange: #f97316;
+  --urban-neon-purple: #a855f7;
+  --urban-neon-green: #22c55e;
+}
+
+/* Dark theme globals for v2 */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #060606;
+  color: white;
+}
+
+/* Hide default cursor for v2 */
+.cursor-none {
+  cursor: none;
+}
+
+.cursor-none * {
+  cursor: none;
+}
+
+/* Bricolage Grotesque Font (Primary for v2) */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap');
+
+/* Selection styling for v2 */
+.dark ::selection {
+  background-color: var(--urban-neon-yellow);
+  color: black;
+}
