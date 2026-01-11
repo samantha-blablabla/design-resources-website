@@ -30,7 +30,7 @@ const CustomCursor = () => {
       width: 16,
       x: -8,
       y: -8,
-      backgroundColor: "white",
+      backgroundColor: "rgba(255, 255, 255, 1)",
       mixBlendMode: "difference" as any,
     },
     text: {
@@ -38,7 +38,7 @@ const CustomCursor = () => {
       width: 80,
       x: -40,
       y: -40,
-      backgroundColor: "white",
+      backgroundColor: "rgba(255, 255, 255, 1)",
       mixBlendMode: "difference" as any,
     },
   };
