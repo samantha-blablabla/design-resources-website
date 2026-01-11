@@ -1,0 +1,75 @@
+Tài liệu: Website DesignHub - Structure & Data Sync Specification
+1. Tổng quan dự án (Project Overview)
+Tên dự án: DesignHub Redesign
+
+Phong cách: Urban Dark, High-end Creative, Motion-focused.
+
+Bảng màu (Urban Palette): * Nền: #060606 (Pure Black)
+
+Accent: Neon Yellow, Neon Blue, Neon Orange, Neon Purple, Neon Green.
+
+Typography: Primary Font là Bricolage Grotesque.
+
+2. Tech Stack (Cấu trúc kỹ thuật)
+Framework: React (Vite/Next.js).
+
+Styling: Tailwind CSS.
+
+Animation: Framer Motion (Core motion logic).
+
+Physics Engine: Matter.js (Dùng cho Hero Section).
+
+Smooth Scroll: Lenis.
+
+Icons: Lucide-react.
+
+3. Cấu trúc Component (YÊU CẦU GIỮ NGUYÊN)
+A. HeroSection (/components/Hero.tsx)
+Tính năng: Chứa các thẻ Tag rơi tự do (Physics Tags).
+
+Lưu ý kỹ thuật: * Hệ thống pointer-events: none trên container và pointer-events: auto trên các Tag.
+
+Hiệu ứng Parallax dựa trên useScroll và useTransform.
+
+Magnetic Buttons: 2 nút CTA chính phải giữ nguyên logic "hút chuột".
+
+B. ResourceGallery (/components/ResourceGallery.tsx)
+Layout: Bento Grid (Asymmetrical).
+
+Filter Bar: Sticky Header với hiệu ứng layoutId (pill animation).
+
+Card Interaction: 3D Tilt, Glow Border theo màu Category, và hiệu ứng Shared Element Transition (Portal).
+
+C. VideoShowcase (/components/VideoShowcase.tsx)
+Smart Loading: Chỉ phát video khi hover (Desktop) hoặc khi cuộn tới (Mobile).
+
+D. ScrollWrapper (/components/ScrollWrapper.tsx)
+Lenis Scroll: Cấu trúc bọc toàn bộ App để tạo hiệu ứng cuộn mượt.
+
+4. Hướng dẫn cập nhật Database cho Claude (CRITICAL)
+Nhiệm vụ của Claude:
+
+Nguồn dữ liệu: Đọc dữ liệu từ file GitHub/JSON được cung cấp.
+
+Mapping: Thay thế mảng dummyData hiện tại bằng dữ liệu thật.
+
+Logic gán màu: * Dựa vào category của tài nguyên, hãy gán cho nó 1 trong 5 màu Neon của Urban Palette.
+
+Phải đảm bảo sự phân bổ màu sắc đồng đều trong Grid.
+
+Cấm thay đổi (DO NOT MODIFY):
+
+❌ Không thay đổi logic vật lý của Matter.js trong Hero.
+
+❌ Không thay đổi thông số stiffness, damping của các hiệu ứng Spring.
+
+❌ Không thay đổi cấu trúc Class của Tailwind (giữ nguyên các lớp backdrop-blur, border-white/10, v.v.).
+
+❌ Không thay đổi thiết lập của Lenis Scroll.
+
+5. Hướng dẫn Refactor cho Claude
+Hãy tách các Component ra thành các file riêng biệt để dễ quản lý.
+
+Tối ưu hóa hình ảnh bằng cách thêm loading="lazy".
+
+Đảm bảo toàn bộ CSS cho Mobile Responsive (đã được định nghĩa) không bị ghi đè.

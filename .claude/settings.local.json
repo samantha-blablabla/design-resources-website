@@ -49,7 +49,9 @@
       "Bash(node check-n8n-data.js:*)",
       "Bash(node fill-home-data.js:*)",
       "Bash(taskkill //F //PID 44356)",
-      "Bash(start http://localhost:3000)"
+      "Bash(start http://localhost:3000)",
+      "Bash(taskkill:*)",
+      "Bash(taskkill /F /PID 75628)"
     ]
   }
 }
